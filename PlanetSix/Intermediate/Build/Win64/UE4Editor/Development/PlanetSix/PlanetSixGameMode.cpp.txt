@@ -1,0 +1,13 @@
+D:\Unreal Projects\PlanetSix\Intermediate\Build\Win64\UE4Editor\Development\PlanetSix\Definitions.PlanetSix.h
+D:\Unreal Projects\PlanetSix\Source\PlanetSix\PlanetSixGameMode.h
+D:\Unreal\UE_4.24\Engine\Source\Runtime\Engine\Classes\GameFramework/GameModeBase.h
+D:\Unreal\UE_4.24\Engine\Source\Runtime\Engine\Classes\Engine/ServerStatReplicator.h
+D:\Unreal\UE_4.24\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\ServerStatReplicator.generated.h
+D:\Unreal\UE_4.24\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\GameModeBase.generated.h
+D:\Unreal Projects\PlanetSix\Intermediate\Build\Win64\UE4Editor\Inc\PlanetSix\PlanetSixGameMode.generated.h
+D:\Unreal Projects\PlanetSix\Source\PlanetSix\PlanetSixCharacter.h
+D:\Unreal\UE_4.24\Engine\Source\Runtime\Engine\Classes\GameFramework/Character.h
+D:\Unreal\UE_4.24\Engine\Source\Runtime\Engine\Classes\GameFramework/RootMotionSource.h
+D:\Unreal\UE_4.24\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\RootMotionSource.generated.h
+D:\Unreal\UE_4.24\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\Character.generated.h
+D:\Unreal Projects\PlanetSix\Intermediate\Build\Win64\UE4Editor\Inc\PlanetSix\PlanetSixCharacter.generated.h
