@@ -7,7 +7,7 @@
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
-class APlanetSixCharacter : public ACharacter, public IAttributes
+class APlanetSixCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
