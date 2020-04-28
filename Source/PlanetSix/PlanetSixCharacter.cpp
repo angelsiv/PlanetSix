@@ -8,6 +8,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Net/UnrealNetwork.h"
+#include "Engine.h"
+#include "Attributes.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -45,6 +48,16 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	//Initialize player's health
+	MaxHealth = 100.f;
+	CurrentHealth = MaxHealth;
+
+	//Initialize Attributes
+	
+
+	bReplicates = true;
+	bReplicateMovement = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,29 +80,10 @@ void APlanetSixCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("TurnRate", this, &APlanetSixCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APlanetSixCharacter::LookUpAtRate);
+	
+	//adding specific inputs for the game:
+	PlayerInputComponent->BindAction("Interaction", IE_Pressed, this, &APlanetSixCharacter::Interact);
 
-	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &APlanetSixCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &APlanetSixCharacter::TouchStopped);
-
-	// VR headset functionality
-	//PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APlanetSixCharacter::OnResetVR);
-}
-
-
-//void APlanetSixCharacter::OnResetVR()
-//{
-//	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
-//}
-
-void APlanetSixCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		Jump();
-}
-
-void APlanetSixCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		StopJumping();
 }
 
 void APlanetSixCharacter::TurnAtRate(float Rate)
@@ -131,4 +125,51 @@ void APlanetSixCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Replicated Properties
+
+void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	//Replicates current health.
+	DOREPLIFETIME(APlanetSixCharacter, CurrentHealth);
+}
+
+void APlanetSixCharacter::OnHealthUpdate()
+{
+	//client-specific functionality
+	if (IsLocallyControlled())
+	{
+		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, healthMessage);
+
+		if (CurrentHealth <= 0)
+		{
+			FString deathMessage = FString::Printf(TEXT("You are dead. Waiting for revive..."));
+		}
+	}
+
+	//server specific functionality
+	if (Role == ROLE_Authority)
+	{
+		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), CurrentHealth);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, healthMessage);
+	}
+
+	//functions that occur on all machines.
+	/** Any special functionality that should occur as a result of damage or death should be placed here */
+
+}
+
+void APlanetSixCharacter::OnRep_CurrentHealth()
+{
+	OnHealthUpdate();
+}
+
+void APlanetSixCharacter::Interact()
+{
+
 }
