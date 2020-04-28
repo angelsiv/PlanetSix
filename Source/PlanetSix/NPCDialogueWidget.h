@@ -3,23 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
 #include "NPCDialogueWidget.generated.h"
 
-class ANPC;
-/**
- * 
- */
+class UButton;
+
+
 
 
 UCLASS()
 class PLANETSIX_API UNPCDialogueWidget : public UUserWidget
 {
+
+
 	GENERATED_BODY()
 
-public: 
+		UPROPERTY(EditAnywhere)
+		UButton* ButtonComponent;
 
-	UPROPERTY(BlueprintReadWrite)
-		ANPC* NPC;
-	
 };

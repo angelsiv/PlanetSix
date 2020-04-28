@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class UWidgetComponent;
+class UTextRenderComponent;
 
 
 UCLASS()
@@ -20,6 +21,8 @@ public:
 	// Sets default values for this actor's properties
 	ANPC();
 
+	UPROPERTY(EditAnywhere)
+		USceneComponent* ScenecomponentRoot;
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* MeshComponent;
@@ -27,8 +30,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* boxcomponent;
 
-	UPROPERTY(VisibleAnywhere)
-		UWidgetComponent* WidgetComponent;
+	UPROPERTY(EditAnywhere)
+		UTextRenderComponent* textrender;
+
 
 
 protected:
@@ -41,5 +45,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 };
