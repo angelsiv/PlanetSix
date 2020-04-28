@@ -19,10 +19,11 @@ ANPC::ANPC()
 
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-	boxcomponent->AttachTo(RootComponent);
+	boxcomponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	boxcomponent->SetRelativeScale3D(FVector(6.0f));
 
 }
+
 
 // Called when the game starts or when spawned
 void ANPC::BeginPlay()
