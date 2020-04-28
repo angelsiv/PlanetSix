@@ -75,6 +75,60 @@ protected:
 	/** Interact with object or player */
 	void Interact();
 
+	/** Reload the player's weapon */
+	void Reload();
+
+	/** Crouch  */
+	void Crouch();
+
+	/** Melee Attack with any weapon */
+	void MeleeAttack();
+
+	/** Send a Skill */
+	void Skill(int32 SkillNumber);
+
+	/** skill 1 */
+	void Skill1();
+
+	/** skill 2 */
+	void Skill2();
+
+	/** skill 3 */
+	void Skill3();
+
+	/** Open the inventory */
+	void Inventory();
+
+	/** Open the quest log */
+	void QuestLog();
+
+	/** Open the skills menu */
+	void SkillsMenu();
+
+	/** Sprint */
+	void Sprint();
+
+	/** Zoom with a distance weapon */
+	void Zoom();
+
+	/** Shoot */
+	void Shoot();
+
+	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+	void ChangeWeaponScroll(float WeaponNumber);
+
+	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+	void ChangeWeapon(int32 WeaponNumber);
+
+	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+	void ChangeWeapon1();
+
+	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+	void ChangeWeapon2();
+
+	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+	void ChangeWeapon3();
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

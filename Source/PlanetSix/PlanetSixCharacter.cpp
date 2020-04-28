@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine.h"
+#include "BaseCharacter.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -53,7 +54,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 	CurrentHealth = MaxHealth;
 
 	//Initialize Attributes
-	
+
 
 	//bReplicates = true;
 	//bReplicateMovement = true;
@@ -79,9 +80,25 @@ void APlanetSixCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("TurnRate", this, &APlanetSixCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APlanetSixCharacter::LookUpAtRate);
-	
+
 	//adding specific inputs for the game:
 	PlayerInputComponent->BindAction("Interaction", IE_Pressed, this, &APlanetSixCharacter::Interact);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &APlanetSixCharacter::Reload);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &APlanetSixCharacter::Crouch);
+	PlayerInputComponent->BindAction("Melee Attack", IE_Pressed, this, &APlanetSixCharacter::MeleeAttack);
+	PlayerInputComponent->BindAction("Skill 1", IE_Pressed, this, &APlanetSixCharacter::Skill1);
+	PlayerInputComponent->BindAction("Skill 2", IE_Pressed, this, &APlanetSixCharacter::Skill2);
+	PlayerInputComponent->BindAction("Skill 3", IE_Pressed, this, &APlanetSixCharacter::Skill3);
+	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &APlanetSixCharacter::Inventory);
+	PlayerInputComponent->BindAction("Quest Log", IE_Pressed, this, &APlanetSixCharacter::QuestLog);
+	PlayerInputComponent->BindAction("Skills Menu", IE_Pressed, this, &APlanetSixCharacter::SkillsMenu);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &APlanetSixCharacter::Sprint);
+	PlayerInputComponent->BindAction("Ranged Weapon Zoom", IE_Pressed, this, &APlanetSixCharacter::Zoom);
+	PlayerInputComponent->BindAction("Fire Ranged Weapon", IE_Pressed, this, &APlanetSixCharacter::Shoot);
+	PlayerInputComponent->BindAction("Change To Weapon 1", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon1);
+	PlayerInputComponent->BindAction("Change To Weapon 2", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon2);
+	PlayerInputComponent->BindAction("Change To Weapon 3", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon3);
+	PlayerInputComponent->BindAxis("Change Weapon ScrollWheel", this, &APlanetSixCharacter::ChangeWeaponScroll);
 
 }
 
@@ -113,12 +130,12 @@ void APlanetSixCharacter::MoveForward(float Value)
 
 void APlanetSixCharacter::MoveRight(float Value)
 {
-	if ( (Controller != NULL) && (Value != 0.0f) )
+	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
+
 		// get right vector 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
@@ -170,5 +187,177 @@ void APlanetSixCharacter::OnRep_CurrentHealth()
 
 void APlanetSixCharacter::Interact()
 {
+	if (Controller != NULL)
+	{
 
+	}
+}
+
+/** Reload the player's weapon */
+void APlanetSixCharacter::Reload()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Crouch  */
+void APlanetSixCharacter::Crouch()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Melee Attack with any weapon */
+void APlanetSixCharacter::MeleeAttack()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Send a Skill */
+void APlanetSixCharacter::Skill(int32 SkillNumber)
+{
+	if (Controller != NULL && SkillNumber < 4 && SkillNumber > 0)
+	{
+
+	}
+}
+
+/** skill 1 */
+void APlanetSixCharacter::Skill1()
+{
+	if (Controller != NULL)
+	{
+		Skill(1);
+	}
+}
+
+/** skill 2 */
+void APlanetSixCharacter::Skill2()
+{
+	if (Controller != NULL)
+	{
+		Skill(2);
+	}
+}
+
+/** skill 3 */
+void APlanetSixCharacter::Skill3()
+{
+	if (Controller != NULL)
+	{
+		Skill(3);
+	}
+}
+
+/** Open the inventory */
+void APlanetSixCharacter::Inventory()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Open the quest log */
+void APlanetSixCharacter::QuestLog()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Open the skills menu */
+void APlanetSixCharacter::SkillsMenu()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Sprint */
+void APlanetSixCharacter::Sprint()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Zoom with a distance weapon */
+void APlanetSixCharacter::Zoom()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Shoot */
+void APlanetSixCharacter::Shoot()
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeaponScroll(float WeaponNumber)
+{
+	if ((Controller != NULL) && (WeaponNumber != 0.0f))
+	{
+		if ((int32)WeaponNumber > 0 && (int32)WeaponNumber < 4)
+		{
+			ChangeWeapon(1); //TODO change the logic of changing weapons
+		}
+		if ((int32)WeaponNumber < 0 && (int32)WeaponNumber > -4)
+		{
+			ChangeWeapon(3); //TODO change the logic of changing weapons
+		}
+	}
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon(int32 WeaponNumber)
+{
+	if (Controller != NULL)
+	{
+
+	}
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon1()
+{
+	if (Controller != NULL)
+	{
+		ChangeWeapon(1);
+	}
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon2()
+{
+	if (Controller != NULL)
+	{
+		ChangeWeapon(2);
+	}
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon3()
+{
+	if (Controller != NULL)
+	{
+		ChangeWeapon(3);
+	}
 }
