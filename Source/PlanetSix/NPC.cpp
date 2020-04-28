@@ -46,6 +46,11 @@ void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//Add rotation to the text NOT YET PERFECT	
+	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+	textrender->SetWorldRotation(camera->GetCameraRotation());
+	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
+
 }
 
 
