@@ -6,6 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "NPC.generated.h"
 
+class UBoxComponent;
+class UWidgetComponent;
+
+
 UCLASS()
 class PLANETSIX_API ANPC : public AActor
 {
@@ -17,8 +21,17 @@ public:
 	// Sets default values for this actor's properties
 	ANPC();
 
+
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* boxcomponent;
+
+	UPROPERTY(VisibleAnywhere)
+		UWidgetComponent* WidgetComponent;
+
+
 
 
 
@@ -29,5 +42,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };
