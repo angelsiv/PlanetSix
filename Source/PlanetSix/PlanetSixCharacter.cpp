@@ -10,7 +10,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine.h"
-#include "Attributes.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -56,8 +55,8 @@ APlanetSixCharacter::APlanetSixCharacter()
 	//Initialize Attributes
 	
 
-	bReplicates = true;
-	bReplicateMovement = true;
+	//bReplicates = true;
+	//bReplicateMovement = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
