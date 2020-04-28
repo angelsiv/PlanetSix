@@ -29,7 +29,6 @@ ANPC::ANPC()
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-
 }
 
 
@@ -37,9 +36,7 @@ ANPC::ANPC()
 void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	textrender->SetVisibility(false);
-
 
 }
 
@@ -63,7 +60,6 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 
 	}
 
-
 }
 
 
@@ -76,9 +72,7 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
 
-
 	}
-
 
 }
 
