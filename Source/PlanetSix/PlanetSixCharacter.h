@@ -33,15 +33,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
-
-
 protected:
 	/** Player's maximum health. */
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 		float MaxHealth;
 
 	/** Player's attributes. */
-
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+		class UAttributesComponent* Attributes;
 
 	/** Player's current health. */
 	UPROPERTY(ReplicatedUsing = OnRep_CurrentHealth)
@@ -79,7 +78,6 @@ protected:
 	void Reload();
 
 	/** Crouch  */
-	void Crouch();
 
 	/** Melee Attack with any weapon */
 	void MeleeAttack();
