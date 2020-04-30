@@ -112,6 +112,15 @@ public:
 	/** CurrentShield attribute for the character */
 	UPROPERTY(BlueprintReadOnly, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
 		FAttributesData CurrentShield;
+	/** Experience points for the character */
+	UPROPERTY(BlueprintReadOnly, Category = "Level", ReplicatedUsing = OnRep_Experience)
+		FAttributesData Experience;
+	/** Level of the character */
+	UPROPERTY(BlueprintReadOnly, Category = "Level", ReplicatedUsing = OnRep_Level)
+		FAttributesData Level;
+
+	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnHealthUpdate();
 
 	/** This region below is for replication on a server - client model only*/
 #pragma region OnRep_Attributes
@@ -137,6 +146,10 @@ public:
 		virtual void OnRep_MaxEnergy();
 	UFUNCTION()
 		virtual void OnRep_CurrentShield();
+	UFUNCTION()
+		virtual void OnRep_Experience();
+	UFUNCTION()
+		virtual void OnRep_Level();
 
 #pragma endregion
 
@@ -144,4 +157,6 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere)
+		class APawn* OwnerPawn;
 };

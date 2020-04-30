@@ -18,13 +18,15 @@ UAttributesComponent::UAttributesComponent()
 	, CurrentEnergy(1.f)
 	, MaxEnergy(1.f)
 	, CurrentShield(1.f)
+	, Experience(1.f)
+	, Level(1.f)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
-
+	OwnerPawn = Cast<APawn>(GetOwner());
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&OutLifetimeProps) const
@@ -42,6 +44,8 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	DOREPLIFETIME(UAttributesComponent, CurrentEnergy);
 	DOREPLIFETIME(UAttributesComponent, MaxEnergy);
 	DOREPLIFETIME(UAttributesComponent, CurrentShield);
+	DOREPLIFETIME(UAttributesComponent, Experience);
+	DOREPLIFETIME(UAttributesComponent, Level);
 }
 
 // Called when the game starts
@@ -76,11 +80,37 @@ void FAttributesData::SetCurrentValue(float NewValue)
 	CurrentValue = NewValue;
 }
 
+void UAttributesComponent::OnHealthUpdate()
+{
+	//client-specific functionality
+	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
+	{
+		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth.GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, healthMessage);
+
+		if (CurrentHealth.GetCurrentValue() <= 0)
+		{
+			FString deathMessage = FString::Printf(TEXT("You are dead. Waiting for revive..."));
+		}
+	}
+
+	//server specific functionality
+	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
+	{
+		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), CurrentHealth.GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, healthMessage);
+	}
+
+	//functions that occur on all machines.
+	/** Any special functionality that should occur as a result of damage or death should be placed here */
+
+}
+
+#pragma region OnRep_Attributes
 void UAttributesComponent::OnRep_Brawn()
 {
 
 }
-
 void UAttributesComponent::OnRep_Vitality()
 {
 
@@ -101,22 +131,18 @@ void UAttributesComponent::OnRep_Fate()
 {
 
 }
-
 void UAttributesComponent::OnRep_CurrentHealth()
 {
-
+	UAttributesComponent::OnHealthUpdate();
 }
-
 void UAttributesComponent::OnRep_MaxHealth()
 {
 
 }
-
 void UAttributesComponent::OnRep_CurrentEnergy()
 {
 
 }
-
 void UAttributesComponent::OnRep_MaxEnergy()
 {
 
@@ -125,3 +151,12 @@ void UAttributesComponent::OnRep_CurrentShield()
 {
 
 }
+void UAttributesComponent::OnRep_Experience()
+{
+
+}
+void UAttributesComponent::OnRep_Level()
+{
+
+}
+#pragma endregion
