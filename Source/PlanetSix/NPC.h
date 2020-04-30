@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+//#include "Blueprint/UserWidget.h"
+#include "PlanetSixCharacter.h"
 #include "NPC.generated.h"
 
 class UBoxComponent;
-class UWidgetComponent;
 class UTextRenderComponent;
 
 
@@ -34,6 +35,10 @@ public:
 		UTextRenderComponent* textrender;
 
 
+	
+
+
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,6 +50,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+
+	
 
 };
