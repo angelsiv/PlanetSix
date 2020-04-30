@@ -50,7 +50,6 @@ void UAttributesComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 //** getter for base value of attribute */

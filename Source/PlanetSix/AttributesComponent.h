@@ -10,24 +10,26 @@
 UENUM(BlueprintType)
 enum class EAttributes : uint8
 {
-	Brawn UMETA(DisplayName = "Brawn", 1),
-	Vitality UMETA(DisplayName = "Vitality", 2),
-	Agility UMETA(DisplayName = "Agility", 4),
-	Mind UMETA(DisplayName = "Mind", 8),
-	Social UMETA(DisplayName = "Social", 16),
-	Fate UMETA(DisplayName = "Fate", 32)
+	None = 0 UMETA(DisplayName = "None"),
+	Brawn = 1 UMETA(DisplayName = "Brawn"),
+	Vitality = 2 UMETA(DisplayName = "Vitality"),
+	Agility = 4 UMETA(DisplayName = "Agility"),
+	Mind = 8 UMETA(DisplayName = "Mind"),
+	Social = 16 UMETA(DisplayName = "Social"),
+	Fate = 32 UMETA(DisplayName = "Fate")
 };
 
 /** Base resistances for all characters. */
 UENUM(BlueprintType)
 enum class EResistances : uint8
 {
-	Physical_Resist UMETA(DisplayName = "Physical_Resist", 1),
-	Energy_Resist UMETA(DisplayName = "Energy_Resist", 2),
-	Fire_Resist UMETA(DisplayName = "Fire_Resist", 4),
-	Ice_Resist UMETA(DisplayName = "Ice_Resist", 8),
-	Electric_Resist UMETA(DisplayName = "Electric_Resist", 16),
-	Corrosive_Resist UMETA(DisplayName = "Corrosive_Resist", 32)
+	None = 0 UMETA(DisplayName = "None"),
+	Physical_Resist = 1 UMETA(DisplayName = "Physical_Resist"),
+	Energy_Resist = 2 UMETA(DisplayName = "Energy_Resist"),
+	Fire_Resist = 4 UMETA(DisplayName = "Fire_Resist"),
+	Ice_Resist = 8 UMETA(DisplayName = "Ice_Resist"),
+	Electric_Resist = 16 UMETA(DisplayName = "Electric_Resist"),
+	Corrosive_Resist = 32 UMETA(DisplayName = "Corrosive_Resist")
 };
 
 /** Base attributes for all characters in game. */

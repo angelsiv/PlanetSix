@@ -3,3 +3,12 @@
 
 #include "HealClassComponent.h"
 
+UHealClassComponent::UHealClassComponent()
+{
+
+}
+
+void UHealClassComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}

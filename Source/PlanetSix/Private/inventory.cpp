@@ -113,7 +113,7 @@ void inventory::sort(sortingMode mode)
 
 int inventory::compare(Item i1, Item i2, sortingMode mode)
 {
-	bool result = 0;
+	int result = 0;
 	switch (mode)
 	{
 	case inventory::alphabetical:
