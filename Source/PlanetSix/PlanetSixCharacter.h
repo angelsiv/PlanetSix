@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include"NPCDialogueWidget.h"
+#include"Components/WidgetComponent.h"
+
+
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -32,6 +36,20 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
+
+	//this is to create the widget of the dialogue  
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UUserWidget> DialogueWidgetClass;
+
+
+	//this the incrementor for widgetclass 
+	UPROPERTY(EditAnywhere)
+	int indexdialogue = 0;
+
+private:
+	//this is for the specific dialogue 
+	UNPCDialogueWidget* widgetDialogue;
+
 
 protected:
 	/** Player's maximum health. */
