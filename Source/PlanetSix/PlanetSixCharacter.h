@@ -42,6 +42,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UAttributesComponent* Attributes;
 
+	/** Player's class. */
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+		class UClassComponent* Class;
+
 	/** Player's current health. */
 	UPROPERTY(ReplicatedUsing = OnRep_CurrentHealth)
 		float CurrentHealth;

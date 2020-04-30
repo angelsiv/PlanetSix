@@ -10,6 +10,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Engine.h"
 #include "AttributesComponent.h"
+#include "ClassComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -53,7 +54,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 	CurrentHealth = MaxHealth;
 
 	//Initialize Attributes
+	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes Component"));
 
+	//Initialize Class
+	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
 
 	//bReplicates = true;
 	//bReplicateMovement = true;
