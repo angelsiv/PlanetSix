@@ -41,6 +41,11 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TSubclassOf<UUserWidget> DialogueWidgetClass;
 
+	/** Interact with object or player */
+	void Interact();
+
+
+	bool IsinperimiterofNPC = false;
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
@@ -89,8 +94,7 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
-	/** Interact with object or player */
-	void Interact();
+	
 
 	/** Reload the player's weapon */
 	void Reload();

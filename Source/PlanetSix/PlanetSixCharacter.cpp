@@ -185,24 +185,35 @@ void APlanetSixCharacter::OnRep_CurrentHealth()
 
 void APlanetSixCharacter::Interact()
 {
-	indexdialogue++;
 
-	if (DialogueWidgetClass) 
+	if (IsinperimiterofNPC == true) 
 	{
-			 if(indexdialogue % 2 == 1)
-			 {
+		indexdialogue++;
+
+		if (DialogueWidgetClass)
+		{
+			if (indexdialogue % 2 == 1)
+			{
 				widgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
 				widgetDialogue->AddToViewport();
-			 }
-			
-			 if (indexdialogue % 2 == 0)
-			 {
-				 GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-				 widgetDialogue->RemoveFromParent();
+			}
 
-			 }
+			if (indexdialogue % 2 == 0)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
+				widgetDialogue->RemoveFromParent();
+
+			}
 
 	}
+
+    }
+
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+	}
+	
 	
 }
 

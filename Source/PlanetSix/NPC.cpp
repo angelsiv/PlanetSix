@@ -30,8 +30,6 @@ ANPC::ANPC()
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 
-
-
 }
 
 
@@ -65,13 +63,16 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto character = Cast<APlanetSixCharacter>(OtherActor);
 	 
-	if (character != nullptr) {
+	character->IsinperimiterofNPC = true;
 
+	if (character != nullptr && character->IsinperimiterofNPC ==true) {
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
-		
+
 	}
+
 
 }
 
@@ -79,6 +80,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	auto character = Cast<APlanetSixCharacter>(OtherActor);
+	character->IsinperimiterofNPC = false;
 
 	if (character != nullptr) {
 
