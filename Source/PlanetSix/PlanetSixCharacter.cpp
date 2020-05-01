@@ -49,10 +49,6 @@ APlanetSixCharacter::APlanetSixCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
-	//Initialize player's health
-	MaxHealth = 100.f;
-	CurrentHealth = MaxHealth;
-
 	//Initialize Attributes
 	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes Component"));
 
@@ -152,39 +148,6 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	//Replicates current health.
-	DOREPLIFETIME(APlanetSixCharacter, CurrentHealth);
-}
-
-void APlanetSixCharacter::OnHealthUpdate()
-{
-	//client-specific functionality
-	if (IsLocallyControlled())
-	{
-		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, healthMessage);
-
-		if (CurrentHealth <= 0)
-		{
-			FString deathMessage = FString::Printf(TEXT("You are dead. Waiting for revive..."));
-		}
-	}
-
-	//server specific functionality
-	if (GetLocalRole() == ROLE_Authority)
-	{
-		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), CurrentHealth);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, healthMessage);
-	}
-
-	//functions that occur on all machines.
-	/** Any special functionality that should occur as a result of damage or death should be placed here */
-
-}
-
-void APlanetSixCharacter::OnRep_CurrentHealth()
-{
-	OnHealthUpdate();
 }
 
 void APlanetSixCharacter::Interact()

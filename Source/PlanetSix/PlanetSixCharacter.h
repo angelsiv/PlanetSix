@@ -34,10 +34,6 @@ public:
 		float BaseLookUpRate;
 
 protected:
-	/** Player's maximum health. */
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
-		float MaxHealth;
-
 	/** Player's attributes. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UAttributesComponent* Attributes;
@@ -45,17 +41,6 @@ protected:
 	/** Player's class. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UClassComponent* Class;
-
-	/** Player's current health. */
-	UPROPERTY(ReplicatedUsing = OnRep_CurrentHealth)
-		float CurrentHealth;
-
-	/** RepNotify for changes made to current health */
-	UFUNCTION()
-		void OnRep_CurrentHealth();
-
-	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnHealthUpdate();
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
