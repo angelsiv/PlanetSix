@@ -79,48 +79,56 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/** Brawn attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Main Attributes", ReplicatedUsing = OnRep_Brawn)
+	UPROPERTY(EditAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Brawn)
 		FAttributesData Brawn;
 	/** Vitality attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Main Attributes", ReplicatedUsing = OnRep_Vitality)
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Vitality)
 		FAttributesData Vitality;
 	/** Agility attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Main Attributes", ReplicatedUsing = OnRep_Agility)
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Agility)
 		FAttributesData Agility;
 	/** Mind attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Main Attributes", ReplicatedUsing = OnRep_Mind)
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Mind)
 		FAttributesData Mind;
 	/** Social attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Main Attributes", ReplicatedUsing = OnRep_Social)
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Social)
 		FAttributesData Social;
 	/** Fate attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Main Attributes", ReplicatedUsing = OnRep_Fate)
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Fate)
 		FAttributesData Fate;
 
 	/** CurrentHealth attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
+	UPROPERTY(VisibleAnywhere, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
 		FAttributesData CurrentHealth;
 	/** MaxHealth attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_MaxHealth)
+	UPROPERTY(VisibleAnywhere, Category = "Health", ReplicatedUsing = OnRep_MaxHealth)
 		FAttributesData MaxHealth;
 	/** CurrentEnergy attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Energy", ReplicatedUsing = OnRep_CurrentEnergy)
+	UPROPERTY(VisibleAnywhere, Category = "Energy", ReplicatedUsing = OnRep_CurrentEnergy)
 		FAttributesData CurrentEnergy;
 	/** MaxEnergy attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Energy", ReplicatedUsing = OnRep_MaxEnergy)
+	UPROPERTY(VisibleAnywhere, Category = "Energy", ReplicatedUsing = OnRep_MaxEnergy)
 		FAttributesData MaxEnergy;
 	/** CurrentShield attribute for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
+	UPROPERTY(VisibleAnywhere, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
 		FAttributesData CurrentShield;
 	/** Experience points for the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Level", ReplicatedUsing = OnRep_Experience)
+	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Experience)
 		FAttributesData Experience;
 	/** Level of the character */
-	UPROPERTY(BlueprintReadOnly, Category = "Level", ReplicatedUsing = OnRep_Level)
+	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Level)
 		FAttributesData Level;
 
 	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnHealthUpdate();
+	/** Response to energy being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnEnergyUpdate();
+	/** Response to shield being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnShieldUpdate();
+	/** Response to experience being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnExperienceUpdate();
+	/** Response to level being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnLevelUpdate();
 
 	/** This region below is for replication on a server - client model only*/
 #pragma region OnRep_Attributes
