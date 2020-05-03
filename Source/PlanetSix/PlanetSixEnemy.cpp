@@ -17,6 +17,7 @@ APlanetSixEnemy::APlanetSixEnemy(const FObjectInitializer & ObjectInitializer)
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	MovComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovComp"));
+	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes"));
 	
 
 	Mesh->SetGenerateOverlapEvents(false);
