@@ -22,4 +22,7 @@ class PLANETSIX_API UNPCDialogueWidget : public UUserWidget
 		UPROPERTY(EditAnywhere)
 		UButton* ButtonComponent;
 
+	
+
+
 };

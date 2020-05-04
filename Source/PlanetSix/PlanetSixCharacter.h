@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include"NPCDialogueWidget.h"
+#include"Components/WidgetComponent.h"
+
+
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -33,6 +37,25 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
+	//this is to create the widget of the dialogue  
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UUserWidget> DialogueWidgetClass;
+
+	/** Interact with object or player */
+	void Interact();
+
+
+	bool IsinperimiterofNPC = false;
+
+	//this the incrementor for widgetclass 
+	UPROPERTY(EditAnywhere)
+	int indexdialogue = 0;
+
+private:
+	//this is for the specific dialogue 
+	UNPCDialogueWidget* widgetDialogue;
+
+
 protected:
 	/** Player's attributes. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
@@ -60,8 +83,7 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
-	/** Interact with object or player */
-	void Interact();
+	
 
 	/** Reload the player's weapon */
 	void Reload();

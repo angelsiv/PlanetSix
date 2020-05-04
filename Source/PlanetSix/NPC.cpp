@@ -3,7 +3,6 @@
 
 #include "NPC.h"
 #include "Components/BoxComponent.h"
-#include "PlanetSixCharacter.h"
 #include"Engine.h"
 
 
@@ -26,8 +25,10 @@ ANPC::ANPC()
 	boxcomponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	boxcomponent->SetRelativeScale3D(FVector(6.0f));
 
+	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 }
 
@@ -36,8 +37,10 @@ ANPC::ANPC()
 void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
+
 	textrender->SetVisibility(false);
 
+	
 }
 
 
@@ -51,19 +54,25 @@ void ANPC::Tick(float DeltaTime)
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
 
+
+
 }
 
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
 	auto character = Cast<APlanetSixCharacter>(OtherActor);
+	 
+	character->IsinperimiterofNPC = true;
 
-	if (character != nullptr) {
-
+	if (character != nullptr && character->IsinperimiterofNPC ==true) {
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
+		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
 
 	}
+
 
 }
 
@@ -71,6 +80,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	auto character = Cast<APlanetSixCharacter>(OtherActor);
+	character->IsinperimiterofNPC = false;
 
 	if (character != nullptr) {
 
