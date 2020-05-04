@@ -62,17 +62,18 @@ void ANPC::Tick(float DeltaTime)
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
 	auto character = Cast<APlanetSixCharacter>(OtherActor);
-	 
+	
 	character->IsinperimiterofNPC = true;
 
 	if (character != nullptr && character->IsinperimiterofNPC ==true) {
 		
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
-
+		
+		
 	}
-
 
 }
 
@@ -80,10 +81,12 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	auto character = Cast<APlanetSixCharacter>(OtherActor);
+	
 	character->IsinperimiterofNPC = false;
 
 	if (character != nullptr) {
 
+		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
 
