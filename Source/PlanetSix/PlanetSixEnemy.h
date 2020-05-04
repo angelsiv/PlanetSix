@@ -34,8 +34,6 @@ protected:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UAttributesComponent* Attributes;
 	
-
-	
 	
 
 	bool bIsDead;
@@ -43,6 +41,8 @@ protected:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
 
 public:	
 	// Called every frame

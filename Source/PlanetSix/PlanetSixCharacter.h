@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include"NPCDialogueWidget.h"
+#include"Components/WidgetComponent.h"
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -33,11 +35,23 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
-protected:
-	/** Player's maximum health. */
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
-		float MaxHealth;
+	//this is to create the widget of the dialogue  
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TSubclassOf<UUserWidget> DialogueWidgetClass;
 
+	/** Interact with object or player */
+	void Interact();
+
+	bool bIsInPerimiterOfNPC = false;
+
+	//this the incrementor for widgetclass 
+	UPROPERTY(EditAnywhere)
+	int IndexDialogue = 0;
+
+	//this is for the specific dialogue 
+	UNPCDialogueWidget* WidgetDialogue;
+
+protected:
 	/** Player's attributes. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UAttributesComponent* Attributes;
@@ -45,17 +59,6 @@ protected:
 	/** Player's class. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UClassComponent* Class;
-
-	/** Player's current health. */
-	UPROPERTY(ReplicatedUsing = OnRep_CurrentHealth)
-		float CurrentHealth;
-
-	/** RepNotify for changes made to current health */
-	UFUNCTION()
-		void OnRep_CurrentHealth();
-
-	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnHealthUpdate();
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -74,9 +77,6 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
-
-	/** Interact with object or player */
-	void Interact();
 
 	/** Reload the player's weapon */
 	void Reload();
@@ -142,4 +142,3 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
-
