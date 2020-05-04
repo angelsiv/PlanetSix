@@ -1,13 +1,16 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "PlanetSixCharacter.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Net/UnrealNetwork.h"
+#include "Engine.h"
+#include "AttributesComponent.h"
+#include "ClassComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -45,6 +48,15 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	//Initialize Attributes
+	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes Component"));
+
+	//Initialize Class
+	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+
+	//bReplicates = true;
+	//bReplicateMovement = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,28 +80,24 @@ void APlanetSixCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APlanetSixCharacter::LookUpAtRate);
 
-	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &APlanetSixCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &APlanetSixCharacter::TouchStopped);
+	//adding specific inputs for the game:
+	PlayerInputComponent->BindAction("Interaction", IE_Pressed, this, &APlanetSixCharacter::Interact);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &APlanetSixCharacter::Reload);
+	PlayerInputComponent->BindAction("Melee Attack", IE_Pressed, this, &APlanetSixCharacter::MeleeAttack);
+	PlayerInputComponent->BindAction("Skill 1", IE_Pressed, this, &APlanetSixCharacter::Skill1);
+	PlayerInputComponent->BindAction("Skill 2", IE_Pressed, this, &APlanetSixCharacter::Skill2);
+	PlayerInputComponent->BindAction("Skill 3", IE_Pressed, this, &APlanetSixCharacter::Skill3);
+	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &APlanetSixCharacter::Inventory);
+	PlayerInputComponent->BindAction("Quest Log", IE_Pressed, this, &APlanetSixCharacter::QuestLog);
+	PlayerInputComponent->BindAction("Skills Menu", IE_Pressed, this, &APlanetSixCharacter::SkillsMenu);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &APlanetSixCharacter::Sprint);
+	PlayerInputComponent->BindAction("Ranged Weapon Zoom", IE_Pressed, this, &APlanetSixCharacter::Zoom);
+	PlayerInputComponent->BindAction("Fire Ranged Weapon", IE_Pressed, this, &APlanetSixCharacter::Shoot);
+	PlayerInputComponent->BindAction("Change To Weapon 1", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon1);
+	PlayerInputComponent->BindAction("Change To Weapon 2", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon2);
+	PlayerInputComponent->BindAction("Change To Weapon 3", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon3);
+	PlayerInputComponent->BindAxis("Change Weapon ScrollWheel", this, &APlanetSixCharacter::ChangeWeaponScroll);
 
-	// VR headset functionality
-	//PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APlanetSixCharacter::OnResetVR);
-}
-
-
-//void APlanetSixCharacter::OnResetVR()
-//{
-//	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
-//}
-
-void APlanetSixCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		Jump();
-}
-
-void APlanetSixCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		StopJumping();
 }
 
 void APlanetSixCharacter::TurnAtRate(float Rate)
@@ -120,15 +128,168 @@ void APlanetSixCharacter::MoveForward(float Value)
 
 void APlanetSixCharacter::MoveRight(float Value)
 {
-	if ( (Controller != NULL) && (Value != 0.0f) )
+	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
+
 		// get right vector 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Replicated Properties
+
+void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+}
+
+void APlanetSixCharacter::Interact()
+{
+
+	if (bIsInPerimiterOfNPC == true)
+	{
+		IndexDialogue++;
+
+		if (DialogueWidgetClass)
+		{
+			if (IndexDialogue % 2 == 1)
+			{
+				WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
+				WidgetDialogue->AddToViewport();
+			}
+
+			if (IndexDialogue % 2 == 0)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
+				WidgetDialogue->RemoveFromParent();
+			}
+		}
+	}
+
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+	}
+}
+
+/** Reload the player's weapon */
+void APlanetSixCharacter::Reload()
+{
+
+}
+
+/** Melee Attack with any weapon */
+void APlanetSixCharacter::MeleeAttack()
+{
+
+}
+
+/** Send a Skill */
+void APlanetSixCharacter::Skill(int32 SkillNumber)
+{
+	if (SkillNumber < 4 && SkillNumber > 0)
+	{
+
+	}
+}
+
+/** skill 1 */
+void APlanetSixCharacter::Skill1()
+{
+	Skill(1);
+}
+
+/** skill 2 */
+void APlanetSixCharacter::Skill2()
+{
+	Skill(2);
+}
+
+/** skill 3 */
+void APlanetSixCharacter::Skill3()
+{
+	Skill(3);
+}
+
+/** Open the inventory */
+void APlanetSixCharacter::Inventory()
+{
+
+}
+
+/** Open the quest log */
+void APlanetSixCharacter::QuestLog()
+{
+
+}
+
+/** Open the skills menu */
+void APlanetSixCharacter::SkillsMenu()
+{
+
+}
+
+/** Sprint */
+void APlanetSixCharacter::Sprint()
+{
+
+}
+
+/** Zoom with a distance weapon */
+void APlanetSixCharacter::Zoom()
+{
+
+}
+
+/** Shoot */
+void APlanetSixCharacter::Shoot()
+{
+
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeaponScroll(float WeaponNumber)
+{
+	if (WeaponNumber != 0.0f)
+	{
+		if ((int32)WeaponNumber > 0 && (int32)WeaponNumber < 4)
+		{
+			ChangeWeapon(1); //TODO change the logic of changing weapons
+		}
+		if ((int32)WeaponNumber < 0 && (int32)WeaponNumber > -4)
+		{
+			ChangeWeapon(3); //TODO change the logic of changing weapons
+		}
+	}
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon(int32 WeaponNumber)
+{
+
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon1()
+{
+	ChangeWeapon(1);
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon2()
+{
+	ChangeWeapon(2);
+}
+
+/** Change Weapon depending on 1, 2, 3 or scrollwheel */
+void APlanetSixCharacter::ChangeWeapon3()
+{
+	ChangeWeapon(3);
 }
