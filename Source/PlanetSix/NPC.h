@@ -34,6 +34,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		UTextRenderComponent* textrender;
 
+	
+
 
 
 protected:

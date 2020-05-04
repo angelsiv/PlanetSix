@@ -163,6 +163,7 @@ void APlanetSixCharacter::Interact()
 			{
 				widgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
 				widgetDialogue->AddToViewport();
+				
 			}
 
 			if (indexdialogue % 2 == 0)
