@@ -44,16 +44,15 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
-
-	bool IsinperimiterofNPC = false;
+	bool bIsInPerimiterOfNPC = false;
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
-	int indexdialogue = 0;
+	int IndexDialogue = 0;
 
 
 	//this is for the specific dialogue 
-	UNPCDialogueWidget* widgetDialogue;
+	UNPCDialogueWidget* WidgetDialogue;
 
 
 protected:
