@@ -153,6 +153,30 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 void APlanetSixCharacter::Interact()
 {
 
+	if (bIsInPerimiterOfNPC == true)
+	{
+		IndexDialogue++;
+
+		if (DialogueWidgetClass)
+		{
+			if (IndexDialogue % 2 == 1)
+			{
+				WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
+				WidgetDialogue->AddToViewport();
+			}
+
+			if (IndexDialogue % 2 == 0)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
+				WidgetDialogue->RemoveFromParent();
+			}
+		}
+	}
+
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+	}
 }
 
 /** Reload the player's weapon */
