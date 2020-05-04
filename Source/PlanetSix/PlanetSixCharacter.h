@@ -50,7 +50,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	int IndexDialogue = 0;
 
-
 	//this is for the specific dialogue 
 	UNPCDialogueWidget* WidgetDialogue;
 
