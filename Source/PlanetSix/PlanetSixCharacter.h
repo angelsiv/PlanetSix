@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include"NPCDialogueWidget.h"
 #include"Components/WidgetComponent.h"
-
-
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -53,7 +51,6 @@ public:
 	//this is for the specific dialogue 
 	UNPCDialogueWidget* WidgetDialogue;
 
-
 protected:
 	/** Player's attributes. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
@@ -80,8 +77,6 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
-
-	
 
 	/** Reload the player's weapon */
 	void Reload();
@@ -147,4 +142,3 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
-
