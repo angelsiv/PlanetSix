@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include"NPCDialogueWidget.h"
 #include"Components/WidgetComponent.h"
-
-
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -44,37 +42,23 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
-
-	bool IsinperimiterofNPC = false;
+	bool bIsInPerimiterOfNPC = false;
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
-	int indexdialogue = 0;
-
+	int IndexDialogue = 0;
 
 	//this is for the specific dialogue 
-	UNPCDialogueWidget* widgetDialogue;
-
+	UNPCDialogueWidget* WidgetDialogue;
 
 protected:
-	/** Player's maximum health. */
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
-		float MaxHealth;
-
 	/** Player's attributes. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UAttributesComponent* Attributes;
 
-	/** Player's current health. */
-	UPROPERTY(ReplicatedUsing = OnRep_CurrentHealth)
-		float CurrentHealth;
-
-	/** RepNotify for changes made to current health */
-	UFUNCTION()
-		void OnRep_CurrentHealth();
-
-	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnHealthUpdate();
+	/** Player's class. */
+	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+		class UClassComponent* Class;
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -93,8 +77,6 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
-
-	
 
 	/** Reload the player's weapon */
 	void Reload();
@@ -160,4 +142,3 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
-

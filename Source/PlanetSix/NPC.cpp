@@ -1,10 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "NPC.h"
 #include "Components/BoxComponent.h"
 #include"Engine.h"
-
 
 // Sets default values
 ANPC::ANPC()
@@ -28,10 +26,7 @@ ANPC::ANPC()
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-
 }
-
 
 // Called when the game starts or when spawned
 void ANPC::BeginPlay()
@@ -39,10 +34,7 @@ void ANPC::BeginPlay()
 	Super::BeginPlay();
 
 	textrender->SetVisibility(false);
-
-	
 }
-
 
 // Called every frame
 void ANPC::Tick(float DeltaTime)
@@ -54,45 +46,30 @@ void ANPC::Tick(float DeltaTime)
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
 
-
-
 }
-
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	auto character = Cast<APlanetSixCharacter>(OtherActor);
-	
-	character->IsinperimiterofNPC = true;
+	auto Character = Cast<APlanetSixCharacter>(OtherActor);
+	Character->bIsInPerimiterOfNPC = true;
 
-	if (character != nullptr && character->IsinperimiterofNPC ==true) {
-		
-		
+	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
-		
-		
 	}
-
 }
-
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	auto character = Cast<APlanetSixCharacter>(OtherActor);
-	
-	character->IsinperimiterofNPC = false;
+	auto Character = Cast<APlanetSixCharacter>(OtherActor);
+	Character->bIsInPerimiterOfNPC = false;
 
-	if (character != nullptr) {
-
+	if (Character != nullptr) 
+	{
 		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
-
 	}
-
 }
-
-
-
