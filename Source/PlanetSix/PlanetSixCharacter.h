@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include"NPCDialogueWidget.h"
-#include"Components/WidgetComponent.h"
+#include "NPCDialogueWidget.h"
+#include "AttributesComponent.h"
+#include "ClassComponent.h"
+#include "Components/WidgetComponent.h"
 #include "PlanetSixCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -36,8 +38,8 @@ public:
 		float BaseLookUpRate;
 
 	//this is to create the widget of the dialogue  
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	TSubclassOf<UUserWidget> DialogueWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<UUserWidget> DialogueWidgetClass;
 
 	/** Interact with object or player */
 	void Interact();
@@ -46,19 +48,22 @@ public:
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
-	int IndexDialogue = 0;
+		int IndexDialogue = 0;
 
 	//this is for the specific dialogue 
 	UNPCDialogueWidget* WidgetDialogue;
 
+	//getter for the character's class
+	EClassName GetClassName();
+
 protected:
 	/** Player's attributes. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
-		class UAttributesComponent* Attributes;
+		UAttributesComponent* Attributes;
 
 	/** Player's class. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
-		class UClassComponent* Class;
+		UClassComponent* Class;
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);

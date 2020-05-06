@@ -9,8 +9,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine.h"
-#include "AttributesComponent.h"
-#include "ClassComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -148,6 +146,11 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+}
+
+EClassName APlanetSixCharacter::GetClassName()
+{
+	return Class->GetClassName();
 }
 
 void APlanetSixCharacter::Interact()

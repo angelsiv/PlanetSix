@@ -10,7 +10,8 @@ UClassComponent::UClassComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+
+	ClassEnumName = EClassName::Uni_Comrade;
 }
 
 
@@ -19,8 +20,10 @@ void UClassComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	FString TempDescription = TEXT("BLANK"); //TODO : implement a database to change that
+
+	//depending on the class, let's add a description to it.
+	ClassDescription = TempDescription;
 }
 
 
@@ -32,3 +35,7 @@ void UClassComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
+EClassName UClassComponent::GetClassName()
+{
+	return ClassEnumName;
+}
