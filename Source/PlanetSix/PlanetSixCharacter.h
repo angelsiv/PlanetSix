@@ -44,6 +44,7 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
+
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
@@ -55,9 +56,7 @@ public:
 	//this is for the specific dialogue 
 	UNPCDialogueWidget* WidgetDialogue;
 
-	//Gets the players controller
-	APlayerController* PC;
-
+	
 
 protected:
 	/** Player's attributes. */
@@ -67,6 +66,8 @@ protected:
 	/** Player's class. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		class UClassComponent* Class;
+
+
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);

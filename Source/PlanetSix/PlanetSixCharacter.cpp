@@ -153,7 +153,7 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 void APlanetSixCharacter::Interact()
 {
 	//Cast the player controller to get controller 
-	 PC = Cast<APlayerController>(GetController());
+	auto PC = Cast<APlayerController>(GetController());
 
 	 //check if the player is the perimiter of the NPC 
 	if (bIsInPerimiterOfNPC)
