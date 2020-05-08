@@ -10,6 +10,8 @@
 #include "Components/WidgetComponent.h"
 #include "PlanetSixCharacter.generated.h"
 
+class APlayerController;
+
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
 {
@@ -44,7 +46,9 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
+	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
+
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
@@ -55,6 +59,9 @@ public:
 
 	//getter for the character's class
 	EClassName GetClassName();
+
+	//Gets the players controller
+	APlayerController* PC;
 
 protected:
 	/** Player's attributes. */

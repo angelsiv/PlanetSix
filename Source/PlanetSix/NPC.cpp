@@ -11,21 +11,22 @@ ANPC::ANPC()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ScenecomponentRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	ScenecomponentRoot -> AttachToComponent(MeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ScenecomponentRoot -> AttachToComponent(skeleton, FAttachmentTransformRules::KeepRelativeTransform);
 	ScenecomponentRoot = RootComponent;
-
-	//Declare Mesh Component
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
-	MeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	boxcomponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	boxcomponent->SetRelativeScale3D(FVector(6.0f));
+	
 
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
+	skeleton->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +35,7 @@ void ANPC::BeginPlay()
 	Super::BeginPlay();
 
 	textrender->SetVisibility(false);
+	skeleton->PlayAnimation(AnimHI, false);
 }
 
 // Called every frame
@@ -52,6 +54,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = true;
+	
 
 	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
 	{
@@ -71,5 +74,6 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
+		
 	}
 }

@@ -155,25 +155,48 @@ EClassName APlanetSixCharacter::GetClassName()
 
 void APlanetSixCharacter::Interact()
 {
+	//Cast the player controller to get controller 
+	 PC = Cast<APlayerController>(GetController());
 
-	if (bIsInPerimiterOfNPC == true)
+	 //check if the player is the perimiter of the NPC 
+	if (bIsInPerimiterOfNPC)
 	{
+
 		IndexDialogue++;
 
-		if (DialogueWidgetClass)
+		//If player controller is not null 
+		if (PC)
 		{
-			if (IndexDialogue % 2 == 1)
-			{
-				WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
-				WidgetDialogue->AddToViewport();
-			}
+			//check if Dialogue widget exists 
+		    if (DialogueWidgetClass)
+		    {
+				//increment the dialogue varible to show the Widget if index = 1 
+				if (IndexDialogue % 2 == 1)
+				{
+					WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
+					WidgetDialogue->AddToViewport();
+					PC->bShowMouseCursor = true;
+					PC->bEnableClickEvents = true;
+					PC->bEnableMouseOverEvents = true;
+					
+					
+				}
 
-			if (IndexDialogue % 2 == 0)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-				WidgetDialogue->RemoveFromParent();
-			}
+				if (IndexDialogue % 2 == 0)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
+					WidgetDialogue->RemoveFromParent();
+					PC->bShowMouseCursor = false;
+					PC->bEnableClickEvents = false;
+					PC->bEnableMouseOverEvents = false;
+					
+
+				}
+	
+		    }
+	     
 		}
+
 	}
 
 	else
