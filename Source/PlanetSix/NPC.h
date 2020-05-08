@@ -28,9 +28,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		USceneComponent* ScenecomponentRoot;
 
-	/*UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* MeshComponent;*/
-
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* boxcomponent;
 

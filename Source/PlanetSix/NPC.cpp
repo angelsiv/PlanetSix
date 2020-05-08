@@ -13,10 +13,6 @@ ANPC::ANPC()
 	ScenecomponentRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	ScenecomponentRoot -> AttachToComponent(skeleton, FAttachmentTransformRules::KeepRelativeTransform);
 	ScenecomponentRoot = RootComponent;
-	
-	//Declare Mesh Component
-	/*MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
-	MeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);*/
 
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
@@ -29,8 +25,6 @@ ANPC::ANPC()
 
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
 	skeleton->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-	
 
 
 }
@@ -80,5 +74,6 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
+		
 	}
 }
