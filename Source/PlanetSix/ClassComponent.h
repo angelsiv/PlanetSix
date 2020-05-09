@@ -40,7 +40,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-		FName ClassName;
+		FName ClassTextName;
 	UPROPERTY(VisibleAnywhere)
 		FString ClassDescription;
 	UPROPERTY(VisibleAnywhere)
@@ -49,5 +49,5 @@ protected:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	void CreateSkill();
 };
