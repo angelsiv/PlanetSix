@@ -62,7 +62,7 @@ public:
 	EClassName GetClassName();
 
 	//Gets the players controller
-	APlayerController* PC;
+	//APlayerController* PC;
 
 protected:
 	/** Player's attributes. */
