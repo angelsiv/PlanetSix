@@ -39,3 +39,8 @@ EClassName UClassComponent::GetClassName()
 {
 	return ClassEnumName;
 }
+
+void UClassComponent::CreateSkill()
+{
+
+}

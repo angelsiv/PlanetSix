@@ -43,7 +43,7 @@ void ASkill_Pylon::NotifyActorBeginOverlap(AActor* OtherActor)
 		class UAttributesComponent* EnemyComponent;
 		class UAttributesComponent* PlayerComponent;
 		EnemyComponent = Cast<UAttributesComponent>(OtherActor);
-		PlayerComponent = Cast<UAttributesComponent>(Parent);
+		PlayerComponent = Cast<UAttributesComponent>(GetOwner());
 		InflictDamage(EnemyComponent, PlayerComponent);
 	}
 }
@@ -56,5 +56,5 @@ void ASkill_Pylon::NotifyActorEndOverlap(AActor* OtherActor)
 
 void ASkill_Pylon::InflictDamage(UAttributesComponent* EnemyComponent, UAttributesComponent* PlayerComponent)
 {
-	float Damage = PlayerComponent->Mind.GetCurrentValue() * PlayerComponent->Level.GetCurrentValue();
+	float Damage = PlayerComponent->WeaponsProficiency.GetCurrentValue() * PlayerComponent->Level.GetCurrentValue();
 }
