@@ -46,6 +46,7 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
+
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
@@ -71,6 +72,8 @@ protected:
 	/** Player's class. */
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 		UClassComponent* Class;
+
+
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);

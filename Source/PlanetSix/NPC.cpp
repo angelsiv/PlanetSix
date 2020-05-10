@@ -23,6 +23,7 @@ ANPC::ANPC()
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
 	skeleton->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
@@ -34,8 +35,11 @@ void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Set the visibility of the text Press F to Interact to true 
 	textrender->SetVisibility(false);
-	skeleton->PlayAnimation(AnimHI, false);
+
+	//Play an animtion on begin play for the NPC 
+	skeleton->PlayAnimation(AnimIdle, true);
 }
 
 // Called every frame
@@ -58,6 +62,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 
 	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
 	{
+
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
@@ -71,6 +76,7 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (Character != nullptr) 
 	{
+
 		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);

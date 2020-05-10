@@ -38,7 +38,7 @@ public:
 		USkeletalMeshComponent* skeleton;
 
 	UPROPERTY(EditAnywhere)
-		UAnimationAsset* AnimHI;
+		UAnimationAsset* AnimIdle;
 
 	
 protected:
