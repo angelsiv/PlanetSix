@@ -7,11 +7,42 @@
 #include "MainMenuWidget.generated.h"
 
 /**
- * 
+ *
  */
+
+class UButton;
+
 UCLASS()
 class PLANETSIX_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* StartButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* OptionsButton;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* ExitButton;
+
+
+
+public:
+	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);
+
+	void NativeConstruct() override;
+
+	UFUNCTION(BlueprintCallable)
+		void StartGame();
+
+	UFUNCTION(BlueprintCallable)
+		void OpenOptions();
+
+	UFUNCTION(BlueprintCallable)
+		void ExitGame();
+
+
 };
