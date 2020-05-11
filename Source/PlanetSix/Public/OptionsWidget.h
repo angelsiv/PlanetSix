@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Types/SlateEnums.h"
 #include "OptionsWidget.generated.h"
 
 /**
@@ -14,27 +15,29 @@ class USlider;
 class UTextBlock;
 class UButton;
 
+
 UCLASS()
 class PLANETSIX_API UOptionsWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
-
+	//Option menu components
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		USlider* ShadowSlider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		UTextBlock* ShadowText;
+		UTextBlock* ShadowStatus;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		USlider* TextureSlider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		UTextBlock* TextureText;
+		UTextBlock* TextureStatus;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		USlider* PostSlider;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		UTextBlock* PostText;
+		UTextBlock* PostStatus;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UComboBoxString* ResComboBox;
@@ -42,8 +45,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UButton* ReturnButton;
 
+	//Ref to MainMenu for the return button
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> RefWidget;
+
 
 public:
 	UOptionsWidget(const FObjectInitializer& ObjectInitializer);
@@ -51,20 +56,21 @@ public:
 	void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-		void ChangeShadowQuality(int level);
+		void ChangeShadowQuality(float Value);
 
 	UFUNCTION(BlueprintCallable)
-		void ChangeTextureQuality(int level);
+		void ChangeTextureQuality(float Value);
 
 	UFUNCTION(BlueprintCallable)
-		void ChangePostQuality(int level);
+		void ChangePostQuality(float Value);
 	
 	UFUNCTION(BlueprintCallable)
-		void ChangeResolution(int level);
+		void ChangeResolution(FString Value, ESelectInfo::Type type);
 	
 	UFUNCTION(BlueprintCallable)
 		void ReturnMainMenu();
-
+private:
+	FText ChangeStatus(float Value);
 
 };
 
