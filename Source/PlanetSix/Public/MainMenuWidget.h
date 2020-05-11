@@ -28,7 +28,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UButton* ExitButton;
 
-
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> RefWidget;
 
 public:
 	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);

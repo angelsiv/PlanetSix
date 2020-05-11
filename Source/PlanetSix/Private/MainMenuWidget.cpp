@@ -21,18 +21,24 @@ void UMainMenuWidget::NativeConstruct() {
 	OptionsButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OpenOptions);
 	ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
 
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
 }
 
 void UMainMenuWidget::StartGame()
 {
 	print("Start Game", -1);
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+
 	UGameplayStatics::OpenLevel(this, "ThirdPersonExampleMap");
 }
 
 void UMainMenuWidget::OpenOptions()
 {
-
+	UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld(),RefWidget);
+	OptionsWidget->AddToViewport();
+	RemoveFromParent();
+	
 	print("OpenOptions", -1);
 
 }
