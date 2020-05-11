@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "MK1_Pistol.generated.h"
 class USkeletalMeshComponent;
+class UDamageType;
 
 UCLASS()
 class PLANETSIX_API AMK1_Pistol : public AActor
@@ -22,6 +23,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComp;
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void Fire();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	TSubclassOf<UDamageType> DamageType;
 
 public:	
 	// Called every frame
