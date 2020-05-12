@@ -51,9 +51,9 @@ APlanetSixCharacter::APlanetSixCharacter()
 	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes Component"));
 
 	//Initialize Class
-	//Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
 
-	//bReplicates = true;
+	SetReplicates(true);
 	//bReplicateMovement = true;
 }
 
