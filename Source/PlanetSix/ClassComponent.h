@@ -6,8 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "ClassComponent.generated.h"
 
-class ASkill_Pylon;
-
 UENUM(BlueprintType)
 enum class EClassName : uint8
 {
@@ -54,8 +52,8 @@ protected:
 		FString ClassDescription;
 	UPROPERTY(VisibleAnywhere)
 		EClassName ClassEnumName;
-	UPROPERTY(VisibleAnywhere)
-		ASkill_Pylon* SkillPylon;
+	/*UPROPERTY(VisibleAnywhere)
+		ASkill_Pylon* SkillPylon;*/
 
 public:
 	// Called every frame
