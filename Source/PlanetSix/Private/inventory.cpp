@@ -2,17 +2,61 @@
 
 
 #include "inventory.h"
-#include "Item.h"
+#include "itemInv.h"
 
-inventory::inventory()
+
+
+// Sets default values for this component's properties
+Uinventory::Uinventory()
 {
-	*items = new Item[inventorySize];
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// off to improve performance if you don't need them.
+	PrimaryComponentTick.bCanEverTick = true;
+
+	items.Init(nullptr, inventorySize);
+
+	
+
+	// ...
+}
+
+// Sets default values for this component's properties
+Uinventory::Uinventory(int invSize)
+{
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// off to improve performance if you don't need them.
+	PrimaryComponentTick.bCanEverTick = true;
+	
+	inventorySize = invSize;
+	
+	items.Init(nullptr, inventorySize);
+
+
+	// ...
+}
+
+
+TArray<UitemInv*> Uinventory::GetItems()
+{
+	return items;
+}
+
+// Called when the game starts
+void Uinventory::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// ...
 	
 }
 
 
-inventory::~inventory()
+// Called every frame
+void Uinventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// ...
 }
 
 
@@ -23,20 +67,19 @@ inventory::~inventory()
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool inventory::add(Item item)
+bool Uinventory::add(UitemInv *item)
 {
 	int i = 0;
 
 	//look for the first available spot.
-	while (i < sizeof(&items)/sizeof(&items[0]))
+	while (i < sizeof(&items) / sizeof(&items[0]))
 	{
 		//if there is someting
 		if (items[i])
 		{
 			//it item already in inventory
-			if (item.id == items[i]->id)
-			{
-				items[i]->quantity += item.quantity;
+			if (items[i]->Stack(item))
+			{			
 				return true;
 			}
 			else
@@ -49,9 +92,9 @@ bool inventory::add(Item item)
 		else
 		{
 			//place the item
-			items[i] = &item;
+			items[i] = item;
 			return true;
-		}		
+		}
 	}
 
 	//if there is no spot left
@@ -66,7 +109,7 @@ bool inventory::add(Item item)
 // Return:
 //   Return the Item in that spot.
 //
-Item* inventory::swap(Item *item, int index)
+UitemInv* Uinventory::swap(UitemInv *item, int index)
 {
 	//if the index is out of bound
 	if (index<0 || index>sizeof(&items) / sizeof(&items[0]))
@@ -77,9 +120,9 @@ Item* inventory::swap(Item *item, int index)
 	else
 	{
 		//it item is the same
-		if (item->id == items[index]->id)
+		if (UitemInv::compare(item,items[index], 1)==0)
 		{
-			items[index]->quantity += item->quantity;
+			items[index]->Stack(item);
 			return nullptr;
 		}
 		else
@@ -100,91 +143,66 @@ Item* inventory::swap(Item *item, int index)
 // Return:
 //   Return the Item in that spot.
 //
-Item* inventory::take(int index)
+UitemInv* Uinventory::take(int index)
 {
 	//get the item at the index and set the spot empty
 	return swap(nullptr, index);
 }
 
-void inventory::sort(sortingMode mode)
+void Uinventory::sort(sortingMode mode)
 {
 	heapSort(sizeof(&items) / sizeof(&items[0]), mode);
 }
 
-int inventory::compare(Item i1, Item i2, sortingMode mode)
+int Uinventory::compare(UitemInv *i1, UitemInv *i2, sortingMode mode)
 {
-	int result = 0;
 	switch (mode)
 	{
-	case inventory::alphabetical:
-		if (i1.displyName > i2.displyName)
+	case Uinventory::alphabetical:
+		return UitemInv::compare(i1, i2, 1);
+	case Uinventory::price:
+		return UitemInv::compare(i1, i2, 1);
+	case Uinventory::weight:
+		return UitemInv::compare(i1, i2, 1);
+	case Uinventory::totalPrice:
+		if (i1->getTotalValue() > i2->getTotalValue())
 		{
-			result = 1;
+			return 1;
 		}
-		else if (i1.displyName < i2.displyName)
+		else if (i1->getTotalValue() < i2->getTotalValue())
 		{
-			result = -1;
-		}
-		break;
-	case inventory::price:
-		if (i1.value > i2.value)
-		{
-			result = 1;
-		}
-		else if (i1.value < i2.value)
-		{
-			result = -1;
+			return -1;
 		}
 		break;
-	case inventory::weight:
-		if (i1.weight > i2.weight)
+	case Uinventory::totalWeight:
+		if (i1->getTotalWeight() > i2->getTotalWeight())
 		{
-			result = 1;
+			return 1;
 		}
-		else if (i1.weight < i2.weight)
+		else if (i1->getTotalWeight() < i2->getTotalWeight())
 		{
-			result = -1;
-		}
-		break;
-	case inventory::totalPrice:
-		if (i1.value * i1.quantity > i2.value * i2.quantity)
-		{
-			result = 1;
-		}
-		else if (i1.value * i1.quantity < i2.value * i2.quantity)
-		{
-			result = -1;
-		}
-		break;
-	case inventory::totalWeight:
-		if (i1.weight * i1.quantity > i2.weight * i2.quantity)
-		{
-			result = 1;
-		}
-		else if (i1.weight * i1.quantity < i2.weight * i2.quantity)
-		{
-			result = -1;
+			return -1;
 		}
 		break;
 	default:
 		break;
 	}
 
-	return result;
+	return 0;
 }
 
-void inventory::heapify( int n, int i,sortingMode mode)
+void Uinventory::heapify(int n, int i, sortingMode mode)
 {
 	int largest = i; // Initialize largest as root 
 	int l = 2 * i + 1; // left = 2*i + 1 
 	int r = 2 * i + 2; // right = 2*i + 2 
 
 	// If left child is larger than root 
-	if (l < n && compare(*items[i],*items[largest],mode)>0)
+	if (l < n && compare(items[i], items[largest], mode)>0)
 		largest = l;
 
 	// If right child is larger than largest so far 
-	if (r < n && compare(*items[r], *items[largest], mode)>0)
+	if (r < n && compare(items[r], items[largest], mode)>0)
 		largest = r;
 
 	// If largest is not root 
@@ -195,11 +213,11 @@ void inventory::heapify( int n, int i,sortingMode mode)
 		items[i] = temp;
 
 		// Recursively heapify the affected sub-tree 
-		heapify(n, largest,mode);
+		heapify(n, largest, mode);
 	}
 }
 
-void inventory::heapSort(int n,sortingMode mode)
+void Uinventory::heapSort(int n, sortingMode mode)
 {
 	// Build heap (rearrange array) 
 	for (int i = n / 2 - 1; i >= 0; i--)
@@ -214,7 +232,7 @@ void inventory::heapSort(int n,sortingMode mode)
 		items[i] = temp;
 
 		// call max heapify on the reduced heap 
-		heapify( i, 0,mode);
+		heapify(i, 0, mode);
 	}
 }
 
