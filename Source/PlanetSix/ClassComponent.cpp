@@ -2,6 +2,7 @@
 
 
 #include "ClassComponent.h"
+#include "Skill_Pylon.h"
 
 // Sets default values for this component's properties
 UClassComponent::UClassComponent()
@@ -12,8 +13,9 @@ UClassComponent::UClassComponent()
 
 
 	ClassEnumName = EClassName::Uni_Comrade;
-}
 
+	SkillPylon = CreateDefaultSubobject<ASkill_Pylon>(TEXT("Pylon"));
+}
 
 // Called when the game starts
 void UClassComponent::BeginPlay()
@@ -25,7 +27,6 @@ void UClassComponent::BeginPlay()
 	//depending on the class, let's add a description to it.
 	ClassDescription = TempDescription;
 }
-
 
 // Called every frame
 void UClassComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -40,7 +41,7 @@ EClassName UClassComponent::GetClassName()
 	return ClassEnumName;
 }
 
-void UClassComponent::CreateSkill()
+void UClassComponent::CastSkill(ESkill SkillName)
 {
 
 }

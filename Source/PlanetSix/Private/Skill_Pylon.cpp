@@ -4,6 +4,7 @@
 #include "Skill_Pylon.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "../PlanetSixCharacter.h"
 #include "../AttributesComponent.h"
 
 // Sets default values
@@ -17,6 +18,8 @@ ASkill_Pylon::ASkill_Pylon()
 
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger"));
 	TriggerBox->SetupAttachment(Mesh);
+
+	Caster = CreateDefaultSubobject<APlanetSixCharacter>(TEXT("Owner Player"));
 
 	OwnerPawn = Cast<APawn>(GetOwner());
 }
@@ -40,11 +43,13 @@ void ASkill_Pylon::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		class UAttributesComponent* EnemyComponent;
-		class UAttributesComponent* PlayerComponent;
-		EnemyComponent = Cast<UAttributesComponent>(OtherActor);
-		PlayerComponent = Cast<UAttributesComponent>(GetOwner());
-		InflictDamage(EnemyComponent, PlayerComponent);
+		//class UAttributesComponent* EnemyComponent;
+		//class UAttributesComponent* PlayerComponent;
+		//EnemyComponent = Cast<UAttributesComponent>(OtherActor);
+		//PlayerComponent = Cast<UAttributesComponent>(GetOwner());
+		//InflictDamage(EnemyComponent, PlayerComponent);
+		//auto Caster = Cast<APlanetSixCharacter>(OtherActor);
+		//auto Enemy = Cast<APlanetSixCharacter>(OtherActor);
 	}
 }
 

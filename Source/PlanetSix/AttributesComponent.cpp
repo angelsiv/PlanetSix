@@ -28,7 +28,6 @@ UAttributesComponent::UAttributesComponent()
 
 	// ...
 	SetIsReplicated(true);
-	bAutoActivate = true;
 	OwnerPawn = Cast<APawn>(GetOwner());
 }
 
