@@ -11,25 +11,9 @@ UENUM(BlueprintType)
 enum class EAttributes : uint8
 {
 	None = 0 UMETA(DisplayName = "None"),
-	Brawn = 1 UMETA(DisplayName = "Brawn"),
-	Vitality = 2 UMETA(DisplayName = "Vitality"),
-	Agility = 4 UMETA(DisplayName = "Agility"),
-	Mind = 8 UMETA(DisplayName = "Mind"),
-	Social = 16 UMETA(DisplayName = "Social"),
-	Fate = 32 UMETA(DisplayName = "Fate")
-};
-
-/** Base resistances for all characters. */
-UENUM(BlueprintType)
-enum class EResistances : uint8
-{
-	None = 0 UMETA(DisplayName = "None"),
-	Physical_Resist = 1 UMETA(DisplayName = "Physical_Resist"),
-	Energy_Resist = 2 UMETA(DisplayName = "Energy_Resist"),
-	Fire_Resist = 4 UMETA(DisplayName = "Fire_Resist"),
-	Ice_Resist = 8 UMETA(DisplayName = "Ice_Resist"),
-	Electric_Resist = 16 UMETA(DisplayName = "Electric_Resist"),
-	Corrosive_Resist = 32 UMETA(DisplayName = "Corrosive_Resist")
+	Armors_Proficiency = 1 UMETA(DisplayName = "Armors Proficiency"),
+	Weapons_Proficiency = 2 UMETA(DisplayName = "Weapons Proficiency"),
+	Abilities_Proficiency = 4 UMETA(DisplayName = "Abilities Proficiency"),
 };
 
 /** Base attributes for all characters in game. */
@@ -39,20 +23,18 @@ struct PLANETSIX_API FAttributesData
 	GENERATED_USTRUCT_BODY()
 
 		FAttributesData()
-		: BaseValue(0.f)
-		, CurrentValue(0.f)
+		: BaseValue(1.f)
+		, CurrentValue(BaseValue)
 	{}
 
 	FAttributesData(float DefaultValue)
-		: BaseValue(DefaultValue)
-		, CurrentValue(DefaultValue)
+		: BaseValue(1.f)
+		, CurrentValue(DefaultValue + BaseValue)
+		, CurrentModifier((int32)CurrentValue / 2)
 	{}
 
 	/** getter for basevalue */
 	float GetBaseValue() const;
-
-	/** setter for basevalue */
-	virtual void SetBaseValue(float NewValue);
 
 	/** getter for currentvalue */
 	float GetCurrentValue() const;
@@ -60,11 +42,16 @@ struct PLANETSIX_API FAttributesData
 	/** setter for currentvalue */
 	virtual void SetCurrentValue(float NewValue);
 
+	/** getter for the modifier */
+	int32 GetCurrentModifier() const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
-		float BaseValue;
+		float BaseValue = 1.f;
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 		float CurrentValue;
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+		int32 CurrentModifier;
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -78,25 +65,22 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	/** Brawn attribute for the character */
-	UPROPERTY(EditAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Brawn)
-		FAttributesData Brawn;
-	/** Vitality attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Vitality)
-		FAttributesData Vitality;
-	/** Agility attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Agility)
-		FAttributesData Agility;
-	/** Mind attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Mind)
-		FAttributesData Mind;
-	/** Social attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Social)
-		FAttributesData Social;
-	/** Fate attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_Fate)
-		FAttributesData Fate;
-
+	/** armor attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_ArmorsProficiency)
+		FAttributesData ArmorsProficiency;
+	/** weapons attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_WeaponsProficiency)
+		FAttributesData WeaponsProficiency;
+	/** abilities attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_AbilitiesProficiency)
+		FAttributesData AbilitiesProficiency;
+	//------------------------------------------------------------------------------------------------------
+	/** Level of the character */
+	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Level)
+		FAttributesData Level;
+	/** Experience points for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Experience)
+		FAttributesData Experience;
 	/** CurrentHealth attribute for the character */
 	UPROPERTY(VisibleAnywhere, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
 		FAttributesData CurrentHealth;
@@ -112,38 +96,64 @@ public:
 	/** CurrentShield attribute for the character */
 	UPROPERTY(VisibleAnywhere, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
 		FAttributesData CurrentShield;
-	/** Experience points for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Experience)
-		FAttributesData Experience;
-	/** Level of the character */
-	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Level)
-		FAttributesData Level;
+	/** CurrentShield attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Shield", ReplicatedUsing = OnRep_MaxShield)
+		FAttributesData MaxShield;
+	//------------------------------------------------------------------------------------------------------
+	/** armor reduction attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Armor", ReplicatedUsing = OnRep_ArmorReduction)
+		FAttributesData ArmorReduction;
+	/** weapon damage attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Damage", ReplicatedUsing = OnRep_WeaponDamage)
+		FAttributesData WeaponDamage;
+	/** Ability damage attribute for the character */
+	UPROPERTY(VisibleAnywhere, Category = "Damage", ReplicatedUsing = OnRep_AbilityDamage)
+		FAttributesData AbilityDamage;
 
-	/** Response to health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnHealthUpdate();
-	/** Response to energy being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnEnergyUpdate();
-	/** Response to shield being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnShieldUpdate();
-	/** Response to experience being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnExperienceUpdate();
+	/** Response to armors proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnArmorsProficiencyUpdate();
+	/** Response to weapons proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnWeaponsProficiencyUpdate();
+	/** Response to abilities proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnAbilitiesProficiencyUpdate();
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	/** Response to level being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnLevelUpdate();
+	/** Response to experience being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnExperienceUpdate();
+	/** Response to current health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnCurrentHealthUpdate();
+	/** Response to MAX health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnMaxHealthUpdate();
+	/** Response to current energy being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnCurrentEnergyUpdate();
+	/** Response to MAX energy being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnMaxEnergyUpdate();
+	/** Response to current shield being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnCurrentShieldUpdate();
+	/** Response to MAX shield being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnMaxShieldUpdate();
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	/** Response to armor reduction attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnArmorReductionUpdate();
+	/** Response to weapon damage attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnWeaponDamageUpdate();
+	/** Response to ability damage attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
+	void OnAbilityDamageUpdate();
 
 	/** This region below is for replication on a server - client model only*/
 #pragma region OnRep_Attributes
 	UFUNCTION()
-		virtual void OnRep_Brawn();
+		virtual void OnRep_ArmorsProficiency();
 	UFUNCTION()
-		virtual void OnRep_Vitality();
+		virtual void OnRep_WeaponsProficiency();
 	UFUNCTION()
-		virtual void OnRep_Agility();
+		virtual void OnRep_AbilitiesProficiency();
+	//----------------------------------------------------
 	UFUNCTION()
-		virtual void OnRep_Mind();
+		virtual void OnRep_Level();
 	UFUNCTION()
-		virtual void OnRep_Social();
-	UFUNCTION()
-		virtual void OnRep_Fate();
+		virtual void OnRep_Experience();
 	UFUNCTION()
 		virtual void OnRep_CurrentHealth();
 	UFUNCTION()
@@ -155,9 +165,14 @@ public:
 	UFUNCTION()
 		virtual void OnRep_CurrentShield();
 	UFUNCTION()
-		virtual void OnRep_Experience();
+		virtual void OnRep_MaxShield();
+	//----------------------------------------------------
 	UFUNCTION()
-		virtual void OnRep_Level();
+		virtual void OnRep_ArmorReduction();
+	UFUNCTION()
+		virtual void OnRep_WeaponDamage();
+	UFUNCTION()
+		virtual void OnRep_AbilityDamage();
 
 #pragma endregion
 

@@ -11,21 +11,23 @@ ANPC::ANPC()
 	PrimaryActorTick.bCanEverTick = true;
 
 	ScenecomponentRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	ScenecomponentRoot -> AttachToComponent(MeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ScenecomponentRoot -> AttachToComponent(skeleton, FAttachmentTransformRules::KeepRelativeTransform);
 	ScenecomponentRoot = RootComponent;
-
-	//Declare Mesh Component
-	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
-	MeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	boxcomponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	boxcomponent->SetRelativeScale3D(FVector(6.0f));
+	
 
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	// Declaring Skeleton of Npc
+	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
+	skeleton->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -33,7 +35,11 @@ void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Set the visibility of the text Press F to Interact to true 
 	textrender->SetVisibility(false);
+
+	//Play an animtion on begin play for the NPC 
+	skeleton->PlayAnimation(AnimIdle, true);
 }
 
 // Called every frame
@@ -52,9 +58,11 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = true;
+	
 
 	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
 	{
+
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
@@ -68,8 +76,10 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (Character != nullptr) 
 	{
+
 		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
+		
 	}
 }

@@ -9,8 +9,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine.h"
-#include "AttributesComponent.h"
-#include "ClassComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -53,7 +51,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes Component"));
 
 	//Initialize Class
-	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+	//Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
 
 	//bReplicates = true;
 	//bReplicateMovement = true;
@@ -150,27 +148,55 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 }
 
+EClassName APlanetSixCharacter::GetClassName()
+{
+	return Class->GetClassName();
+}
+
 void APlanetSixCharacter::Interact()
 {
+	//Cast the player controller to get controller 
+	auto PC = Cast<APlayerController>(GetController());
 
-	if (bIsInPerimiterOfNPC == true)
+	//check if the player is the perimiter of the NPC 
+	if (bIsInPerimiterOfNPC)
 	{
+
 		IndexDialogue++;
 
-		if (DialogueWidgetClass)
+		//If player controller is not null 
+		if (PC)
 		{
-			if (IndexDialogue % 2 == 1)
+			//check if Dialogue widget exists 
+			if (DialogueWidgetClass)
 			{
-				WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
-				WidgetDialogue->AddToViewport();
+				//increment the dialogue varible to show the Widget if index = 1 
+				if (IndexDialogue % 2 == 1)
+				{
+					WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
+					WidgetDialogue->AddToViewport();
+					PC->bShowMouseCursor = true;
+					PC->bEnableClickEvents = true;
+					PC->bEnableMouseOverEvents = true;
+
+
+				}
+
+				if (IndexDialogue % 2 == 0)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
+					WidgetDialogue->RemoveFromParent();
+					PC->bShowMouseCursor = false;
+					PC->bEnableClickEvents = false;
+					PC->bEnableMouseOverEvents = false;
+
+
+				}
+
 			}
 
-			if (IndexDialogue % 2 == 0)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-				WidgetDialogue->RemoveFromParent();
-			}
 		}
+
 	}
 
 	else
@@ -196,7 +222,8 @@ void APlanetSixCharacter::Skill(int32 SkillNumber)
 {
 	if (SkillNumber < 4 && SkillNumber > 0)
 	{
-
+		if (SkillNumber == 1)
+			Class->CastSkill(ESkill::Uni_Pylon);
 	}
 }
 

@@ -10,6 +10,9 @@
 
 class UBoxComponent;
 class UTextRenderComponent;
+class USkeletalMeshComponent;
+
+
 
 
 UCLASS()
@@ -26,18 +29,18 @@ public:
 		USceneComponent* ScenecomponentRoot;
 
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* MeshComponent;
-
-	UPROPERTY(EditAnywhere)
 		UBoxComponent* boxcomponent;
 
 	UPROPERTY(EditAnywhere)
 		UTextRenderComponent* textrender;
 
+	UPROPERTY(EditAnywhere)
+		USkeletalMeshComponent* skeleton;
+
+	UPROPERTY(EditAnywhere)
+		UAnimationAsset* AnimIdle;
+
 	
-
-
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
