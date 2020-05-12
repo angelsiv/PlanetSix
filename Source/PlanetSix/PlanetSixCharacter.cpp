@@ -9,8 +9,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine.h"
-#include "AttributesComponent.h"
-#include "ClassComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -53,7 +51,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes Component"));
 
 	//Initialize Class
-	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+	//Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
 
 	//bReplicates = true;
 	//bReplicateMovement = true;
@@ -150,12 +148,17 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 }
 
+EClassName APlanetSixCharacter::GetClassName()
+{
+	return Class->GetClassName();
+}
+
 void APlanetSixCharacter::Interact()
 {
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
-	 //check if the player is the perimiter of the NPC 
+	//check if the player is the perimiter of the NPC 
 	if (bIsInPerimiterOfNPC)
 	{
 
@@ -165,8 +168,8 @@ void APlanetSixCharacter::Interact()
 		if (PC)
 		{
 			//check if Dialogue widget exists 
-		    if (DialogueWidgetClass)
-		    {
+			if (DialogueWidgetClass)
+			{
 				//increment the dialogue varible to show the Widget if index = 1 
 				if (IndexDialogue % 2 == 1)
 				{
@@ -175,8 +178,8 @@ void APlanetSixCharacter::Interact()
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
-					
-					
+
+
 				}
 
 				if (IndexDialogue % 2 == 0)
@@ -186,12 +189,12 @@ void APlanetSixCharacter::Interact()
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
-					
+
 
 				}
-	
-		    }
-	     
+
+			}
+
 		}
 
 	}
@@ -219,7 +222,8 @@ void APlanetSixCharacter::Skill(int32 SkillNumber)
 {
 	if (SkillNumber < 4 && SkillNumber > 0)
 	{
-
+		if (SkillNumber == 1)
+			Class->CastSkill(ESkill::Uni_Pylon);
 	}
 }
 
