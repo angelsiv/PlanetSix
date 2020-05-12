@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "ClassComponent.generated.h"
 
+class ASkill_Pylon;
+
 UENUM(BlueprintType)
 enum class EClassName : uint8
 {
@@ -22,6 +24,13 @@ enum class EClassName : uint8
 	Uni_Sanitar UMETA(DisplayName = "Uni_Sanitar"),
 	Uni_Comissar UMETA(DisplayName = "Uni_Comissar"),
 	Uni_Comrade UMETA(DisplayName = "Uni_Comrade")
+};
+
+UENUM(BlueprintType)
+enum class ESkill : uint8
+{
+	None UMETA(DisplayName = "None"),
+	Uni_Pylon UMETA(DisplayName = "Pylon")
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -45,9 +54,11 @@ protected:
 		FString ClassDescription;
 	UPROPERTY(VisibleAnywhere)
 		EClassName ClassEnumName;
+	UPROPERTY(VisibleAnywhere)
+		ASkill_Pylon* SkillPylon;
 
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void CreateSkill();
+	void CastSkill(ESkill SkillName);
 };

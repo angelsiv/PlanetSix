@@ -7,6 +7,7 @@
 #include "Skill_Pylon.generated.h"
 
 class UAttributesComponent;
+class APlanetSixCharacter;
 
 UCLASS()
 class PLANETSIX_API ASkill_Pylon : public AActor
@@ -26,7 +27,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 		class APawn* OwnerPawn;
 	UPROPERTY(VisibleAnywhere)
-		class APlanetSixCharacter* Parent;
+		APlanetSixCharacter* Caster;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
