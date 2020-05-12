@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Runtime/AIModule/Classes/Perception/AIPerceptionComponent.h"
 #include "EnemyController.h"
+#include "Runtime/AIModule/Classes/Perception/AIPerceptionComponent.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 

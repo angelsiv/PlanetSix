@@ -7,47 +7,50 @@
 
 // Sets default values for this component's properties
 UAttributesComponent::UAttributesComponent()
-	: Brawn(1.f)
-	, Vitality(1.f)
-	, Agility(1.f)
-	, Mind(1.f)
-	, Social(1.f)
-	, Fate(1.f)
-	, CurrentHealth(1.f)
-	, MaxHealth(1.f)
-	, CurrentEnergy(1.f)
-	, MaxEnergy(1.f)
-	, CurrentShield(1.f)
-	, Experience(1.f)
+	: ArmorsProficiency(1.f)
+	, WeaponsProficiency(1.f)
+	, AbilitiesProficiency(1.f)
 	, Level(1.f)
+	, Experience(1.f)
+	, CurrentHealth(100.f)
+	, MaxHealth(100.f)
+	, CurrentEnergy(50.f)
+	, MaxEnergy(50.f)
+	, CurrentShield(10.f)
+	, MaxShield(10.f)
+	, ArmorReduction(1.f)
+	, WeaponDamage(1.f)
+	, AbilityDamage(1.f)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
-	bReplicates = true;
-	bAutoActivate = true;
+	SetIsReplicated(true);
 	OwnerPawn = Cast<APawn>(GetOwner());
 }
 
-void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&OutLifetimeProps) const
+void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UAttributesComponent, Brawn);
-	DOREPLIFETIME(UAttributesComponent, Vitality);
-	DOREPLIFETIME(UAttributesComponent, Agility);
-	DOREPLIFETIME(UAttributesComponent, Mind);
-	DOREPLIFETIME(UAttributesComponent, Social);
-	DOREPLIFETIME(UAttributesComponent, Fate);
+	DOREPLIFETIME(UAttributesComponent, ArmorsProficiency);
+	DOREPLIFETIME(UAttributesComponent, WeaponsProficiency);
+	DOREPLIFETIME(UAttributesComponent, AbilitiesProficiency);
+	//-----------------------------------------------------------
+	DOREPLIFETIME(UAttributesComponent, Level);
+	DOREPLIFETIME(UAttributesComponent, Experience);
 	DOREPLIFETIME(UAttributesComponent, CurrentHealth);
 	DOREPLIFETIME(UAttributesComponent, MaxHealth);
 	DOREPLIFETIME(UAttributesComponent, CurrentEnergy);
 	DOREPLIFETIME(UAttributesComponent, MaxEnergy);
 	DOREPLIFETIME(UAttributesComponent, CurrentShield);
-	DOREPLIFETIME(UAttributesComponent, Experience);
-	DOREPLIFETIME(UAttributesComponent, Level);
+	DOREPLIFETIME(UAttributesComponent, MaxShield);
+	//-----------------------------------------------------------
+	DOREPLIFETIME(UAttributesComponent, ArmorReduction);
+	DOREPLIFETIME(UAttributesComponent, WeaponDamage);
+	DOREPLIFETIME(UAttributesComponent, AbilityDamage);
 }
 
 // Called when the game starts
@@ -64,12 +67,6 @@ float FAttributesData::GetBaseValue() const
 	return BaseValue;
 }
 
-//** setter for base value of attribute */
-void FAttributesData::SetBaseValue(float NewValue)
-{
-	BaseValue = NewValue;
-}
-
 //** getter for current value of attribute */
 float FAttributesData::GetCurrentValue() const
 {
@@ -82,7 +79,69 @@ void FAttributesData::SetCurrentValue(float NewValue)
 	CurrentValue = NewValue;
 }
 
-void UAttributesComponent::OnHealthUpdate()
+int32 FAttributesData::GetCurrentModifier() const
+{
+	return CurrentModifier;
+}
+
+void UAttributesComponent::OnArmorsProficiencyUpdate()
+{
+
+}
+
+void UAttributesComponent::OnWeaponsProficiencyUpdate()
+{
+
+}
+
+void UAttributesComponent::OnAbilitiesProficiencyUpdate()
+{
+
+}
+
+void UAttributesComponent::OnLevelUpdate()
+{
+	//client-specific functionality
+	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
+	{
+		FString levelMessage = FString::Printf(TEXT("You are now level %f ."), Level.GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, levelMessage);
+	}
+
+	//server specific functionality
+	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
+	{
+		FString levelMessage = FString::Printf(TEXT("%s now is level %f ."), *GetFName().ToString(), Level.GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, levelMessage);
+	}
+
+	//functions that occur on all machines.
+	/** Any special functionality that should occur as a result of leveling should be placed here */
+
+}
+
+void UAttributesComponent::OnExperienceUpdate()
+{
+	//client-specific functionality
+	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
+	{
+		FString expMessage = FString::Printf(TEXT("You now have %f experience."), Experience.GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, expMessage);
+	}
+
+	//server specific functionality
+	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
+	{
+		FString expMessage = FString::Printf(TEXT("%s now has %f experience."), *GetFName().ToString(), Experience.GetCurrentValue());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, expMessage);
+	}
+
+	//functions that occur on all machines.
+	/** Any special functionality that should occur as a result of gaining experience should be placed here */
+
+}
+
+void UAttributesComponent::OnCurrentHealthUpdate()
 {
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
@@ -109,7 +168,12 @@ void UAttributesComponent::OnHealthUpdate()
 
 }
 
-void UAttributesComponent::OnEnergyUpdate()
+void UAttributesComponent::OnMaxHealthUpdate()
+{
+
+}
+
+void UAttributesComponent::OnCurrentEnergyUpdate()
 {
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
@@ -132,12 +196,17 @@ void UAttributesComponent::OnEnergyUpdate()
 	}
 
 	//functions that occur on all machines.
-	/** Any special functionality that should occur as a result of damage or death should be placed here */
+	/** Any special functionality that should occur as a result of lack of energy should be placed here */
 
 	//CurrentEnergy.SetCurrentValue(0.f);
 }
 
-void UAttributesComponent::OnShieldUpdate()
+void UAttributesComponent::OnMaxEnergyUpdate()
+{
+
+}
+
+void UAttributesComponent::OnCurrentShieldUpdate()
 {
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
@@ -160,103 +229,46 @@ void UAttributesComponent::OnShieldUpdate()
 	}
 
 	//functions that occur on all machines.
-	/** Any special functionality that should occur as a result of damage or death should be placed here */
+	/** Any special functionality that should occur as a result of damage to shield or lack of shield should be placed here */
 
 }
 
-void UAttributesComponent::OnExperienceUpdate()
+void UAttributesComponent::OnMaxShieldUpdate()
 {
-	//client-specific functionality
-	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
-	{
-		FString expMessage = FString::Printf(TEXT("You now have %f experience."), Experience.GetCurrentValue());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, expMessage);
-	}
-
-	//server specific functionality
-	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
-	{
-		FString expMessage = FString::Printf(TEXT("%s now has %f experience."), *GetFName().ToString(), Experience.GetCurrentValue());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, expMessage);
-	}
-
-	//functions that occur on all machines.
-	/** Any special functionality that should occur as a result of damage or death should be placed here */
 
 }
 
-void UAttributesComponent::OnLevelUpdate()
+void UAttributesComponent::OnArmorReductionUpdate()
 {
-	//client-specific functionality
-	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
-	{
-		FString levelMessage = FString::Printf(TEXT("You are now level %f ."), Level.GetCurrentValue());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, levelMessage);
-	}
 
-	//server specific functionality
-	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
-	{
-		FString levelMessage = FString::Printf(TEXT("%s now is level %f ."), *GetFName().ToString(), Level.GetCurrentValue());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, levelMessage);
-	}
+}
 
-	//functions that occur on all machines.
-	/** Any special functionality that should occur as a result of damage or death should be placed here */
+void UAttributesComponent::OnWeaponDamageUpdate()
+{
+
+}
+
+void UAttributesComponent::OnAbilityDamageUpdate()
+{
 
 }
 
 #pragma region OnRep_Attributes
-void UAttributesComponent::OnRep_Brawn()
-{
-
-}
-void UAttributesComponent::OnRep_Vitality()
-{
-
-}
-void UAttributesComponent::OnRep_Agility()
-{
-
-}
-void UAttributesComponent::OnRep_Mind()
-{
-
-}
-void UAttributesComponent::OnRep_Social()
-{
-
-}
-void UAttributesComponent::OnRep_Fate()
-{
-
-}
-void UAttributesComponent::OnRep_CurrentHealth()
-{
-	UAttributesComponent::OnHealthUpdate();
-}
-void UAttributesComponent::OnRep_MaxHealth()
-{
-
-}
-void UAttributesComponent::OnRep_CurrentEnergy()
-{
-	UAttributesComponent::OnEnergyUpdate();
-}
-void UAttributesComponent::OnRep_MaxEnergy()
-{
-
-}
-void UAttributesComponent::OnRep_CurrentShield()
-{
-	UAttributesComponent::OnShieldUpdate();
-}
-void UAttributesComponent::OnRep_Experience()
-{
-	UAttributesComponent::OnExperienceUpdate();
-}
-void UAttributesComponent::OnRep_Level()
-{
-	UAttributesComponent::OnLevelUpdate();
-}
+//this is all for rep_notifies : everytime a value is changed, the engine calls this for multiplayer purposes
+void UAttributesComponent::OnRep_ArmorsProficiency() { UAttributesComponent::OnArmorsProficiencyUpdate(); }
+void UAttributesComponent::OnRep_WeaponsProficiency() { UAttributesComponent::OnWeaponsProficiencyUpdate(); }
+void UAttributesComponent::OnRep_AbilitiesProficiency() { UAttributesComponent::OnAbilitiesProficiencyUpdate(); }
+//-----------------------------------------------------------------------------------------------------------------
+void UAttributesComponent::OnRep_Level() { UAttributesComponent::OnLevelUpdate(); }
+void UAttributesComponent::OnRep_Experience() { UAttributesComponent::OnExperienceUpdate(); }
+void UAttributesComponent::OnRep_CurrentHealth() { UAttributesComponent::OnCurrentHealthUpdate(); }
+void UAttributesComponent::OnRep_MaxHealth() { UAttributesComponent::OnMaxHealthUpdate(); }
+void UAttributesComponent::OnRep_CurrentEnergy() { UAttributesComponent::OnCurrentEnergyUpdate(); }
+void UAttributesComponent::OnRep_MaxEnergy() { UAttributesComponent::OnMaxEnergyUpdate(); }
+void UAttributesComponent::OnRep_CurrentShield() { UAttributesComponent::OnCurrentShieldUpdate(); }
+void UAttributesComponent::OnRep_MaxShield() { UAttributesComponent::OnMaxShieldUpdate(); }
+//-----------------------------------------------------------------------------------------------------------------
+void UAttributesComponent::OnRep_ArmorReduction() { UAttributesComponent::OnArmorReductionUpdate(); }
+void UAttributesComponent::OnRep_WeaponDamage() { UAttributesComponent::OnWeaponDamageUpdate(); }
+void UAttributesComponent::OnRep_AbilityDamage() { UAttributesComponent::OnAbilityDamageUpdate(); }
 #pragma endregion
