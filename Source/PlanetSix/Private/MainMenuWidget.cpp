@@ -30,7 +30,7 @@ void UMainMenuWidget::StartGame()
 	print("Start Game", -1);
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 
-	UGameplayStatics::OpenLevel(this, "ThirdPersonExampleMap");
+	UGameplayStatics::OpenLevel(this, "NetworkTestMenu");
 }
 
 void UMainMenuWidget::OpenOptions()
