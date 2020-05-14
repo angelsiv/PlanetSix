@@ -7,7 +7,6 @@
 #include "Quest.generated.h"
 
 
-
  enum ObjectiveType 
 {
 	 Kill,
@@ -16,18 +15,17 @@
 
 };
 
-
 UCLASS()
 class PLANETSIX_API UQuest : public UObject
 {
 	GENERATED_BODY()
 	
-
 public:
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category ="Quest")
-	FText title;
+	 FText title;
+
 
 	//this is the description of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -39,8 +37,6 @@ public:
 
 	//Rewards for when the lpayer finishes the quest 
 	int ExperiecnceReward;
-
-
 
 };
 

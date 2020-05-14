@@ -69,19 +69,18 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
 		
-		
 	}
 }
 
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
+
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = false;
 
 	if (Character != nullptr) 
 	{
-
 		//character->widgetDialogue->RemoveFromParent();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		textrender->SetVisibility(false);
@@ -90,7 +89,6 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 		{
 			Character->IndexDialogue = 0;
 			Character->WidgetDialogue->RemoveFromParent();
-
 		}
 		
 	}
