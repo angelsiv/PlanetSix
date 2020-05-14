@@ -14,6 +14,7 @@ ANPC::ANPC()
 	ScenecomponentRoot -> AttachToComponent(skeleton, FAttachmentTransformRules::KeepRelativeTransform);
 	ScenecomponentRoot = RootComponent;
 
+
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	boxcomponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -22,6 +23,7 @@ ANPC::ANPC()
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
@@ -42,6 +44,7 @@ void ANPC::BeginPlay()
 	skeleton->PlayAnimation(AnimIdle, true);
 }
 
+
 // Called every frame
 void ANPC::Tick(float DeltaTime)
 {
@@ -54,20 +57,27 @@ void ANPC::Tick(float DeltaTime)
 
 }
 
+
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = true;
 	
+	
 
 	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
 	{
+		
 
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
+
+		
+
 	}
 }
+
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {

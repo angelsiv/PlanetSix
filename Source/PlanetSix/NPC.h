@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PlanetSixCharacter.h"
+#include "Quest.h"
 #include "NPC.generated.h"
 
 class UBoxComponent;
@@ -38,6 +39,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		UAnimationAsset* AnimIdle;
+
+
+	   UQuest* QuestOfNpc;
+
 
 	
 protected:
