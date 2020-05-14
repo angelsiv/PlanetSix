@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ItemInv.h"
 #include "Item_base.h"
+#include "ItemInv.h"
 
 
 // Sets default values
@@ -35,10 +35,10 @@ void AItem_base::Tick(float DeltaTime)
 
 }
 
-UitemInv* AItem_base::ToItemInv()
-{
-	auto item = NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
-		
-	return item;
-}
+//UitemInv* AItem_base::ToItemInv()
+//{
+//	auto item = NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
+//		
+//	return item;
+//}
 

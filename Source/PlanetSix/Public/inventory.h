@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "itemInv.h"
 #include "inventory.generated.h"
 
 
-struct FitemInv;
+//struct FitemInv;
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -21,18 +22,18 @@ public:
 	Uinventory(int invSize);
 
 	UFUNCTION(BlueprintCallable)
-	bool add(FitemInv *item);
-	UFUNCTION(BlueprintCallable)
-		FitemInv* swap(FitemInv *item, int index);
-	UFUNCTION(BlueprintCallable)
-		FitemInv* take(int index);
+	bool add(FitemInv item);
+	//UFUNCTION(BlueprintCallable)
+	//	FitemInv* swap(FitemInv item, int index);
+	//UFUNCTION(BlueprintCallable)
+		//FitemInv* take(int index);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int inventorySize;
-	TArray<FitemInv*> items;
+	TArray<FitemInv> items;
 	enum sortingMode { alphabetical, price, weight, totalPrice, totalWeight };
 
 	UFUNCTION(BlueprintCallable)
-	TArray<FitemInv*> GetItems();
+	TArray<FitemInv> GetItems();
 
 protected:
 	// Called when the game starts
@@ -40,7 +41,7 @@ protected:
 
 	void heapify(int n, int i, sortingMode mode);
 	void heapSort(int n, sortingMode mode);
-	int compare(FitemInv *i1, FitemInv *i2, sortingMode mode);
+	//int compare(FitemInv *i1, FitemInv *i2, sortingMode mode);
 
 
 public:	
