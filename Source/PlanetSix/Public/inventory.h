@@ -7,7 +7,7 @@
 #include "inventory.generated.h"
 
 
-class UitemInv;
+struct FitemInv;
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -21,18 +21,18 @@ public:
 	Uinventory(int invSize);
 
 	UFUNCTION(BlueprintCallable)
-	bool add(UitemInv *item);
+	bool add(FitemInv *item);
 	UFUNCTION(BlueprintCallable)
-		UitemInv* swap(UitemInv *item, int index);
+		FitemInv* swap(FitemInv *item, int index);
 	UFUNCTION(BlueprintCallable)
-		UitemInv* take(int index);
+		FitemInv* take(int index);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int inventorySize;
-	TArray<UitemInv*> items;
+	TArray<FitemInv*> items;
 	enum sortingMode { alphabetical, price, weight, totalPrice, totalWeight };
 
 	UFUNCTION(BlueprintCallable)
-	TArray<UitemInv*> GetItems();
+	TArray<FitemInv*> GetItems();
 
 protected:
 	// Called when the game starts
@@ -40,7 +40,7 @@ protected:
 
 	void heapify(int n, int i, sortingMode mode);
 	void heapSort(int n, sortingMode mode);
-	int compare(UitemInv *i1, UitemInv *i2, sortingMode mode);
+	int compare(FitemInv *i1, FitemInv *i2, sortingMode mode);
 
 
 public:	

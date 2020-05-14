@@ -13,7 +13,7 @@ Uinventory::Uinventory()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	items.Init(nullptr, inventorySize);
+	items.Init(nullptr, 20);
 
 	
 
@@ -36,7 +36,7 @@ Uinventory::Uinventory(int invSize)
 }
 
 
-TArray<UitemInv*> Uinventory::GetItems()
+TArray<FitemInv*> Uinventory::GetItems()
 {
 	return items;
 }
@@ -67,12 +67,10 @@ void Uinventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool Uinventory::add(UitemInv *item)
+bool Uinventory::add(FitemInv *item)
 {
-	int i = 0;
-
 	//look for the first available spot.
-	while (i < sizeof(&items) / sizeof(&items[0]))
+	for (int i = 0; i < sizeof(&items) / sizeof(&items[0]);i++)
 	{
 		//if there is someting
 		if (items[i])
@@ -81,11 +79,6 @@ bool Uinventory::add(UitemInv *item)
 			if (items[i]->Stack(item))
 			{			
 				return true;
-			}
-			else
-			{
-				//increment spot
-				i++;
 			}
 		}
 		//if empty
@@ -109,7 +102,7 @@ bool Uinventory::add(UitemInv *item)
 // Return:
 //   Return the Item in that spot.
 //
-UitemInv* Uinventory::swap(UitemInv *item, int index)
+FitemInv* Uinventory::swap(FitemInv *item, int index)
 {
 	//if the index is out of bound
 	if (index<0 || index>sizeof(&items) / sizeof(&items[0]))
@@ -120,7 +113,7 @@ UitemInv* Uinventory::swap(UitemInv *item, int index)
 	else
 	{
 		//it item is the same
-		if (UitemInv::compare(item,items[index], 1)==0)
+		if (FitemInv::compare(item,items[index], 1)==0)
 		{
 			items[index]->Stack(item);
 			return nullptr;
@@ -143,7 +136,7 @@ UitemInv* Uinventory::swap(UitemInv *item, int index)
 // Return:
 //   Return the Item in that spot.
 //
-UitemInv* Uinventory::take(int index)
+FitemInv* Uinventory::take(int index)
 {
 	//get the item at the index and set the spot empty
 	return swap(nullptr, index);
@@ -154,16 +147,16 @@ void Uinventory::sort(sortingMode mode)
 	heapSort(sizeof(&items) / sizeof(&items[0]), mode);
 }
 
-int Uinventory::compare(UitemInv *i1, UitemInv *i2, sortingMode mode)
+int Uinventory::compare(FitemInv *i1, FitemInv *i2, sortingMode mode)
 {
 	switch (mode)
 	{
 	case Uinventory::alphabetical:
-		return UitemInv::compare(i1, i2, 1);
+		return FitemInv::compare(i1, i2, 1);
 	case Uinventory::price:
-		return UitemInv::compare(i1, i2, 1);
+		return FitemInv::compare(i1, i2, 1);
 	case Uinventory::weight:
-		return UitemInv::compare(i1, i2, 1);
+		return FitemInv::compare(i1, i2, 1);
 	case Uinventory::totalPrice:
 		if (i1->getTotalValue() > i2->getTotalValue())
 		{

@@ -37,20 +37,8 @@ void AItem_base::Tick(float DeltaTime)
 
 UitemInv* AItem_base::ToItemInv()
 {
-	//UitemInv::UitemInv(id, displayName, weight, value, quantity);		// item = UitemInv(id, displayName, weight, value, quantity);
-	//UitemInv item = UitemInv::getNewItemInv(id, displayName, weight, value, quantity);
-
-	//return UitemInv::UitemInv(id, displayName, weight, value, quantity);
-
-
-
-	//auto item = NewObject<UitemInv>(TEXT("plswork"));
 	auto item = NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
 		
-
-	//auto item = UitemInv::UitemInv(id, displayName, weight, value, quantity) ;
-	//item.getId();
-	//item.self = &item;
 	return item;
 }
 

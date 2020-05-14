@@ -6,11 +6,11 @@
 #include "ItemInv.h"
 
 // Sets default values for this component's properties
-//UitemInv::UitemInv() : id(), displayName(), weight(), value(), quantity()
-//{
-//
-//}
-UitemInv::UitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity): id(), displayName(),  weight(),  value(),  quantity()
+FitemInv::FitemInv()
+{
+
+}
+FitemInv::FitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity): id(), displayName(),  weight(),  value(),  quantity()
 {
 	id = Id;
 	displayName = DisplayName;
@@ -27,7 +27,7 @@ UitemInv::UitemInv(int Id, FString DisplayName, float Weight, float Value, int Q
 //	quantity = base.quantity;
 //}
 
-int UitemInv::compare(UitemInv * i1, UitemInv * i2, int type)
+int FitemInv::compare(FitemInv * i1, FitemInv * i2, int type)
 {
 
 	int result = 0;
@@ -93,47 +93,47 @@ int UitemInv::compare(UitemInv * i1, UitemInv * i2, int type)
 	return false;
 }
 
-int UitemInv::getId()
+int FitemInv::getId()
 {
 	return id;
 }
 
-FString UitemInv::getDisplayName()
+FString FitemInv::getDisplayName()
 {
 	return displayName;
 }
 
-float UitemInv::getWeight()
+float FitemInv::getWeight()
 {
 	return weight;
 }
 
-float UitemInv::getValue()
+float FitemInv::getValue()
 {
 	return value;
 }
 
-int UitemInv::getQuantity()
+int FitemInv::getQuantity()
 {
 	return quantity;
 }
 
-float UitemInv::getTotalWeight()
+float FitemInv::getTotalWeight()
 {
 	return weight*quantity;
 }
 
-float UitemInv::getTotalValue()
+float FitemInv::getTotalValue()
 {
 	return value*quantity;
 }
 
-bool UitemInv::Stack(UitemInv * other)
+bool FitemInv::Stack(FitemInv * other)
 {
 	if (id == other->id)
 	{
 		quantity += other->quantity;
-		DestructItem(other);
+		other = nullptr;
 		return true;
 	}
 	else
@@ -142,10 +142,10 @@ bool UitemInv::Stack(UitemInv * other)
 	}
 }
 
-//UitemInv UitemInv::getNewItemInv(int id, FString displayName, float weight, float value, int quantity)
-//{
-//	return UitemInv(id,displayName,weight,value,quantity);
-//}
+FitemInv FitemInv::getNewItemInv(int id, FString displayName, float weight, float value, int quantity)
+{
+	return FitemInv(id,displayName,weight,value,quantity);
+}
 
 
 

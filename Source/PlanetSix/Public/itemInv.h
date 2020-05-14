@@ -22,18 +22,16 @@ class AItem_base;
 //};
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent),BlueprintType )
-class PLANETSIX_API UitemInv : public UObject
+USTRUCT(BlueprintType)
+struct PLANETSIX_API FitemInv //: public UObject
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UitemInv();
-	UitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity);// :id(0), displayName(), weight(1.0f), value(1.f), quantity(1);
+	FitemInv();
+	FitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity);// :id(0), displayName(), weight(1.0f), value(1.f), quantity(1);
 	//UitemInv(AItem_base &base);
-
-	UitemInv * self;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -49,7 +47,7 @@ protected:
 
 public:	
 
-	static int compare(UitemInv* i1, UitemInv* i2, int type);
+	static int compare(FitemInv* i1, FitemInv* i2, int type);
 
 	int getId();
 	FString getDisplayName();
@@ -59,7 +57,7 @@ public:
 	float getTotalWeight();
 	float getTotalValue();
 	
-	bool Stack(UitemInv* other);
+	bool Stack(FitemInv* other);
 
-	//static UitemInv getNewItemInv(int id, FString displayName, float weight, float value, int quantity);
+	static FitemInv getNewItemInv(int id, FString displayName, float weight, float value, int quantity);
 };
