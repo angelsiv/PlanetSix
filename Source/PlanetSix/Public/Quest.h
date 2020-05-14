@@ -17,7 +17,6 @@
 };
 
 
-
 UCLASS()
 class PLANETSIX_API UQuest : public UObject
 {
@@ -42,9 +41,10 @@ public:
 	int ExperiecnceReward;
 
 
+
 };
 
-//this class represents the objectives the players needs to complete to succed the quest 
+//this class represents the objectives the players needs to complete to succeed the quest 
 class Objective
 {
 
