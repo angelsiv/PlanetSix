@@ -2,7 +2,6 @@
 
 
 #include "ClassComponent.h"
-#include "Skill_Pylon.h"
 
 // Sets default values for this component's properties
 UClassComponent::UClassComponent()
@@ -14,7 +13,7 @@ UClassComponent::UClassComponent()
 
 	ClassEnumName = EClassName::Uni_Comrade;
 
-	SkillPylon = CreateDefaultSubobject<ASkill_Pylon>(TEXT("Pylon"));
+	//SkillPylon = CreateDefaultSubobject<ASkill_Pylon>(TEXT("Pylon"));
 }
 
 // Called when the game starts
