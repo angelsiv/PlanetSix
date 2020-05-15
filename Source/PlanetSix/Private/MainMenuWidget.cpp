@@ -22,7 +22,7 @@ void UMainMenuWidget::NativeConstruct() {
 	ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 }
 
 void UMainMenuWidget::StartGame()
@@ -31,6 +31,7 @@ void UMainMenuWidget::StartGame()
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 
 	UGameplayStatics::OpenLevel(this, "NetworkTestMenu");
+	
 }
 
 void UMainMenuWidget::OpenOptions()
