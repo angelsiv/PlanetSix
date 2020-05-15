@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "PlanetSixCharacter.h"
 #include "Quest.h"
+
 #include "NPC.generated.h"
 
 class UBoxComponent;
