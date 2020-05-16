@@ -3,8 +3,8 @@
 
 #include "Trap.h"
 #include "Components/BoxComponent.h"
-#include "../ClassComponent.h"
-#include "../EnemyController.h"
+#include "ClassComponent.h"
+#include "EnemyController.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
