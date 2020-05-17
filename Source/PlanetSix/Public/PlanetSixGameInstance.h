@@ -16,6 +16,10 @@ class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 
 public:
 	//PlayerCharacter values
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	FString UserName;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	uint32 Level;
 
 };

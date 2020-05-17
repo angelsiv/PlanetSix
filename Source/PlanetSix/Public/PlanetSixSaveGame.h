@@ -25,14 +25,14 @@ public:
 	//
 
 	UPROPERTY(VisibleAnywhere)
-		float ScoreSave;
-
-	UPROPERTY(VisibleAnywhere)
 		FString SaveSlotName;
 
 	UPROPERTY(VisibleAnywhere)
 		uint32 UserIndex;
 	
+	//Player Character values
 	UPROPERTY(VisibleAnywhere)
 		FString UserName;
+	UPROPERTY(VisibleAnywhere)
+		uint32 Level;
 };
