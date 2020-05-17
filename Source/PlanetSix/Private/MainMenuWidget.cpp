@@ -22,7 +22,7 @@ void UMainMenuWidget::NativeConstruct() {
 	ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-
+	
 }
 
 void UMainMenuWidget::StartGame()
