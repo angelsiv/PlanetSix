@@ -28,7 +28,7 @@ public:
 		FString SaveSlotName;
 
 	UPROPERTY(VisibleAnywhere)
-		uint32 UserIndex;
+		int32 UserIndex;
 	
 	//Player Character values
 	UPROPERTY(VisibleAnywhere)

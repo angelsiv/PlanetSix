@@ -28,6 +28,13 @@ class APlanetSixCharacter : public ACharacter
 public:
 	APlanetSixCharacter();
 
+	//Player Stats
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString UserName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Level;
+
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

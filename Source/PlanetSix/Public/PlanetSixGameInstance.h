@@ -20,6 +20,6 @@ public:
 	FString UserName;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	uint32 Level;
+	int32 Level;
 
 };
