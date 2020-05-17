@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/MainMenuWidget.h"
+#include "MainMenuWidget.h"
 #include "Engine.h"
 #include "Components/CanvasPanel.h"
 #include "Components/Button.h"

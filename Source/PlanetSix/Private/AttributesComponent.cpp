@@ -3,6 +3,7 @@
 
 #include "AttributesComponent.h"
 #include "Engine.h"
+#include "UMG/Public/Blueprint/UserWidget.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
@@ -13,11 +14,8 @@ UAttributesComponent::UAttributesComponent()
 	, Level(1.f)
 	, Experience(1.f)
 	, CurrentHealth(100.f)
-	, MaxHealth(100.f)
 	, CurrentEnergy(50.f)
-	, MaxEnergy(50.f)
 	, CurrentShield(10.f)
-	, MaxShield(10.f)
 	, ArmorReduction(1.f)
 	, WeaponDamage(1.f)
 	, AbilityDamage(1.f)
@@ -28,6 +26,7 @@ UAttributesComponent::UAttributesComponent()
 
 	// ...
 	SetIsReplicated(true);
+	//OwnerPawn = Cast<APawn>(GetOwner());
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -41,11 +40,8 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	DOREPLIFETIME(UAttributesComponent, Level);
 	DOREPLIFETIME(UAttributesComponent, Experience);
 	DOREPLIFETIME(UAttributesComponent, CurrentHealth);
-	DOREPLIFETIME(UAttributesComponent, MaxHealth);
 	DOREPLIFETIME(UAttributesComponent, CurrentEnergy);
-	DOREPLIFETIME(UAttributesComponent, MaxEnergy);
 	DOREPLIFETIME(UAttributesComponent, CurrentShield);
-	DOREPLIFETIME(UAttributesComponent, MaxShield);
 	//-----------------------------------------------------------
 	DOREPLIFETIME(UAttributesComponent, ArmorReduction);
 	DOREPLIFETIME(UAttributesComponent, WeaponDamage);
@@ -56,7 +52,6 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 void UAttributesComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	OwnerPawn = Cast<APawn>(GetOwner());
 
 	// ...
 }
@@ -74,7 +69,7 @@ float FAttributesData::GetCurrentValue() const
 }
 
 //** setter for current value of attribute */
-void FAttributesData::SetCurrentValue(float NewValue)
+void FAttributesData::SetCurrentValue(const float NewValue)
 {
 	CurrentValue = NewValue;
 }
@@ -168,11 +163,6 @@ void UAttributesComponent::OnCurrentHealthUpdate()
 
 }
 
-void UAttributesComponent::OnMaxHealthUpdate()
-{
-
-}
-
 void UAttributesComponent::OnCurrentEnergyUpdate()
 {
 	//client-specific functionality
@@ -199,11 +189,6 @@ void UAttributesComponent::OnCurrentEnergyUpdate()
 	/** Any special functionality that should occur as a result of lack of energy should be placed here */
 
 	//CurrentEnergy.SetCurrentValue(0.f);
-}
-
-void UAttributesComponent::OnMaxEnergyUpdate()
-{
-
 }
 
 void UAttributesComponent::OnCurrentShieldUpdate()
@@ -233,11 +218,6 @@ void UAttributesComponent::OnCurrentShieldUpdate()
 
 }
 
-void UAttributesComponent::OnMaxShieldUpdate()
-{
-
-}
-
 void UAttributesComponent::OnArmorReductionUpdate()
 {
 
@@ -262,11 +242,8 @@ void UAttributesComponent::OnRep_AbilitiesProficiency() { UAttributesComponent::
 void UAttributesComponent::OnRep_Level() { UAttributesComponent::OnLevelUpdate(); }
 void UAttributesComponent::OnRep_Experience() { UAttributesComponent::OnExperienceUpdate(); }
 void UAttributesComponent::OnRep_CurrentHealth() { UAttributesComponent::OnCurrentHealthUpdate(); }
-void UAttributesComponent::OnRep_MaxHealth() { UAttributesComponent::OnMaxHealthUpdate(); }
 void UAttributesComponent::OnRep_CurrentEnergy() { UAttributesComponent::OnCurrentEnergyUpdate(); }
-void UAttributesComponent::OnRep_MaxEnergy() { UAttributesComponent::OnMaxEnergyUpdate(); }
 void UAttributesComponent::OnRep_CurrentShield() { UAttributesComponent::OnCurrentShieldUpdate(); }
-void UAttributesComponent::OnRep_MaxShield() { UAttributesComponent::OnMaxShieldUpdate(); }
 //-----------------------------------------------------------------------------------------------------------------
 void UAttributesComponent::OnRep_ArmorReduction() { UAttributesComponent::OnArmorReductionUpdate(); }
 void UAttributesComponent::OnRep_WeaponDamage() { UAttributesComponent::OnWeaponDamageUpdate(); }

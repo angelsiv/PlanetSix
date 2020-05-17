@@ -57,6 +57,11 @@ APlanetSixCharacter::APlanetSixCharacter()
 	//bReplicateMovement = true;
 }
 
+void APlanetSixCharacter::UpdateUI()
+{
+	
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Input
 
