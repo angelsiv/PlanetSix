@@ -28,7 +28,6 @@ UAttributesComponent::UAttributesComponent()
 
 	// ...
 	SetIsReplicated(true);
-	OwnerPawn = Cast<APawn>(GetOwner());
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -57,6 +56,7 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 void UAttributesComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	OwnerPawn = Cast<APawn>(GetOwner());
 
 	// ...
 }

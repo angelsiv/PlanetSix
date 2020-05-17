@@ -44,9 +44,9 @@ void UOptionsWidget::NativeConstruct()
 	//
 	EWindowMode::Type WindowMode = UserSettings->GetDefaultWindowMode();
 	switch (WindowMode) {
-	case EWindowMode::Fullscreen:			print("Fullscreen", -1); break;
-	case EWindowMode::Windowed:				print("Windowed", -1);  break;
-	case EWindowMode::WindowedFullscreen:	print("WindowedFullscreen", -1);  break;
+	case EWindowMode::Fullscreen:			ScreenType = "f";	print("Fullscreen", -1); break;
+	case EWindowMode::Windowed:				ScreenType = "w";	print("Windowed", -1);  break;
+	case EWindowMode::WindowedFullscreen:	ScreenType = "wf";	print("WindowedFullscreen", -1);  break;
 	default:break;
 
 	}

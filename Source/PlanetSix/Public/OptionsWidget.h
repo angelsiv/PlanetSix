@@ -73,6 +73,7 @@ private:
 	FText ChangeStatus(float Value);
 
 	FString ScreenType = "w";
+
 	UGameUserSettings* UserSettings;
 };
 
