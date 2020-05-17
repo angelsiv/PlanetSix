@@ -14,7 +14,7 @@ class UComboBoxString;
 class USlider;
 class UTextBlock;
 class UButton;
-
+class UGameUserSettings;
 
 UCLASS()
 class PLANETSIX_API UOptionsWidget : public UUserWidget
@@ -72,5 +72,8 @@ public:
 private:
 	FText ChangeStatus(float Value);
 
+	FString ScreenType = "w";
+
+	UGameUserSettings* UserSettings;
 };
 

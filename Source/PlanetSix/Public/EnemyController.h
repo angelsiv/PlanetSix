@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "PlanetSix\PlanetSixCharacter.h"
+#include "PlanetSixCharacter.h"
 #include "Engine.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "EnemyController.generated.h"

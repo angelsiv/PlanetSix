@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../PlanetSixCharacter.h"
+#include "PlanetSixCharacter.h"
 #include "GameFramework/Actor.h"
 #include "Trap.generated.h"
 

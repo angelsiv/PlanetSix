@@ -4,8 +4,8 @@
 #include "Skill_Pylon.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "../PlanetSixCharacter.h"
-#include "../AttributesComponent.h"
+#include "PlanetSixCharacter.h"
+#include "AttributesComponent.h"
 
 // Sets default values
 ASkill_Pylon::ASkill_Pylon()
