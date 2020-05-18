@@ -5,6 +5,8 @@
 #include "Engine.h"
 #include "Components/CanvasPanel.h"
 #include "Components/Button.h"
+#include "PlanetSixSaveGame.h"
+#include "PlanetSixGameInstance.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
@@ -24,12 +26,17 @@ void UMainMenuWidget::NativeConstruct() {
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 }
-
+ 
 void UMainMenuWidget::StartGame()
 {
 	print("Start Game", -1);
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
-
+	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test",0));
+	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
+		Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
+	}
+	
+	
 	UGameplayStatics::OpenLevel(this, "NetworkTestMenu");
 	
 }

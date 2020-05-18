@@ -24,15 +24,15 @@ public:
 
 	//
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FString SaveSlotName;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		int32 UserIndex;
 	
 	//Player Character values
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FString UserName;
-	UPROPERTY(VisibleAnywhere)
-		uint32 Level;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		int32 Level;
 };
