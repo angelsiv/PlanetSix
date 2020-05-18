@@ -102,32 +102,32 @@ bool Uinventory::add(FitemInv item)
 // Return:
 //   Return the Item in that spot.
 //
-//FitemInv* Uinventory::swap(FitemInv* item, int index)
-//{
-//	//if the index is out of bound
-//	if (index < 0 || index>sizeof(&items) / sizeof(&items[0]))
-//	{
-//		//give back the item you try to put in
-//		return item;
-//	}
-//	else
-//	{
-//		//it item is the same
-//		if (FitemInv::compare(item, items[index], 1) == 0)
-//		{
-//			items[index]->Stack(item);
-//			return nullptr;
-//		}
-//		else
-//		{
-//			//place the item in the spot
-//			auto* temp = items[index];
-//			items[index] = item;
-//			//return what was there (can return null_ptr)
-//			return temp;
-//		}
-//	}
-//}
+FitemInv* Uinventory::swap(FitemInv *item, int index)
+{
+	//if the index is out of bound
+	if (index < 0 || index>sizeof(&items) / sizeof(&items[0]))
+	{
+		//give back the item you try to put in
+		return &item;
+	}
+	else
+	{
+		//it item is the same
+		if (FitemInv::compare(&item, &items[index], 1) == 0)
+		{
+			items[index].Stack(&item);
+			return nullptr;
+		}
+		else
+		{
+			//place the item in the spot
+			auto temp = items[index];
+			items[index] = item;
+			//return what was there (can return null_ptr)
+			return &temp;
+		}
+	}
+}
 
 // Description:
 //   Take an item in a specific inventory spot.
@@ -136,11 +136,11 @@ bool Uinventory::add(FitemInv item)
 // Return:
 //   Return the Item in that spot.
 //
-//FitemInv* Uinventory::take(int index)
-//{
-//	//get the item at the index and set the spot empty
-//	return swap(nullptr, index);
-//}
+FitemInv* Uinventory::take(int index)
+{
+	//get the item at the index and set the spot empty
+	return swap(nullptr, index);
+}
 
 void Uinventory::sort(sortingMode mode)
 {
