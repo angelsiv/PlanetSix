@@ -11,29 +11,29 @@
 //struct FitemInv;
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API Uinventory : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
-	Uinventory();
-	Uinventory(int invSize);
+	Uinventory() {};
+	Uinventory(int32 invSize);
 
 	UFUNCTION(BlueprintCallable)
-	bool add(FitemInv item);
+		bool add(AItem_base* item);
 	//UFUNCTION(BlueprintCallable)
-		FitemInv* swap(FitemInv *item, int index);
+	FitemInv* swap(FitemInv* item, int index);
 	//UFUNCTION(BlueprintCallable)
-		FitemInv* take(int index);
+	FitemInv* take(int index);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int inventorySize;
+		int32 inventorySize;
 	TArray<FitemInv> items;
 	enum sortingMode { alphabetical, price, weight, totalPrice, totalWeight };
 
 	UFUNCTION(BlueprintCallable)
-	TArray<FitemInv> GetItems();
+		TArray<FitemInv> GetItems();
 
 protected:
 	// Called when the game starts
@@ -44,12 +44,10 @@ protected:
 	//int compare(FitemInv *i1, FitemInv *i2, sortingMode mode);
 
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void sort(sortingMode mode);
-		
-};
 
-	
+};

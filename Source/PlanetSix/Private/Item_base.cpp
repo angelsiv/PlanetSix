@@ -8,7 +8,7 @@
 // Sets default values
 AItem_base::AItem_base()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 
@@ -25,7 +25,7 @@ AItem_base::AItem_base()
 void AItem_base::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -37,8 +37,8 @@ void AItem_base::Tick(float DeltaTime)
 
 //UitemInv* AItem_base::ToItemInv()
 //{
-//	auto item = NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
-//		
-//	return item;
+//	return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
+//
+//
 //}
 

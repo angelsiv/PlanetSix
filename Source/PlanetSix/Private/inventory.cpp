@@ -5,23 +5,8 @@
 //#include "itemInv.h"
 
 
-
 // Sets default values for this component's properties
-Uinventory::Uinventory()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	//items.Init(nullptr, 20);
-
-
-
-	// ...
-}
-
-// Sets default values for this component's properties
-Uinventory::Uinventory(int invSize)
+Uinventory::Uinventory(int32 invSize)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -102,7 +87,7 @@ bool Uinventory::add(FitemInv item)
 // Return:
 //   Return the Item in that spot.
 //
-FitemInv* Uinventory::swap(FitemInv *item, int index)
+FitemInv* Uinventory::swap(FitemInv* item, int index)
 {
 	//if the index is out of bound
 	if (index < 0 || index>sizeof(&items) / sizeof(&items[0]))
@@ -143,10 +128,6 @@ FitemInv* Uinventory::take(int index)
 	return swap(nullptr, index);
 }
 
-void Uinventory::sort(sortingMode mode)
-{
-	heapSort(sizeof(&items) / sizeof(&items[0]), mode);
-}
 //
 //int Uinventory::compare(FitemInv* i1, FitemInv* i2, sortingMode mode)
 //{
@@ -211,22 +192,5 @@ void Uinventory::heapify(int n, int i, sortingMode mode)
 	}
 }
 
-void Uinventory::heapSort(int n, sortingMode mode)
-{
-	// Build heap (rearrange array) 
-	for (int i = n / 2 - 1; i >= 0; i--)
-		heapify(n, i, mode);
 
-	// One by one extract an element from heap 
-	for (int i = n - 1; i > 0; i--)
-	{
-		// Move current root to end 
-		auto temp = items[0];
-		items[0] = items[i];
-		items[i] = temp;
-
-		// call max heapify on the reduced heap 
-		heapify(i, 0, mode);
-	}
-}
 
