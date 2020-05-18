@@ -13,18 +13,15 @@ class UUserWidget;
 UENUM(BlueprintType)
 enum class EAttributes : uint8
 {
-	None = 0 UMETA(DisplayName = "None"),
+	None UMETA(DisplayName = "None"),
 	Armors_Proficiency UMETA(DisplayName = "Armors Proficiency"),
 	Weapons_Proficiency UMETA(DisplayName = "Weapons Proficiency"),
 	Abilities_Proficiency UMETA(DisplayName = "Abilities Proficiency"),
 	Level UMETA(DisplayName = "Level"),
 	Experience UMETA(DisplayName = "Experience"),
-	CurrentHealth UMETA(DisplayName = "Current Health"),
-	MaxHealth UMETA(DisplayName = "Max Health"),
-	CurrentEnergy UMETA(DisplayName = "Current Energy"),
-	MaxEnergy UMETA(DisplayName = "Max Health"),
-	CurrentShield UMETA(DisplayName = "Current Shield"),
-	MaxShield UMETA(DisplayName = "Max Health"),
+	Health UMETA(DisplayName = "Health"),
+	Energy UMETA(DisplayName = "Energy"),
+	Shield UMETA(DisplayName = "Shield"),
 	ArmorReduction UMETA(DisplayName = "Armor Reduction"),
 	WeaponDamage UMETA(DisplayName = "Weapon Damage"),
 	AbilityDamage UMETA(DisplayName = "Ability Damage"),
@@ -127,13 +124,13 @@ public:
 		FAttributesData Experience;
 	/** CurrentHealth attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
-		FAttributesData CurrentHealth;
+		FAttributesData Health;
 	/** CurrentEnergy attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Energy", ReplicatedUsing = OnRep_CurrentEnergy)
-		FAttributesData CurrentEnergy;
+		FAttributesData Energy;
 	/** CurrentShield attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
-		FAttributesData CurrentShield;
+		FAttributesData Shield;
 	//------------------------------------------------------------------------------------------------------
 	/** armor reduction attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Armor", ReplicatedUsing = OnRep_ArmorReduction)

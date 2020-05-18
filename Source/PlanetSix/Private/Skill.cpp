@@ -26,8 +26,7 @@ void ASkill::Tick(float DeltaTime)
 
 }
 
-//Calculate damage depending on ability damage from the ability caster
-void ASkill::CalculateDamage(APlanetSixCharacter* AbilityCaster)
+void ASkill::DoDamage(APlanetSixCharacter* AbilityCaster, ESkillDamageType SkillDamageType, APlanetSixCharacter* DamageReceiver)
 {
 	float AbilityDamage = AbilityCaster->Attributes->AbilityDamage.GetCurrentValue();
 	//ability damage depending on their type
@@ -37,26 +36,21 @@ void ASkill::CalculateDamage(APlanetSixCharacter* AbilityCaster)
 
 	//random chances for critical here
 
-}
-
-float ASkill::OutgoingDamage(ESkillDamageType SkillDamageType)
-{
-	CalculateDamage(Character);
+	//
 	switch (SkillDamageType)
 	{
 	case ESkillDamageType::None:
 		break;
 	case ESkillDamageType::Raw:
-		return AbilityDamage_Raw;
+		DamageReceiver->ReceiveDamage(AbilityDamage_Raw);
 		break;
 	case ESkillDamageType::AoE:
-		return AbilityDamage_AoE;
+		DamageReceiver->ReceiveDamage(AbilityDamage_AoE);
 		break;
 	case ESkillDamageType::DoT:
-		return AbilityDamage_DoT;
+		DamageReceiver->ReceiveDamage(AbilityDamage_DoT);
 		break;
 	default:
 		break;
 	}
-	return 1.f;
 }

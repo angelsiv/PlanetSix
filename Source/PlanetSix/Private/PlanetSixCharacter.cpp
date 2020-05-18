@@ -59,7 +59,19 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 void APlanetSixCharacter::UpdateUI()
 {
-	
+
+}
+
+void APlanetSixCharacter::ReceiveDamage(float Damage)
+{
+	if (Attributes->Shield.GetCurrentValue() > 0)
+	{
+		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
+	else if (Attributes->Health.GetCurrentValue() > 0)
+	{
+		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
