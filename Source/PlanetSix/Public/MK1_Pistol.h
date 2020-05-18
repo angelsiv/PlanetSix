@@ -30,8 +30,31 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	TSubclassOf<UDamageType> DamageType;
 
-public:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
+		float RecoilRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
+		float RecoilPitchTop;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
+		float RecoilPitchBot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
+		float RecoilYawLeft;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
+		float RecoilYawRight;
+
+	bool isRecoiling;
+	float FinalRecoilPitch;
+	float FinalRecoilYaw;
+	float FinalRecoilYawDirection;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Recoil();
+
+	void StopRecoil();
 };
