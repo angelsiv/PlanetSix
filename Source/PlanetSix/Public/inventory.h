@@ -23,9 +23,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool add(FitemInv item);
-	UFUNCTION(BlueprintCallable)
+	//UFUNCTION(BlueprintCallable)
 		FitemInv* swap(FitemInv *item, int index);
-	UFUNCTION(BlueprintCallable)
+	//UFUNCTION(BlueprintCallable)
 		FitemInv* take(int index);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int inventorySize;

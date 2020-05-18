@@ -108,23 +108,24 @@ FitemInv* Uinventory::swap(FitemInv *item, int index)
 	if (index < 0 || index>sizeof(&items) / sizeof(&items[0]))
 	{
 		//give back the item you try to put in
-		return &item;
+		return item;
 	}
 	else
 	{
 		//it item is the same
-		if (FitemInv::compare(&item, &items[index], 1) == 0)
+		if (FitemInv::compare(item, &items[index], 1) == 0)
 		{
-			items[index].Stack(&item);
+			items[index].Stack(item);
 			return nullptr;
 		}
 		else
 		{
 			//place the item in the spot
-			auto temp = items[index];
-			items[index] = item;
+			//auto temp = items[index];
+			items[index] = *item;
 			//return what was there (can return null_ptr)
-			return &temp;
+			//return &temp;
+			return nullptr; //debug purposed -Alonso
 		}
 	}
 }
