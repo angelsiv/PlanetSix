@@ -11,17 +11,18 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"UMG",
-				"AIModule"
+				"AIModule",
+				"CoreUObject"
 			]
 		}
 	],
 	"Plugins": [
 		{
-			"Name": "AdvancedSteamSessions",
-			"Enabled": false
+			"Name": "AdvancedSessions",
+			"Enabled": true
 		},
 		{
-			"Name": "AdvancedSessions",
+			"Name": "AdvancedSteamSessions",
 			"Enabled": true
 		}
 	]
