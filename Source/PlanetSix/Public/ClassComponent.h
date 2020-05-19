@@ -52,8 +52,6 @@ protected:
 		FString ClassDescription;
 	UPROPERTY(VisibleAnywhere)
 		EClassName ClassEnumName;
-	/*UPROPERTY(VisibleAnywhere)
-		ASkill_Pylon* SkillPylon;*/
 
 public:
 	// Called every frame

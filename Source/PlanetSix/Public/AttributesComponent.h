@@ -3,17 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "Components/ActorComponent.h"
 #include "AttributesComponent.generated.h"
+
+class UUserWidget;
 
 /** Base Attributes for all characters. */
 UENUM(BlueprintType)
 enum class EAttributes : uint8
 {
-	None = 0 UMETA(DisplayName = "None"),
-	Armors_Proficiency = 1 UMETA(DisplayName = "Armors Proficiency"),
-	Weapons_Proficiency = 2 UMETA(DisplayName = "Weapons Proficiency"),
-	Abilities_Proficiency = 4 UMETA(DisplayName = "Abilities Proficiency"),
+	None UMETA(DisplayName = "None"),
+	Armors_Proficiency UMETA(DisplayName = "Armors Proficiency"),
+	Weapons_Proficiency UMETA(DisplayName = "Weapons Proficiency"),
+	Abilities_Proficiency UMETA(DisplayName = "Abilities Proficiency"),
+	Level UMETA(DisplayName = "Level"),
+	Experience UMETA(DisplayName = "Experience"),
+	Health UMETA(DisplayName = "Health"),
+	Energy UMETA(DisplayName = "Energy"),
+	Shield UMETA(DisplayName = "Shield"),
+	ArmorReduction UMETA(DisplayName = "Armor Reduction"),
+	WeaponDamage UMETA(DisplayName = "Weapon Damage"),
+	AbilityDamage UMETA(DisplayName = "Ability Damage"),
+	Widget UMETA(DisplayName = "UI Widget")
 };
 
 /** Base attributes for all characters in game. */
@@ -30,6 +42,7 @@ struct PLANETSIX_API FAttributesData
 	FAttributesData(float DefaultValue)
 		: BaseValue(1.f)
 		, CurrentValue(DefaultValue + BaseValue)
+		, MaxValue(DefaultValue + BaseValue)
 		, CurrentModifier((int32)CurrentValue / 2)
 	{}
 
@@ -40,21 +53,49 @@ struct PLANETSIX_API FAttributesData
 	float GetCurrentValue() const;
 
 	/** setter for currentvalue */
-	virtual void SetCurrentValue(float NewValue);
+	virtual void SetCurrentValue(const float NewValue);
 
 	/** getter for the modifier */
 	int32 GetCurrentModifier() const;
 
-protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		float BaseValue = 1.f;
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		float CurrentValue;
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
+		float MaxValue;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		int32 CurrentModifier;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+		UUserWidget* MainUI;
 };
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS()
+class PLANETSIX_API UAttributesDataFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+public:
+	/* Getters */
+
+	/** Blueprint Function to return the value of CurrentValue from the struct 
+	@Params AttributesData value to get from the struct*/
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Getter")
+		static float GetCurrentValue(UPARAM(ref) FAttributesData& AttributesData) { return AttributesData.GetCurrentValue(); }
+	/** Blueprint Function to return the value of CurrentValue from the struct
+	@Params CurrentValue Current value for a certain value from the struct*/
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Getter")
+		static int32 GetCurrentModifier(UPARAM(ref) FAttributesData& AttributesData) { return AttributesData.GetCurrentModifier(); }
+
+	/* Setters */
+
+	/** Blueprint Function to set the value of CurrentValue from the struct
+	@Params AttributesData value to set in the struct */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Setter")
+		static void SetCurrentValue(UPARAM(ref) FAttributesData& AttributesData, const float Value) { AttributesData.SetCurrentValue(Value); }
+};
+
+UCLASS(ClassGroup = (Custom), meta = (Blueprintable))
 class PLANETSIX_API UAttributesComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -66,48 +107,39 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/** armor attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_ArmorsProficiency)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Main Attributes", ReplicatedUsing = OnRep_ArmorsProficiency)
 		FAttributesData ArmorsProficiency;
 	/** weapons attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_WeaponsProficiency)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Main Attributes", ReplicatedUsing = OnRep_WeaponsProficiency)
 		FAttributesData WeaponsProficiency;
 	/** abilities attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Main Attributes", ReplicatedUsing = OnRep_AbilitiesProficiency)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Main Attributes", ReplicatedUsing = OnRep_AbilitiesProficiency)
 		FAttributesData AbilitiesProficiency;
 	//------------------------------------------------------------------------------------------------------
 	/** Level of the character */
-	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Level)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level", ReplicatedUsing = OnRep_Level)
 		FAttributesData Level;
 	/** Experience points for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Level", ReplicatedUsing = OnRep_Experience)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level", ReplicatedUsing = OnRep_Experience)
 		FAttributesData Experience;
 	/** CurrentHealth attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
-		FAttributesData CurrentHealth;
-	/** MaxHealth attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Health", ReplicatedUsing = OnRep_MaxHealth)
-		FAttributesData MaxHealth;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
+		FAttributesData Health;
 	/** CurrentEnergy attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Energy", ReplicatedUsing = OnRep_CurrentEnergy)
-		FAttributesData CurrentEnergy;
-	/** MaxEnergy attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Energy", ReplicatedUsing = OnRep_MaxEnergy)
-		FAttributesData MaxEnergy;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Energy", ReplicatedUsing = OnRep_CurrentEnergy)
+		FAttributesData Energy;
 	/** CurrentShield attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
-		FAttributesData CurrentShield;
-	/** CurrentShield attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Shield", ReplicatedUsing = OnRep_MaxShield)
-		FAttributesData MaxShield;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Shield", ReplicatedUsing = OnRep_CurrentShield)
+		FAttributesData Shield;
 	//------------------------------------------------------------------------------------------------------
 	/** armor reduction attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Armor", ReplicatedUsing = OnRep_ArmorReduction)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Armor", ReplicatedUsing = OnRep_ArmorReduction)
 		FAttributesData ArmorReduction;
 	/** weapon damage attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Damage", ReplicatedUsing = OnRep_WeaponDamage)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", ReplicatedUsing = OnRep_WeaponDamage)
 		FAttributesData WeaponDamage;
 	/** Ability damage attribute for the character */
-	UPROPERTY(VisibleAnywhere, Category = "Damage", ReplicatedUsing = OnRep_AbilityDamage)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", ReplicatedUsing = OnRep_AbilityDamage)
 		FAttributesData AbilityDamage;
 
 	/** Response to armors proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
@@ -123,16 +155,10 @@ public:
 	void OnExperienceUpdate();
 	/** Response to current health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnCurrentHealthUpdate();
-	/** Response to MAX health being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnMaxHealthUpdate();
 	/** Response to current energy being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnCurrentEnergyUpdate();
-	/** Response to MAX energy being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnMaxEnergyUpdate();
 	/** Response to current shield being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnCurrentShieldUpdate();
-	/** Response to MAX shield being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
-	void OnMaxShieldUpdate();
 	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	/** Response to armor reduction attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnArmorReductionUpdate();
@@ -157,15 +183,9 @@ public:
 	UFUNCTION()
 		virtual void OnRep_CurrentHealth();
 	UFUNCTION()
-		virtual void OnRep_MaxHealth();
-	UFUNCTION()
 		virtual void OnRep_CurrentEnergy();
 	UFUNCTION()
-		virtual void OnRep_MaxEnergy();
-	UFUNCTION()
 		virtual void OnRep_CurrentShield();
-	UFUNCTION()
-		virtual void OnRep_MaxShield();
 	//----------------------------------------------------
 	UFUNCTION()
 		virtual void OnRep_ArmorReduction();

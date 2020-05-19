@@ -33,8 +33,6 @@ public:
 	FString UserName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Level;
-
-
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -53,10 +51,8 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
-
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
-
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
@@ -71,17 +67,22 @@ public:
 	//Gets the players controller
 	//APlayerController* PC;
 
-protected:
 	/** Player's attributes. */
-	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UAttributesComponent* Attributes;
 
 	/** Player's class. */
-	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
+	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UClassComponent* Class;
 
+	/** Player's HUD. */
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+		UUserWidget* MainHUD;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
+		TSubclassOf<UUserWidget> InGameMenu;
 
-
+protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
 
@@ -151,7 +152,10 @@ protected:
 	void ChangeWeapon2();
 
 	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
-	void ChangeWeapon3();
+	void ChangeWeapon3();	
+
+	/** Open Ingame Menu*/
+	void OpenIngameMenu();
 
 protected:
 	// APawn interface
@@ -163,4 +167,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	/** Updates the UI with the proper numbers */
+	void UpdateUI();
+	UFUNCTION(BlueprintCallable)
+		void ReceiveDamage(float Damage);
 };

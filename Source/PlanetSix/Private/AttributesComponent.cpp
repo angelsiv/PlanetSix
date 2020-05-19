@@ -3,6 +3,7 @@
 
 #include "AttributesComponent.h"
 #include "Engine.h"
+#include "UMG/Public/Blueprint/UserWidget.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
@@ -12,12 +13,9 @@ UAttributesComponent::UAttributesComponent()
 	, AbilitiesProficiency(1.f)
 	, Level(1.f)
 	, Experience(1.f)
-	, CurrentHealth(100.f)
-	, MaxHealth(100.f)
-	, CurrentEnergy(50.f)
-	, MaxEnergy(50.f)
-	, CurrentShield(10.f)
-	, MaxShield(10.f)
+	, Health(100.f)
+	, Energy(50.f)
+	, Shield(10.f)
 	, ArmorReduction(1.f)
 	, WeaponDamage(1.f)
 	, AbilityDamage(1.f)
@@ -28,6 +26,7 @@ UAttributesComponent::UAttributesComponent()
 
 	// ...
 	SetIsReplicated(true);
+	//OwnerPawn = Cast<APawn>(GetOwner());
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -40,12 +39,9 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	//-----------------------------------------------------------
 	DOREPLIFETIME(UAttributesComponent, Level);
 	DOREPLIFETIME(UAttributesComponent, Experience);
-	DOREPLIFETIME(UAttributesComponent, CurrentHealth);
-	DOREPLIFETIME(UAttributesComponent, MaxHealth);
-	DOREPLIFETIME(UAttributesComponent, CurrentEnergy);
-	DOREPLIFETIME(UAttributesComponent, MaxEnergy);
-	DOREPLIFETIME(UAttributesComponent, CurrentShield);
-	DOREPLIFETIME(UAttributesComponent, MaxShield);
+	DOREPLIFETIME(UAttributesComponent, Health);
+	DOREPLIFETIME(UAttributesComponent, Energy);
+	DOREPLIFETIME(UAttributesComponent, Shield);
 	//-----------------------------------------------------------
 	DOREPLIFETIME(UAttributesComponent, ArmorReduction);
 	DOREPLIFETIME(UAttributesComponent, WeaponDamage);
@@ -56,7 +52,6 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 void UAttributesComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	OwnerPawn = Cast<APawn>(GetOwner());
 
 	// ...
 }
@@ -74,7 +69,7 @@ float FAttributesData::GetCurrentValue() const
 }
 
 //** setter for current value of attribute */
-void FAttributesData::SetCurrentValue(float NewValue)
+void FAttributesData::SetCurrentValue(const float NewValue)
 {
 	CurrentValue = NewValue;
 }
@@ -146,10 +141,10 @@ void UAttributesComponent::OnCurrentHealthUpdate()
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
 	{
-		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth.GetCurrentValue());
+		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), Health.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, healthMessage);
 
-		if (CurrentHealth.GetCurrentValue() <= 0)
+		if (Health.GetCurrentValue() <= 0)
 		{
 			FString deathMessage = FString::Printf(TEXT("You are dead. Waiting for revive..."));
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, deathMessage);
@@ -159,7 +154,7 @@ void UAttributesComponent::OnCurrentHealthUpdate()
 	//server specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), CurrentHealth.GetCurrentValue());
+		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), Health.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, healthMessage);
 	}
 
@@ -168,20 +163,15 @@ void UAttributesComponent::OnCurrentHealthUpdate()
 
 }
 
-void UAttributesComponent::OnMaxHealthUpdate()
-{
-
-}
-
 void UAttributesComponent::OnCurrentEnergyUpdate()
 {
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
 	{
-		FString energyMessage = FString::Printf(TEXT("You now have %f energy remaining."), CurrentEnergy.GetCurrentValue());
+		FString energyMessage = FString::Printf(TEXT("You now have %f energy remaining."), Energy.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, energyMessage);
 
-		if (CurrentEnergy.GetCurrentValue() <= 0)
+		if (Energy.GetCurrentValue() <= 0)
 		{
 			FString zeroMessage = FString::Printf(TEXT("Your energy is depleted... wait for it to recharge or consume an energy bar"));
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, zeroMessage);
@@ -191,7 +181,7 @@ void UAttributesComponent::OnCurrentEnergyUpdate()
 	//server specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		FString energyMessage = FString::Printf(TEXT("%s now has %f energy remaining."), *GetFName().ToString(), CurrentEnergy.GetCurrentValue());
+		FString energyMessage = FString::Printf(TEXT("%s now has %f energy remaining."), *GetFName().ToString(), Energy.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, energyMessage);
 	}
 
@@ -201,20 +191,15 @@ void UAttributesComponent::OnCurrentEnergyUpdate()
 	//CurrentEnergy.SetCurrentValue(0.f);
 }
 
-void UAttributesComponent::OnMaxEnergyUpdate()
-{
-
-}
-
 void UAttributesComponent::OnCurrentShieldUpdate()
 {
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
 	{
-		FString shieldMessage = FString::Printf(TEXT("You now have %f shield remaining."), CurrentShield.GetCurrentValue());
+		FString shieldMessage = FString::Printf(TEXT("You now have %f shield remaining."), Shield.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, shieldMessage);
 
-		if (CurrentShield.GetCurrentValue() <= 0)
+		if (Shield.GetCurrentValue() <= 0)
 		{
 			FString zeroMessage = FString::Printf(TEXT("Your shield is depleted."));
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, zeroMessage);
@@ -224,17 +209,12 @@ void UAttributesComponent::OnCurrentShieldUpdate()
 	//server specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		FString shieldMessage = FString::Printf(TEXT("%s now has %f shield remaining."), *GetFName().ToString(), CurrentShield.GetCurrentValue());
+		FString shieldMessage = FString::Printf(TEXT("%s now has %f shield remaining."), *GetFName().ToString(), Shield.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, shieldMessage);
 	}
 
 	//functions that occur on all machines.
 	/** Any special functionality that should occur as a result of damage to shield or lack of shield should be placed here */
-
-}
-
-void UAttributesComponent::OnMaxShieldUpdate()
-{
 
 }
 
@@ -262,11 +242,8 @@ void UAttributesComponent::OnRep_AbilitiesProficiency() { UAttributesComponent::
 void UAttributesComponent::OnRep_Level() { UAttributesComponent::OnLevelUpdate(); }
 void UAttributesComponent::OnRep_Experience() { UAttributesComponent::OnExperienceUpdate(); }
 void UAttributesComponent::OnRep_CurrentHealth() { UAttributesComponent::OnCurrentHealthUpdate(); }
-void UAttributesComponent::OnRep_MaxHealth() { UAttributesComponent::OnMaxHealthUpdate(); }
 void UAttributesComponent::OnRep_CurrentEnergy() { UAttributesComponent::OnCurrentEnergyUpdate(); }
-void UAttributesComponent::OnRep_MaxEnergy() { UAttributesComponent::OnMaxEnergyUpdate(); }
 void UAttributesComponent::OnRep_CurrentShield() { UAttributesComponent::OnCurrentShieldUpdate(); }
-void UAttributesComponent::OnRep_MaxShield() { UAttributesComponent::OnMaxShieldUpdate(); }
 //-----------------------------------------------------------------------------------------------------------------
 void UAttributesComponent::OnRep_ArmorReduction() { UAttributesComponent::OnArmorReductionUpdate(); }
 void UAttributesComponent::OnRep_WeaponDamage() { UAttributesComponent::OnWeaponDamageUpdate(); }

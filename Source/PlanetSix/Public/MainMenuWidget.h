@@ -11,6 +11,7 @@
  */
 
 class UButton;
+class UEditableTextBox;
 
 UCLASS()
 class PLANETSIX_API UMainMenuWidget : public UUserWidget
@@ -27,6 +28,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UButton* ExitButton;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UEditableTextBox* NameReceiverTextBox;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UButton* NameReceiverButton;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> RefWidget;
@@ -44,6 +51,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void ExitGame();
+	
+	UFUNCTION(BlueprintCallable)
+		void EnterName();
 
 
 };
