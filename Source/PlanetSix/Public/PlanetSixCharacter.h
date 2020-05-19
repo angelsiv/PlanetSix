@@ -169,4 +169,6 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	/** Updates the UI with the proper numbers */
 	void UpdateUI();
+	UFUNCTION(BlueprintCallable)
+		void ReceiveDamage(float Damage);
 };
