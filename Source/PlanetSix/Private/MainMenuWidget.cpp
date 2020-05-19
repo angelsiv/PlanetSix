@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/MainMenuWidget.h"
+#include "MainMenuWidget.h"
 #include "Engine.h"
 #include "Components/CanvasPanel.h"
 #include "Components/Button.h"
@@ -22,7 +22,7 @@ void UMainMenuWidget::NativeConstruct() {
 	ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 }
 
 void UMainMenuWidget::StartGame()
@@ -31,6 +31,7 @@ void UMainMenuWidget::StartGame()
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 
 	UGameplayStatics::OpenLevel(this, "NetworkTestMenu");
+	
 }
 
 void UMainMenuWidget::OpenOptions()
