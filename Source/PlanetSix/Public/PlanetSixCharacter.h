@@ -78,6 +78,9 @@ public:
 	/** Player's HUD. */
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		UUserWidget* MainHUD;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
+		TSubclassOf<UUserWidget> InGameMenu;
 
 protected:
 	/** Called for forwards/backward input */
@@ -149,7 +152,10 @@ protected:
 	void ChangeWeapon2();
 
 	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
-	void ChangeWeapon3();
+	void ChangeWeapon3();	
+
+	/** Open Ingame Menu*/
+	void OpenIngameMenu();
 
 protected:
 	// APawn interface
