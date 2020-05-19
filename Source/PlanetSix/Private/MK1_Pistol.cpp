@@ -3,8 +3,8 @@
 
 #include "MK1_Pistol.h"
 #include "Kismet/GameplayStatics.h"
-#include <Engine.h>
-#include <PlanetSix\PlanetSixCharacter.h>
+#include "Engine.h"
+#include "PlanetSixCharacter.h"
 #include "GameFramework/Controller.h"
 
 // Sets default values
