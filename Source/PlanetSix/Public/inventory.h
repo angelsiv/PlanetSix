@@ -22,11 +22,11 @@ public:
 	Uinventory(int32 invSize);
 
 	UFUNCTION(BlueprintCallable)
-		bool add(AItem_base* item);
-	//UFUNCTION(BlueprintCallable)
-	FitemInv* swap(FitemInv* item, int index);
-	//UFUNCTION(BlueprintCallable)
-	FitemInv* take(int index);
+	bool add(FitemInv item);
+	UFUNCTION(BlueprintCallable)
+	FitemInv swap(FitemInv item, int index);
+	UFUNCTION(BlueprintCallable)
+	FitemInv takeItem(int index);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 inventorySize;
 	TArray<FitemInv> items;
@@ -38,7 +38,10 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
+	bool add(FitemInv* item);
+	FitemInv* swap(FitemInv* item, int index);
+	FitemInv* take(int index);
+	
 	void heapify(int n, int i, sortingMode mode);
 	void heapSort(int n, sortingMode mode);
 	//int compare(FitemInv *i1, FitemInv *i2, sortingMode mode);

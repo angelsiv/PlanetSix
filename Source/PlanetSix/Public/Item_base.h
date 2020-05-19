@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ItemInv.h"
 #include "Components/SphereComponent.h"
 #include "Item_base.generated.h"
 
 
-class UitemInv;
+
+//struct FitemInv;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API AItem_base : public AActor
@@ -44,6 +46,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	//UFUNCTION(BlueprintCallable)
-	//class UitemInv* ToItemInv();
+	UFUNCTION(BlueprintCallable)
+	FitemInv ToItemInv();
 };

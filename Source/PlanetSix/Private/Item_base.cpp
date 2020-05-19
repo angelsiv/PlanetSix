@@ -35,10 +35,12 @@ void AItem_base::Tick(float DeltaTime)
 
 }
 
-//UitemInv* AItem_base::ToItemInv()
-//{
-//	return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
-//
-//
-//}
+FitemInv AItem_base::ToItemInv()
+{
+	//return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
+	//auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
+
+	//return item;
+	return FitemInv(1, TEXT("item"), 2.0f, 3.0f, 1);
+}
 

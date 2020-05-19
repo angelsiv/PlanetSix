@@ -52,31 +52,38 @@ void Uinventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool Uinventory::add(FitemInv item)
+bool Uinventory::add(FitemInv* item)
 {
+	//return false;
+	
 	//look for the first available spot.
-	//for (int i = 0; i < sizeof(&items) / sizeof(&items[0]);i++)
+	for (int i = 0; i < sizeof(&items) / sizeof(&items[0]);i++)
 	{
 		//if there is someting
-		//if (items[i])
+		if (!items[i].getId()==0)
 		{
-			//it item already in inventory
-			//if (items[i]->Stack(item))
-			{
-				//	return true;
-			}
+			////it item already in inventory
+			//if (items[i].Stack(item))
+			//{
+			//	return true;
+			//}
 		}
 		//if empty
-		//else
+		else
 		{
 			//place the item
-			//items[i] = item;
-			//return true;
+			//items[i] = *item;
+			return true;
 		}
+		return false;
 	}
 
 	//if there is no spot left
 	return false;
+}
+bool Uinventory::add(FitemInv item)
+{
+	return add(&item);
 }
 
 // Description:
@@ -114,6 +121,11 @@ FitemInv* Uinventory::swap(FitemInv* item, int index)
 		}
 	}
 }
+FitemInv Uinventory::swap(FitemInv item, int index)
+{
+	return *swap(&item, index);
+}
+
 
 // Description:
 //   Take an item in a specific inventory spot.
@@ -127,6 +139,11 @@ FitemInv* Uinventory::take(int index)
 	//get the item at the index and set the spot empty
 	return swap(nullptr, index);
 }
+FitemInv Uinventory::takeItem(int index)
+{
+	return *take(index);
+}
+
 
 //
 //int Uinventory::compare(FitemInv* i1, FitemInv* i2, sortingMode mode)
