@@ -8,7 +8,10 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine.h"
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
 //////////////////////////////////////////////////////////////////////////
 // APlanetSixCharacter
@@ -59,7 +62,19 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 void APlanetSixCharacter::UpdateUI()
 {
-	
+
+}
+
+void APlanetSixCharacter::ReceiveDamage(float Damage)
+{
+	if (Attributes->Shield.GetCurrentValue() > 0)
+	{
+		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
+	else if (Attributes->Health.GetCurrentValue() > 0)
+	{
+		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -99,6 +114,7 @@ void APlanetSixCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("Change To Weapon 1", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon1);
 	PlayerInputComponent->BindAction("Change To Weapon 2", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon2);
 	PlayerInputComponent->BindAction("Change To Weapon 3", IE_Pressed, this, &APlanetSixCharacter::ChangeWeapon3);
+	PlayerInputComponent->BindAction("IngameMenu", IE_Pressed, this, &APlanetSixCharacter::OpenIngameMenu);
 	PlayerInputComponent->BindAxis("Change Weapon ScrollWheel", this, &APlanetSixCharacter::ChangeWeaponScroll);
 
 }
@@ -324,4 +340,19 @@ void APlanetSixCharacter::ChangeWeapon2()
 void APlanetSixCharacter::ChangeWeapon3()
 {
 	ChangeWeapon(3);
+}
+
+void APlanetSixCharacter::OpenIngameMenu()
+{
+	if (!Controller) {
+		print("Failure", -1);
+		return;
+	}
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Cast<APlayerController>(Controller));
+	
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
+
+	Cast<APlayerController>(Controller)->bShowMouseCursor = true;
 }

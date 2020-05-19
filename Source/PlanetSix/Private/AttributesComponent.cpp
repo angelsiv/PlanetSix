@@ -13,9 +13,9 @@ UAttributesComponent::UAttributesComponent()
 	, AbilitiesProficiency(1.f)
 	, Level(1.f)
 	, Experience(1.f)
-	, CurrentHealth(100.f)
-	, CurrentEnergy(50.f)
-	, CurrentShield(10.f)
+	, Health(100.f)
+	, Energy(50.f)
+	, Shield(10.f)
 	, ArmorReduction(1.f)
 	, WeaponDamage(1.f)
 	, AbilityDamage(1.f)
@@ -39,9 +39,9 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	//-----------------------------------------------------------
 	DOREPLIFETIME(UAttributesComponent, Level);
 	DOREPLIFETIME(UAttributesComponent, Experience);
-	DOREPLIFETIME(UAttributesComponent, CurrentHealth);
-	DOREPLIFETIME(UAttributesComponent, CurrentEnergy);
-	DOREPLIFETIME(UAttributesComponent, CurrentShield);
+	DOREPLIFETIME(UAttributesComponent, Health);
+	DOREPLIFETIME(UAttributesComponent, Energy);
+	DOREPLIFETIME(UAttributesComponent, Shield);
 	//-----------------------------------------------------------
 	DOREPLIFETIME(UAttributesComponent, ArmorReduction);
 	DOREPLIFETIME(UAttributesComponent, WeaponDamage);
@@ -141,10 +141,10 @@ void UAttributesComponent::OnCurrentHealthUpdate()
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
 	{
-		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth.GetCurrentValue());
+		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), Health.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, healthMessage);
 
-		if (CurrentHealth.GetCurrentValue() <= 0)
+		if (Health.GetCurrentValue() <= 0)
 		{
 			FString deathMessage = FString::Printf(TEXT("You are dead. Waiting for revive..."));
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, deathMessage);
@@ -154,7 +154,7 @@ void UAttributesComponent::OnCurrentHealthUpdate()
 	//server specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), CurrentHealth.GetCurrentValue());
+		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), Health.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, healthMessage);
 	}
 
@@ -168,10 +168,10 @@ void UAttributesComponent::OnCurrentEnergyUpdate()
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
 	{
-		FString energyMessage = FString::Printf(TEXT("You now have %f energy remaining."), CurrentEnergy.GetCurrentValue());
+		FString energyMessage = FString::Printf(TEXT("You now have %f energy remaining."), Energy.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, energyMessage);
 
-		if (CurrentEnergy.GetCurrentValue() <= 0)
+		if (Energy.GetCurrentValue() <= 0)
 		{
 			FString zeroMessage = FString::Printf(TEXT("Your energy is depleted... wait for it to recharge or consume an energy bar"));
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, zeroMessage);
@@ -181,7 +181,7 @@ void UAttributesComponent::OnCurrentEnergyUpdate()
 	//server specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		FString energyMessage = FString::Printf(TEXT("%s now has %f energy remaining."), *GetFName().ToString(), CurrentEnergy.GetCurrentValue());
+		FString energyMessage = FString::Printf(TEXT("%s now has %f energy remaining."), *GetFName().ToString(), Energy.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, energyMessage);
 	}
 
@@ -196,10 +196,10 @@ void UAttributesComponent::OnCurrentShieldUpdate()
 	//client-specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->IsLocallyControlled())
 	{
-		FString shieldMessage = FString::Printf(TEXT("You now have %f shield remaining."), CurrentShield.GetCurrentValue());
+		FString shieldMessage = FString::Printf(TEXT("You now have %f shield remaining."), Shield.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, shieldMessage);
 
-		if (CurrentShield.GetCurrentValue() <= 0)
+		if (Shield.GetCurrentValue() <= 0)
 		{
 			FString zeroMessage = FString::Printf(TEXT("Your shield is depleted."));
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, zeroMessage);
@@ -209,7 +209,7 @@ void UAttributesComponent::OnCurrentShieldUpdate()
 	//server specific functionality
 	if (OwnerPawn != nullptr && OwnerPawn->GetLocalRole() == ROLE_Authority)
 	{
-		FString shieldMessage = FString::Printf(TEXT("%s now has %f shield remaining."), *GetFName().ToString(), CurrentShield.GetCurrentValue());
+		FString shieldMessage = FString::Printf(TEXT("%s now has %f shield remaining."), *GetFName().ToString(), Shield.GetCurrentValue());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, shieldMessage);
 	}
 

@@ -53,7 +53,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void CalculateDamage(APlanetSixCharacter* AbilityCaster);
-	UFUNCTION()
-		float OutgoingDamage(ESkillDamageType SkillDamageType);
+	UFUNCTION(BlueprintCallable)
+		void DoDamage(APlanetSixCharacter* AbilityCaster, ESkillDamageType SkillDamageType, APlanetSixCharacter* DamageReceiver);
 };
