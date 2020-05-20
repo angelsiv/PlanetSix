@@ -40,7 +40,7 @@ EClassName UClassComponent::GetClassName()
 	return ClassEnumName;
 }
 
-void UClassComponent::CastSkill(ESkill SkillName)
+void UClassComponent::CastSkill(ESkillName SkillName)
 {
 
 }
