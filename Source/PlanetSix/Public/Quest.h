@@ -10,10 +10,13 @@
  enum ObjectiveType 
 {
 	 Kill,
-	 Gathering,
-	 TalkToNpc,
+	 Gather,
+	 Interact,
+	 Location
+
 
 };
+
 
 UCLASS()
 class PLANETSIX_API UQuest : public UObject

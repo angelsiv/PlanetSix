@@ -45,7 +45,7 @@ public:
 		float BaseLookUpRate;
 
 	//this is to create the widget of the dialogue  
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DialogueWidget")
 		TSubclassOf<UUserWidget> DialogueWidgetClass;
 
 	/** Interact with object or player */
@@ -55,7 +55,7 @@ public:
 	bool bIsInPerimiterOfNPC = false;
 
 	//this the incrementor for widgetclass 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "DialogueWidget" )
 		int IndexDialogue = 0;
 
 	//this is for the specific dialogue 
