@@ -25,7 +25,7 @@ enum class EClassName : uint8
 };
 
 UENUM(BlueprintType)
-enum class ESkill : uint8
+enum class ESkillName : uint8
 {
 	None UMETA(DisplayName = "None"),
 	Uni_Pylon UMETA(DisplayName = "Pylon")
@@ -56,5 +56,5 @@ protected:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void CastSkill(ESkill SkillName);
+	void CastSkill(ESkillName SkillName);
 };
