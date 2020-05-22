@@ -25,6 +25,10 @@ struct FObjectiveData
 {
 	GENERATED_BODY()
 
+		//this is the name of the quest 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FText QuestName;
+
 	//Quest description
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FText QuestDescription;
@@ -72,9 +76,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsActive;
 
-	//this is the name of the quest 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	FText QuestName;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsStoryQuest;
