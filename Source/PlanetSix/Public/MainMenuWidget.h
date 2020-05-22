@@ -36,7 +36,9 @@ public:
 		UButton* NameReceiverButton;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> RefWidget;
+		TSubclassOf<UUserWidget> RefOptionWidget;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UUserWidget> RefStartGameWidget;
 
 public:
 	UMainMenuWidget(const FObjectInitializer& ObjectInitializer);

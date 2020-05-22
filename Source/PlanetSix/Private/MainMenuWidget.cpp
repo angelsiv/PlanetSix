@@ -26,28 +26,27 @@ void UMainMenuWidget::NativeConstruct() {
 	NameReceiverButton->OnClicked.AddDynamic(this, &UMainMenuWidget::EnterName);
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
-	
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly()); 
 }
  
 void UMainMenuWidget::StartGame()
 {
 	print("Start Game", -1);
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
+
 	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test",0));
 	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
 		Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
 		print(SavedGame->UserName + "Its a me hue", -1);
 	}
 	
-	
-	UGameplayStatics::OpenLevel(this, "NetworkTestMenu");
-	
+	UUserWidget* StartGameWidget = CreateWidget<UUserWidget>(GetWorld()->GetFirstPlayerController(), RefStartGameWidget);
+	StartGameWidget->AddToViewport();
+	RemoveFromParent();
 }
 
 void UMainMenuWidget::OpenOptions()
 {
-	UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld(),RefWidget);
+	UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld(),RefOptionWidget);
 	OptionsWidget->AddToViewport();
 	RemoveFromParent();
 	
