@@ -28,6 +28,9 @@ void AMK1_Pistol::BeginPlay()
 
 	RecoilYawLeft = -1.f;
 	RecoilYawRight = 1.f;
+
+	CurrentAmmo = 12;
+	TotalAmmo = 36;
 }
 
 void AMK1_Pistol::Fire() 
@@ -84,4 +87,24 @@ void AMK1_Pistol::StopRecoil()
 {
 	isRecoiling = false;
 	//GetWorldTimerManager().ClearTimer(this, &AMK1_Pistol::StopRecoil);
+}
+
+void AMK1_Pistol::Reload() 
+{
+	if (TotalAmmo <= 0 || CurrentAmmo >= 12) 
+	{
+		return; 
+	}
+
+	if (TotalAmmo < (12 - CurrentAmmo)) 
+	{
+		CurrentAmmo = CurrentAmmo + TotalAmmo;
+		TotalAmmo = 0;
+	}
+
+	else 
+	{
+		TotalAmmo = TotalAmmo - (12 - CurrentAmmo);
+		CurrentAmmo = 12;
+	}
 }
