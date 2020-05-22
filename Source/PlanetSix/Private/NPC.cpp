@@ -14,11 +14,9 @@ ANPC::ANPC()
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	RootComponent = boxcomponent;
 	
-
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
-
 
 	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
@@ -76,15 +74,17 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (Character != nullptr) 
 	{
-		//character->widgetDialogue->RemoveFromParent();
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
+		//set invisible the Text renderer of the NPC
 		textrender->SetVisibility(false);
 
-		if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 
+		/*if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 
 		{
 			Character->IndexDialogue = 0;
+			
 			Character->WidgetDialogue->RemoveFromParent();
-		}
+		}*/
 		
 	}
 }

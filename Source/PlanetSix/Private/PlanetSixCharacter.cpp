@@ -183,6 +183,7 @@ void APlanetSixCharacter::Interact()
 	if (bIsInPerimiterOfNPC)
 	{
 		IndexDialogue++;
+
 		//If player controller is not null 
 		if (PC)
 		{
@@ -198,10 +199,11 @@ void APlanetSixCharacter::Interact()
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
+					PC->SetIgnoreMoveInput(true);
 
 				}
 
-				if (IndexDialogue % 2 == 0)
+				else 
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
 					WidgetDialogue->RemoveFromParent();
@@ -209,6 +211,7 @@ void APlanetSixCharacter::Interact()
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
+					PC->SetIgnoreMoveInput(false);
 
 				}
 
