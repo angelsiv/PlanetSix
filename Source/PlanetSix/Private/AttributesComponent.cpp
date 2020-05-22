@@ -25,8 +25,6 @@ UAttributesComponent::UAttributesComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
-	SetIsReplicated(true);
-	//OwnerPawn = Cast<APawn>(GetOwner());
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -68,10 +66,20 @@ float FAttributesData::GetCurrentValue() const
 	return CurrentValue;
 }
 
+float FAttributesData::GetMaxValue() const
+{
+	return MaxValue;
+}
+
 //** setter for current value of attribute */
 void FAttributesData::SetCurrentValue(const float NewValue)
 {
 	CurrentValue = NewValue;
+}
+
+void FAttributesData::SetMaxValue(const float AddedValue)
+{
+	MaxValue = BaseValue + AddedValue;
 }
 
 int32 FAttributesData::GetCurrentModifier() const

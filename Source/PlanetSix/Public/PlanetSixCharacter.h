@@ -30,10 +30,10 @@ public:
 	APlanetSixCharacter();
 
 	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString UserName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 Level;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+		FString UserName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+		int32 Level;
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -95,7 +95,7 @@ public:
 	/** Player's HUD. */
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		UUserWidget* MainHUD;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
 		TSubclassOf<UUserWidget> InGameMenu;
 
@@ -127,7 +127,8 @@ protected:
 	void MeleeAttack();
 
 	/** Send a Skill */
-	void Skill(int32 SkillNumber);
+	UFUNCTION(BlueprintCallable)
+		void Skill(int32 SkillNumber);
 
 	/** skill 1 */
 	void Skill1();
@@ -169,7 +170,7 @@ protected:
 	void ChangeWeapon2();
 
 	/** Change Weapon depending on 1, 2, 3 or scrollwheel */
-	void ChangeWeapon3();	
+	void ChangeWeapon3();
 
 	/** Open Ingame Menu*/
 	void OpenIngameMenu();

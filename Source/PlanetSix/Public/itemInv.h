@@ -29,8 +29,8 @@ struct PLANETSIX_API FitemInv //: public UObject
 
 public:	
 	// Sets default values for this component's properties
-	FitemInv();
-	FitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity);// :id(0), displayName(), weight(1.0f), value(1.f), quantity(1);
+	FitemInv() : id(), displayName(), weight(), value(), quantity() {}
+	FitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity) : id(), displayName(), weight(), value(), quantity() {}
 	//UitemInv(AItem_base &base);
 
 protected:

@@ -242,29 +242,29 @@ void APlanetSixCharacter::MeleeAttack()
 /** Send a Skill */
 void APlanetSixCharacter::Skill(int32 SkillNumber)
 {
-	if (SkillNumber < 4 && SkillNumber > 0)
+	/*if (SkillNumber < 4 && SkillNumber > 0)
 	{
 		if (SkillNumber == 1)
 			Class->CastSkill(ESkill::Uni_Pylon);
-	}
+	}*/
 }
 
 /** skill 1 */
 void APlanetSixCharacter::Skill1()
 {
-	Skill(1);
+	//Skill(1);
 }
 
 /** skill 2 */
 void APlanetSixCharacter::Skill2()
 {
-	Skill(2);
+	//Skill(2);
 }
 
 /** skill 3 */
 void APlanetSixCharacter::Skill3()
 {
-	Skill(3);
+	//Skill(3);
 }
 
 /** Open the inventory */
