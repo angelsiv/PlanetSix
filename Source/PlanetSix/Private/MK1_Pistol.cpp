@@ -36,7 +36,7 @@ void AMK1_Pistol::BeginPlay()
 void AMK1_Pistol::Fire() 
 {
 	AActor* MyOwner = GetOwner();
-	if (MyOwner)
+	if (MyOwner && CurrentAmmo > 0)
 	{
 		FVector EyeLocation;
 		FRotator EyeRotation;
@@ -58,8 +58,13 @@ void AMK1_Pistol::Fire()
 			UGameplayStatics::ApplyPointDamage(HitActor, 1.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 		}
 
+		CurrentAmmo--;
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 		Recoil();
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OUT OF AMMO"));
 	}
 }
 
