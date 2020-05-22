@@ -42,8 +42,7 @@ public:
 		UAnimationAsset* AnimIdle;
 
 
-	   UQuest* QuestOfNpc;
-
+	
 
 	
 protected:
