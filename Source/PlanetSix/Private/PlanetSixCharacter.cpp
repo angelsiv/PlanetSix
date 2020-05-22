@@ -178,13 +178,11 @@ void APlanetSixCharacter::Interact()
 {
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
-
+	
 	//check if the player is the perimiter of the NPC 
 	if (bIsInPerimiterOfNPC)
 	{
-
 		IndexDialogue++;
-
 		//If player controller is not null 
 		if (PC)
 		{
@@ -196,10 +194,10 @@ void APlanetSixCharacter::Interact()
 				{
 					WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
 					WidgetDialogue->AddToViewport();
+					PC->SetInputMode(FInputModeGameAndUI());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
-
 
 				}
 
@@ -207,10 +205,10 @@ void APlanetSixCharacter::Interact()
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
 					WidgetDialogue->RemoveFromParent();
+					PC->SetInputMode(FInputModeGameOnly());
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
-
 
 				}
 
@@ -275,6 +273,33 @@ void APlanetSixCharacter::Inventory()
 /** Open the quest log */
 void APlanetSixCharacter::QuestLog()
 {
+	auto PC = Cast<APlayerController>(GetController());
+	Incrementor++;
+
+	if (Incrementor % 2 == 1)
+	{
+		
+		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
+		WidgetQuestLog->AddToViewport();
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->bShowMouseCursor = true;
+		PC->bEnableClickEvents = true;
+		PC->bEnableMouseOverEvents = true;
+		
+		
+	
+	}
+	else if (Incrementor % 2 == 0)
+	{
+		
+		WidgetQuestLog->RemoveFromParent();
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->bShowMouseCursor = false;
+		PC->bEnableClickEvents = false;
+		PC->bEnableMouseOverEvents = false;
+		CameraBoom->bUsePawnControlRotation = true;
+		
+	}
 
 }
 

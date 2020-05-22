@@ -76,6 +76,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FText QuestName;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		bool IsStoryQuest;
+
+
 
 protected:
 	// Called when the game starts or when spawned

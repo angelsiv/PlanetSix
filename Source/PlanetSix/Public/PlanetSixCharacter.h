@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "NPCDialogueWidget.h"
+#include "QuestWidget.h"
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
@@ -44,9 +45,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
-	//this is to create the widget of the dialogue  
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DialogueWidget")
-		TSubclassOf<UUserWidget> DialogueWidgetClass;
 
 	/** Interact with object or player */
 	void Interact();
@@ -54,12 +52,31 @@ public:
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
-	//this the incrementor for widgetclass 
-	UPROPERTY(EditAnywhere, Category = "DialogueWidget" )
-		int IndexDialogue = 0;
 
-	//this is for the specific dialogue 
-	UNPCDialogueWidget* WidgetDialogue;
+	      /*Dialogue Sections */
+		//this the incrementor for widgetclass 
+		UPROPERTY(EditAnywhere, Category = "DialogueWidget")
+			int IndexDialogue = 0;
+
+
+		//this is to create the widget of the dialogue  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+			TSubclassOf<UUserWidget> DialogueWidgetClass;
+
+		//this is for the specific dialogue 
+		UNPCDialogueWidget* WidgetDialogue;
+
+	
+
+		/*Quest Widget UI*/
+		//this is to create teh quest LOG 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
+			TSubclassOf<UUserWidget> QuestWidgetLog;
+
+		//this is for the WidgetQuestLog
+		UQuestWidget* WidgetQuestLog;
+
+		int Incrementor=0;
 
 	//getter for the character's class
 	EClassName GetClassName();
