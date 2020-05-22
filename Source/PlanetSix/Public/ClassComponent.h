@@ -45,10 +45,12 @@ public:
 		EClassName GetClassName();
 
 
-
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	/** checker if the skill is unlocked or not. CAN NOT cast skill if false */
+	bool bIsUnlocked = false;
 
 	UPROPERTY(VisibleAnywhere)
 		FName ClassTextName;
@@ -64,4 +66,9 @@ public:
 	/** Cast a Skill*/
 	UFUNCTION(Blueprintable)
 	void CastSkill(ESkillName SkillName);
+
+	UFUNCTION(Blueprintable, BlueprintGetter = "IsUnlocked")
+		bool GetIsUnlocked() { return bIsUnlocked; }
+	UFUNCTION(Blueprintable, BlueprintSetter = "IsUnlocked")
+		void SetIsUnlocked(bool IsUnlocked) { bIsUnlocked = IsUnlocked; }
 };

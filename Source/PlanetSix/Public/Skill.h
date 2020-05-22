@@ -63,11 +63,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ESkillType SkillType;
 
-	UFUNCTION(Blueprintable, BlueprintGetter = "IsUnlocked")
-		bool GetIsUnlocked() { return bIsUnlocked; }
-	UFUNCTION(Blueprintable, BlueprintSetter = "IsUnlocked")
-		void SetIsUnlocked(bool IsUnlocked) { bIsUnlocked = IsUnlocked; }
-
+	
 	/** factor for damage scaling on raw abilities */
 	const float DamageFactor_Raw = 5.f;
 	/** factor for damage scaling on area of effect abilities */
@@ -81,8 +77,6 @@ protected:
 	float AbilityDamage_AoE;
 	/** calculated damage over time damage the skill will inflict to another character */
 	float AbilityDamage_DoT;
-	/** checker if the skill is unlocked or not. CAN NOT cast skill if false */
-	bool bIsUnlocked = false;
 
 public:
 	// Called every frame
