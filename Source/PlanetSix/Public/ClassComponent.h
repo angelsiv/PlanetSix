@@ -39,8 +39,12 @@ class PLANETSIX_API UClassComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UClassComponent();
+
 	//getter for the class name
-	EClassName GetClassName();
+	UFUNCTION(Blueprintable)
+		EClassName GetClassName();
+
+
 
 protected:
 	// Called when the game starts
@@ -56,5 +60,8 @@ protected:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	/** Cast a Skill*/
+	UFUNCTION(Blueprintable)
 	void CastSkill(ESkillName SkillName);
 };
