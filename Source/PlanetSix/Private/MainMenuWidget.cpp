@@ -33,11 +33,11 @@ void UMainMenuWidget::StartGame()
 {
 	print("Start Game", -1);
 
-	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test",0));
+	/*UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test",0));
 	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
 		Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
 		print(SavedGame->UserName + "Its a me hue", -1);
-	}
+	}*/
 	
 	UUserWidget* StartGameWidget = CreateWidget<UUserWidget>(GetWorld()->GetFirstPlayerController(), RefStartGameWidget);
 	StartGameWidget->AddToViewport();
