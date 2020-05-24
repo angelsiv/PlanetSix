@@ -8,6 +8,7 @@
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
 
 class APlayerController;
@@ -29,9 +30,9 @@ public:
 	APlanetSixCharacter();
 
 	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
 		FString UserName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 Level;
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

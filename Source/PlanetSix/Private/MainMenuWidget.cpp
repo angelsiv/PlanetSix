@@ -8,11 +8,12 @@
 #include "Components/EditableTextBox.h"
 #include "PlanetSixSaveGame.h"
 #include "PlanetSixGameInstance.h"
+#include "PlanetSixPlayerState.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
-UMainMenuWidget::UMainMenuWidget(const FObjectInitializer & ObjectInitializer) : Super(ObjectInitializer){
+UMainMenuWidget::UMainMenuWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
 
 
 }
@@ -26,19 +27,29 @@ void UMainMenuWidget::NativeConstruct() {
 	NameReceiverButton->OnClicked.AddDynamic(this, &UMainMenuWidget::EnterName);
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly()); 
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 }
- 
+
 void UMainMenuWidget::StartGame()
 {
 	print("Start Game", -1);
 
-	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test",0));
+	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test", 0));
+
+	//If Inputed name doesnt exist
 	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
-		Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
-		print(SavedGame->UserName + "Its a me hue", -1);
+		if (SavedGame) {
+			//If Saved game
+			Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
+			//Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
+
+			//print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+
+		}
 	}
 	
+
+
 	UUserWidget* StartGameWidget = CreateWidget<UUserWidget>(GetWorld()->GetFirstPlayerController(), RefStartGameWidget);
 	StartGameWidget->AddToViewport();
 	RemoveFromParent();
@@ -46,17 +57,17 @@ void UMainMenuWidget::StartGame()
 
 void UMainMenuWidget::OpenOptions()
 {
-	UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld(),RefOptionWidget);
+	UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld(), RefOptionWidget);
 	OptionsWidget->AddToViewport();
 	RemoveFromParent();
-	
+
 	print("OpenOptions", -1);
 
 }
 
 void UMainMenuWidget::ExitGame()
 {
-	UKismetSystemLibrary::QuitGame(this,GetWorld()->GetFirstPlayerController(),TEnumAsByte<EQuitPreference::Type>(),false);
+	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), TEnumAsByte<EQuitPreference::Type>(), false);
 	print("Exit Game", -1);
 
 }
