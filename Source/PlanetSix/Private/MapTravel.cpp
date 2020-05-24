@@ -45,6 +45,7 @@ void AMapTravel::NotifyActorBeginOverlap(AActor * OtherActor)
 	print("overlapped with portal", -1);
 	if (Player && LevelName != "")
 	{
+		print("check", -1);
 		TravelTo(LevelName);
 	}
 }
@@ -53,11 +54,20 @@ void AMapTravel::TravelTo(FString mapName)
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
-		if (GetWorld()->ServerTravel(mapName)) {
-		
-		print("should travel", -1);	
-		
+		if (GetWorld()->ServerTravel(mapName)) 
+		{
+			print("should travel", -1);	
+		}
+		else if (Role == ROLE_Authority)
+		{
+			UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName), true, "?listen");
+			print("single travel", -1);
+		}
+		else
+		{
+			print("not allowed to travel", -1);
 		}
 	}
+	
 }
 
