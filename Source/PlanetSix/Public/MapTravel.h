@@ -15,7 +15,6 @@ class PLANETSIX_API AMapTravel : public AActor
 	GENERATED_BODY()
 	
 public:	
-	FString MapName;
 	// Sets default values for this actor's properties
 	AMapTravel();
 
@@ -23,6 +22,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) UStaticMeshComponent* MeshComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) UBoxComponent* BoxCollider;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) UTextRenderComponent* LocationText;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Map") FString LevelName;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

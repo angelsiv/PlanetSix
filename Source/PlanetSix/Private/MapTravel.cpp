@@ -6,6 +6,9 @@
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "PlanetSixCharacter.h"
+#include "Kismet/KismetSystemLibrary.h"
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
 // Sets default values
 AMapTravel::AMapTravel()
@@ -39,17 +42,19 @@ void AMapTravel::Tick(float DeltaTime)
 void AMapTravel::NotifyActorBeginOverlap(AActor * OtherActor)
 {
 	auto Player = Cast<APlanetSixCharacter>(OtherActor);
-	if (Player)
+	print("overlapped with portal", -1);
+	if (Player && LevelName != "")
 	{
-		TravelTo(MapName);
+		TravelTo(LevelName);
 	}
 }
 
 void AMapTravel::TravelTo(FString mapName)
 {
-	if (MapName != "")
+	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
-		GetWorld()->ServerTravel(mapName);
+		print("should travel", -1);	
+		GetWorld()->SeamlessTravel(mapName);
 	}
 }
 
