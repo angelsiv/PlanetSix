@@ -33,6 +33,7 @@ public:
 	FString UserName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 Level;
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

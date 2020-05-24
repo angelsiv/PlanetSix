@@ -53,8 +53,11 @@ void AMapTravel::TravelTo(FString mapName)
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
+		if (GetWorld()->ServerTravel(mapName)) {
+		
 		print("should travel", -1);	
-		GetWorld()->SeamlessTravel(mapName);
+		
+		}
 	}
 }
 
