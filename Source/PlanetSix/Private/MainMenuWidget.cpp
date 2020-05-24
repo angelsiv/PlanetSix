@@ -40,18 +40,24 @@ void UMainMenuWidget::StartGame()
 	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
 		if (SavedGame) {
 			//If Saved game
-			Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
-			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
+			//Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
+			//Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
 
-			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+			//print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
 
 		}
 	}
 	else {
+		if (GetOwningPlayer()) {
+
 
 			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
-			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
-
+			//print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+		}
+		else {
+		
+			print("Kaboom", -1);
+		}
 	}
 	
 
@@ -85,4 +91,6 @@ void UMainMenuWidget::EnterName()
 	UPlanetSixGameInstance* PSGameInstance = Cast<UPlanetSixGameInstance>(GameInstance);
 
 	PSGameInstance->UserName = NameReceiverTextBox->GetText().ToString();
+
+	print("Entered name: " + PSGameInstance->UserName, -1);
 }
