@@ -41,11 +41,17 @@ void UMainMenuWidget::StartGame()
 		if (SavedGame) {
 			//If Saved game
 			Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
-			//Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
+			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
 
-			//print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
 
 		}
+	}
+	else {
+
+			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
+			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+
 	}
 	
 
