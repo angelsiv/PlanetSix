@@ -2,6 +2,7 @@
 
 
 #include "GrenadeLauncherProjectile.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -29,21 +30,45 @@ AGrenadeLauncherProjectile::AGrenadeLauncherProjectile()
 
 void AGrenadeLauncherProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
+	if ((OtherActor != NULL) && (OtherActor != this))
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
-		Destroy();
+		OnDetonate();
 	}
+}
+
+void AGrenadeLauncherProjectile::OnDetonate() 
+{
+	UParticleSystemComponent* Explosion = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionParticles, GetActorTransform());
+
+	TArray<FHitResult> HitActors;
+
+	FVector StartTrace = GetActorLocation();
+	FVector EndTrace = StartTrace;
+	EndTrace.Z += 300.f;
+
+	FCollisionShape CollisionShape;
+	CollisionShape.ShapeType = ECollisionShape::Sphere;
+	CollisionShape.SetSphere(Radius);
+
+	if (GetWorld()->SweepMultiByChannel(HitActors, StartTrace, EndTrace, FQuat::FQuat(), ECC_WorldStatic, CollisionShape))
+	{
+		for (auto Actors = HitActors.CreateIterator(); Actors; Actors++) 
+		{
+			UStaticMeshComponent* SM = Cast<UStaticMeshComponent>((*Actors).Actor->GetRootComponent());
+
+			SM->AddRadialImpulse(GetActorLocation(), 1000.f, 5000.f, ERadialImpulseFalloff::RIF_Linear, true);		
+		}
+	}
+	Destroy();
 }
 
 void AGrenadeLauncherProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	FTimerHandle handle;
+	GetWorld()->GetTimerManager().SetTimer(handle, this, &AGrenadeLauncherProjectile::OnDetonate, 5.f, false);
 }
 
-// Called every frame
 void AGrenadeLauncherProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

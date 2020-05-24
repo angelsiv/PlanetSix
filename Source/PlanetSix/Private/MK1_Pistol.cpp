@@ -7,7 +7,6 @@
 #include "PlanetSixCharacter.h"
 #include "GameFramework/Controller.h"
 
-// Sets default values
 AMK1_Pistol::AMK1_Pistol()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -17,7 +16,6 @@ AMK1_Pistol::AMK1_Pistol()
 	RootComponent = MeshComp;
 }
 
-// Called when the game starts or when spawned
 void AMK1_Pistol::BeginPlay()
 {
 	Super::BeginPlay();
@@ -68,7 +66,6 @@ void AMK1_Pistol::Fire()
 	}
 }
 
-// Called every frame
 void AMK1_Pistol::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);

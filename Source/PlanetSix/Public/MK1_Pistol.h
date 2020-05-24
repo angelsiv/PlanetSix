@@ -14,11 +14,9 @@ class PLANETSIX_API AMK1_Pistol : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AMK1_Pistol();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -60,7 +58,6 @@ protected:
 	float FinalRecoilYawDirection;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void Recoil();

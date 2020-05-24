@@ -16,9 +16,21 @@ class PLANETSIX_API AGrenadeLauncherProjectile : public AActor
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
+	class UParticleSystem* ExplosionParticles;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
+	class USoundCue* ExplosionSound;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	float Radius = 500.f;
 	
 public:	
 	AGrenadeLauncherProjectile();
+
+	UFUNCTION()
+	void OnDetonate();
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -28,11 +40,9 @@ public:
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 };
