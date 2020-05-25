@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ItemInv.h"
+#include "InventoryComponent.h"
 #include "Components/SphereComponent.h"
 #include "Item_base.generated.h"
 
@@ -47,5 +47,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	FitemInv ToItemInv();
+		FItemData ToItemInv();
 };
