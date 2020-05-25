@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NPCDialogueWidget.h"
 #include "QuestWidget.h"
+#include "QuestActor.h"
 #include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
@@ -87,8 +88,7 @@ public:
 
 		AMapTravel* Portal;
 
-
-
+		
 
 		////this is to create the widget of the dialogue  
 		//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")

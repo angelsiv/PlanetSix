@@ -219,6 +219,7 @@ void APlanetSixCharacter::Interact()
 					PC->bEnableMouseOverEvents = true;
 					PC->SetIgnoreMoveInput(true);
 				}
+
 				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
