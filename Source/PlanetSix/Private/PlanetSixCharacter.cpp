@@ -58,6 +58,9 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
+	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
+
 }
 
 void APlanetSixCharacter::UpdateUI()
@@ -195,7 +198,6 @@ void APlanetSixCharacter::Interact()
 				//increment the dialogue varible to show the Widget if index = 1 
 				if (IndexDialogue % 2 == 1)
 				{
-					WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(),NPCQuestWidgetClass);
 					WidgetQuestNPC->AddToViewport();
 					PC->SetInputMode(FInputModeGameAndUI());
 					PC->bShowMouseCursor = true;

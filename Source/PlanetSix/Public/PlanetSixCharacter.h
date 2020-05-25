@@ -79,6 +79,7 @@ public:
 			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
 
 		//this is for the specific dialogue 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
 		UNPCQuestWidget* WidgetQuestNPC;
 
 		/*Quest Widget UI*/
