@@ -58,21 +58,30 @@ void ANPC::Tick(float DeltaTime)
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
+
+	/*auto test = SpecifiedQuestOFNPC->QuestName.ToString();
+	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();*/
+
+	
+	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
 
-	auto test = SpecifiedQuestOFNPC->QuestName.ToString();
-	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();
+		if (Character->bIsInPerimiterOfNPC == true)
+		{
 
-	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
-	{
-		/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
-		
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);
-	
-		//set visible the Text renderer of the NPC
-		textrender->SetVisibility(true);
-		
+			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
+			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
+			//NPCQuestWidgetref->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
+
+			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
+
+			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);*/
+
+			//set visible the Text renderer of the NPC
+			textrender->SetVisibility(true);
+
+		}
 	}
 }
 
