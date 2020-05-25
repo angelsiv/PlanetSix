@@ -81,8 +81,6 @@ public:
 		//this is for the specific dialogue 
 		UNPCQuestWidget* WidgetQuestNPC;
 
-
-
 		/*Quest Widget UI*/
 		//this is to create teh quest LOG 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
@@ -90,8 +88,6 @@ public:
 
 		//this is for the WidgetQuestLog
 		UQuestWidget* WidgetQuestLog;
-
-
 
 
 		int Incrementor=0;
