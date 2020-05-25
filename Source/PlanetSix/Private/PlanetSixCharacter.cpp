@@ -8,6 +8,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Skill.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -184,11 +185,6 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 }
 
-EClassName APlanetSixCharacter::GetClassName()
-{
-	return Class->GetClassName();
-}
-
 void APlanetSixCharacter::Interact()
 {
 	/* Interaction with NPC */
@@ -203,6 +199,9 @@ void APlanetSixCharacter::Interact()
 		//If player controller is not null 
 		if (PC)
 		{
+
+
+
 			//check if Dialogue widget exists 
 			if (DialogueWidgetClass)
 			{
@@ -211,20 +210,21 @@ void APlanetSixCharacter::Interact()
 				{
 					WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
 					WidgetDialogue->AddToViewport();
+					PC->SetInputMode(FInputModeGameAndUI());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
-
-
+					PC->SetIgnoreMoveInput(true);
 				}
-
-				if (IndexDialogue % 2 == 0)
+				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
 					WidgetDialogue->RemoveFromParent();
+					PC->SetInputMode(FInputModeGameOnly());
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
+					PC->SetIgnoreMoveInput(false);
 				}
 			}
 		}
@@ -290,6 +290,33 @@ void APlanetSixCharacter::Inventory()
 /** Open the quest log */
 void APlanetSixCharacter::QuestLog()
 {
+	auto PC = Cast<APlayerController>(GetController());
+	Incrementor++;
+
+	if (Incrementor % 2 == 1)
+	{
+
+		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
+		WidgetQuestLog->AddToViewport();
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->bShowMouseCursor = true;
+		PC->bEnableClickEvents = true;
+		PC->bEnableMouseOverEvents = true;
+
+
+
+	}
+	else if (Incrementor % 2 == 0)
+	{
+
+		WidgetQuestLog->RemoveFromParent();
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->bShowMouseCursor = false;
+		PC->bEnableClickEvents = false;
+		PC->bEnableMouseOverEvents = false;
+		CameraBoom->bUsePawnControlRotation = true;
+
+	}
 
 }
 
@@ -364,7 +391,7 @@ void APlanetSixCharacter::OpenIngameMenu()
 		return;
 	}
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Cast<APlayerController>(Controller));
-	
+
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();

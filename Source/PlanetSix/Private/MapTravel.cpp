@@ -4,11 +4,13 @@
 #include "MapTravel.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine.h"
 #include "Components/TextRenderComponent.h"
 #include "PlanetSixCharacter.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text);
 
 // Sets default values
 AMapTravel::AMapTravel()

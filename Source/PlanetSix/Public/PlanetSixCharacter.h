@@ -5,12 +5,33 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "NPCDialogueWidget.h"
+#include "QuestWidget.h"
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
 
+
+USTRUCT(BlueprintType)
+struct PLANETSIX_API FPlayerInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	FString UserName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	int32 Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	bool HasQuestItem;
+
+};
+
 class APlayerController;
+class ASkill;
 class AMapTravel;
 
 UCLASS(config = Game)
@@ -30,10 +51,15 @@ public:
 	APlanetSixCharacter();
 
 	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		FString UserName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		int32 Level;
+	//PlayerCharacter values
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FPlayerInfo Playerinfo;
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -45,28 +71,41 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
-	//this is to create the widget of the dialogue  
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<UUserWidget> DialogueWidgetClass;
 
 	/** Interact with object or player */
 	void Interact();
 
+
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
-
-	//define portal
-	AMapTravel* Portal;
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
 		int IndexDialogue = 0;
 
-	//this is for the specific dialogue 
-	UNPCDialogueWidget* WidgetDialogue;
+	      /*Dialogue Sections */
+		//this the incrementor for widgetclass 
+		UPROPERTY(EditAnywhere, Category = "DialogueWidget")
+			int IndexDialogue = 0;
 
-	//getter for the character's class
-	EClassName GetClassName();
+
+		//this is to create the widget of the dialogue  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+			TSubclassOf<UUserWidget> DialogueWidgetClass;
+
+		//this is for the specific dialogue 
+		UNPCDialogueWidget* WidgetDialogue;
+
+	
+		/*Quest Widget UI*/
+		//this is to create teh quest LOG 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
+			TSubclassOf<UUserWidget> QuestWidgetLog;
+
+		//this is for the WidgetQuestLog
+		UQuestWidget* WidgetQuestLog;
+
+		int Incrementor=0;
 
 	//Gets the players controller
 	//APlayerController* PC;
