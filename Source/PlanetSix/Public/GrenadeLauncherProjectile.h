@@ -12,37 +12,40 @@ class PLANETSIX_API AGrenadeLauncherProjectile : public AActor
 	GENERATED_BODY()
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
-	class USphereComponent* CollisionComp;
+		class USphereComponent* CollisionComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-	class UProjectileMovementComponent* ProjectileMovement;
+		class UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+		class UStaticMeshComponent* StaticMeshComponent;
 
 	UPROPERTY(EditAnywhere, Category = "FX")
-	class UParticleSystem* ExplosionParticles;
+		class UParticleSystem* ExplosionParticles;
 
 	UPROPERTY(EditAnywhere, Category = "FX")
-	class USoundCue* ExplosionSound;
+		class USoundCue* ExplosionSound;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
-	float Radius = 500.f;
-	
-public:	
+		float Radius = 500.f;
+
+public:
 	AGrenadeLauncherProjectile();
 
 	UFUNCTION()
-	void OnDetonate();
+		void OnDetonate();
 
 	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-	
+		void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 	FORCEINLINE class USphereComponent* GetCollisionComp() const { return CollisionComp; }
-	
+
 	FORCEINLINE class UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 
 };
