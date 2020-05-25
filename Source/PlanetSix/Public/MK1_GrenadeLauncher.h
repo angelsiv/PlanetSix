@@ -23,6 +23,12 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 		class USceneComponent* MuzzleLocation;
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+		void Fire();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+		void Reload();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 
