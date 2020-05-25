@@ -5,6 +5,7 @@
 #include "PlanetSixGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlanetSixSaveGame.h"
+#include "Net/UnrealNetwork.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
@@ -50,10 +51,23 @@ void APlanetSixPlayerState::OverrideWith(APlayerState* PlayerState)
 void APlanetSixPlayerState::BeginPlay() {
 	//If Inputed name doesnt exist
 	Super::BeginPlay();
-	USaveGame* SavedGame = UGameplayStatics::LoadGameFromSlot("Test", 0);
+	/*USaveGame* SavedGame = UGameplayStatics::LoadGameFromSlot("Test", 0);
 	if (SavedGame) {
 		UPlanetSixSaveGame* PSavedGame = Cast<UPlanetSixSaveGame>(SavedGame);
 
 		ChangeInfo(PSavedGame->PlayerInfo);
-	}
+	}*/
+
+	//if (!HasAuthority()) {
+		ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo);
+		print("Connecting to game instance with name: " + Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo.UserName, -1);
+	//}
+}
+
+
+void APlanetSixPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APlanetSixPlayerState, PlayerInfo);
 }
