@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PlanetSixCharacter.h"
-#include "Quest.h"
-
+#include "QuestActor.h"
 #include "NPC.generated.h"
 
 class UBoxComponent;
@@ -41,10 +40,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		UAnimationAsset* AnimIdle;
 
-
-	   UQuest* QuestOfNpc;
-
-
+	UPROPERTY(EditAnywhere)
+		AQuestActor* SpecifiedQuestOFNPC;
 	
 protected:
 	// Called when the game starts or when spawned
