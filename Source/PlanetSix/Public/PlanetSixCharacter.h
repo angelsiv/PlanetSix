@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NPCDialogueWidget.h"
 #include "QuestWidget.h"
+#include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
@@ -62,14 +63,26 @@ public:
 			int IndexDialogue = 0;
 
 
-		//this is to create the widget of the dialogue  
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
-			TSubclassOf<UUserWidget> DialogueWidgetClass;
 
-		//this is for the specific dialogue 
-		UNPCDialogueWidget* WidgetDialogue;
+
+		////this is to create the widget of the dialogue  
+		//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+		//	TSubclassOf<UUserWidget> DialogueWidgetClass;
+
+		////this is for the specific dialogue 
+		//UNPCDialogueWidget* WidgetDialogue;
 
 	
+
+		//this is to create the widget of the NPCQuest  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
+
+		//this is for the specific dialogue 
+		UNPCQuestWidget* WidgetQuestNPC;
+
+
+
 		/*Quest Widget UI*/
 		//this is to create teh quest LOG 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
@@ -77,6 +90,9 @@ public:
 
 		//this is for the WidgetQuestLog
 		UQuestWidget* WidgetQuestLog;
+
+
+
 
 		int Incrementor=0;
 

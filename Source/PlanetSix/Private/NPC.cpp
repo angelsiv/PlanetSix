@@ -63,8 +63,14 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 	auto test = SpecifiedQuestOFNPC->QuestName.ToString();
 	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();
 
+	
+
+
 	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
 	{
+		NPCQuestWidgetref->TextName = SpecifiedQuestOFNPC->QuestName;
+		NPCQuestWidgetref->TextDescription = SpecifiedQuestOFNPC->QuestDescription;
+
 		/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
 		
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
