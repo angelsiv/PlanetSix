@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PlanetSixCharacter.h"
+#include "NPCQuestWidget.h"
 #include "QuestActor.h"
 #include "NPC.generated.h"
 
@@ -42,6 +43,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		AQuestActor* SpecifiedQuestOFNPC;
+
+	UPROPERTY(EditAnywhere)
+	UNPCQuestWidget* NPCQuestWidgetref;
 	
 protected:
 	// Called when the game starts or when spawned

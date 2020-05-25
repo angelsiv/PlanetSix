@@ -60,6 +60,11 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
+
+
+	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
+
 }
 
 void APlanetSixCharacter::UpdateUI()
@@ -199,17 +204,15 @@ void APlanetSixCharacter::Interact()
 		//If player controller is not null 
 		if (PC)
 		{
-
-
-
 			//check if Dialogue widget exists 
-			if (DialogueWidgetClass)
+			if (NPCQuestWidgetClass)
 			{
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
+
 				//increment the dialogue varible to show the Widget if index = 1 
 				if (IndexDialogue % 2 == 1)
 				{
-					WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
-					WidgetDialogue->AddToViewport();
+					WidgetQuestNPC->AddToViewport();
 					PC->SetInputMode(FInputModeGameAndUI());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
@@ -219,7 +222,7 @@ void APlanetSixCharacter::Interact()
 				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-					WidgetDialogue->RemoveFromParent();
+					WidgetQuestNPC->RemoveFromParent();
 					PC->SetInputMode(FInputModeGameOnly());
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;

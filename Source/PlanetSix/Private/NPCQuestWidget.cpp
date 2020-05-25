@@ -16,8 +16,6 @@ void UNPCQuestWidget::NativeConstruct() {
 	Accept->OnClicked.AddDynamic(this, &UNPCQuestWidget::AcceptQuest);
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 
-	
-
 
 }
 
