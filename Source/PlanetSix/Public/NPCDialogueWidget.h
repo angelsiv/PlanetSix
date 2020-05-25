@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
 #include "NPCDialogueWidget.generated.h"
 
-class UButton;
 
 
 
@@ -15,14 +13,8 @@ class UButton;
 UCLASS()
 class PLANETSIX_API UNPCDialogueWidget : public UUserWidget
 {
-
-
 	GENERATED_BODY()
 
-		UPROPERTY(EditAnywhere)
-		UButton* ButtonComponent;
-
-	
 
 
 };

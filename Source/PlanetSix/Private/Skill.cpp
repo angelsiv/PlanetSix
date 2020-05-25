@@ -17,6 +17,15 @@ void ASkill::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (GetInstigator<APlanetSixCharacter>() != nullptr)
+	{
+		OwnerCharacter = GetInstigator<APlanetSixCharacter>();
+	}
+
+	if (ActivationTime != 0)
+	{
+		Duration += ActivationTime;
+	}
 }
 
 // Called every frame
@@ -24,11 +33,15 @@ void ASkill::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Duration -= DeltaTime;
+	ActivationTime -= DeltaTime;
 }
 
-void ASkill::DoDamage(APlanetSixCharacter* AbilityCaster, ESkillDamageType SkillDamageType, APlanetSixCharacter* DamageReceiver)
+/** Inflict Damage to the receiver depending on the caster's abilitydamage.
+@PARAMS DamageReceiver is the person who will receive damage.*/
+void ASkill::DoDamage(APlanetSixCharacter* DamageReceiver)
 {
-	float AbilityDamage = AbilityCaster->Attributes->AbilityDamage.GetCurrentValue();
+	float AbilityDamage = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability damage depending on their type
 	AbilityDamage_Raw = AbilityDamage / DamageFactor_Raw;
 	AbilityDamage_AoE = AbilityDamage / DamageFactor_AoE;
@@ -36,7 +49,7 @@ void ASkill::DoDamage(APlanetSixCharacter* AbilityCaster, ESkillDamageType Skill
 
 	//random chances for critical here
 
-	//
+	//inflict damage depending on the skill's damage type
 	switch (SkillDamageType)
 	{
 	case ESkillDamageType::None:

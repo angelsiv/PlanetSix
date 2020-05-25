@@ -28,12 +28,15 @@ void AMK1_Pistol::BeginPlay()
 
 	RecoilYawLeft = -1.f;
 	RecoilYawRight = 1.f;
+
+	CurrentAmmo = 12;
+	TotalAmmo = 36;
 }
 
 void AMK1_Pistol::Fire() 
 {
 	AActor* MyOwner = GetOwner();
-	if (MyOwner)
+	if (MyOwner && CurrentAmmo > 0)
 	{
 		FVector EyeLocation;
 		FRotator EyeRotation;
@@ -55,8 +58,13 @@ void AMK1_Pistol::Fire()
 			UGameplayStatics::ApplyPointDamage(HitActor, 1.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 		}
 
+		CurrentAmmo--;
 		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 		Recoil();
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OUT OF AMMO"));
 	}
 }
 
@@ -84,4 +92,24 @@ void AMK1_Pistol::StopRecoil()
 {
 	isRecoiling = false;
 	//GetWorldTimerManager().ClearTimer(this, &AMK1_Pistol::StopRecoil);
+}
+
+void AMK1_Pistol::Reload() 
+{
+	if (TotalAmmo <= 0 || CurrentAmmo >= 12) 
+	{
+		return; 
+	}
+
+	if (TotalAmmo < (12 - CurrentAmmo)) 
+	{
+		CurrentAmmo = CurrentAmmo + TotalAmmo;
+		TotalAmmo = 0;
+	}
+
+	else 
+	{
+		TotalAmmo = TotalAmmo - (12 - CurrentAmmo);
+		CurrentAmmo = 12;
+	}
 }

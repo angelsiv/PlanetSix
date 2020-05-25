@@ -2,6 +2,8 @@
 
 
 #include "ClassComponent.h"
+#include "PlanetSixCharacter.h"
+#include "Skill.h"
 
 // Sets default values for this component's properties
 UClassComponent::UClassComponent()
@@ -12,8 +14,7 @@ UClassComponent::UClassComponent()
 
 
 	ClassEnumName = EClassName::Uni_Comrade;
-
-	//SkillPylon = CreateDefaultSubobject<ASkill_Pylon>(TEXT("Pylon"));
+	ClassTextName = TEXT("Comrade");
 }
 
 // Called when the game starts
@@ -35,12 +36,31 @@ void UClassComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-EClassName UClassComponent::GetClassName()
-{
-	return ClassEnumName;
-}
+//void UClassComponent::CastSkill(ASkill* SkillToCast, APlanetSixCharacter* Instigator)
+//{
+//	if (SkillToCast != nullptr && Instigator != nullptr)
+//	{
+//		if (IsSkillCastable(SkillToCast, Instigator))
+//		{
+//			/*Instigator->Attributes->Energy.SetCurrentValue(Instigator->Attributes->Energy.GetCurrentValue() - SkillToCast->GetEnergyCost());
+//			FTransform NewTransform = Instigator->GetTransform();
+//			NewTransform.SetLocation(Instigator->GetActorLocation() + Instigator->GetActorForwardVector() * 15.f);
+//			NewTransform.SetRotation(Instigator->GetActorQuat());
+//			FActorSpawnParameters SpawnParameters;
+//			SpawnParameters.Instigator = Instigator;
+//			SpawnParameters.Owner = Instigator;
+//			const auto Transform = NewTransform;
+//			const auto Spawn = SpawnParameters;
+//			UWorld::SpawnActor(SkillToCast, ref Transform, ref Spawn);*/
+//		}
+//	}
+//}
 
-void UClassComponent::CastSkill(ESkillName SkillName)
-{
-
-}
+//bool UClassComponent::IsSkillCastable(ASkill* SkillToCast, APlanetSixCharacter* Instigator)
+//{
+//	if (SkillToCast->GetEnergyCost() <= Instigator->Attributes->Energy.GetCurrentValue())
+//	{
+//		return true;
+//	}
+//	return false;
+//}

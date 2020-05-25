@@ -10,17 +10,13 @@ ANPC::ANPC()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-
-	
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	RootComponent = boxcomponent;
 	
-
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
-
 
 	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
@@ -66,30 +62,29 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
-
 		
-	
 	}
 }
 
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
-
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = false;
 
 	if (Character != nullptr) 
 	{
-		//character->widgetDialogue->RemoveFromParent();
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
+		//set invisible the Text renderer of the NPC
 		textrender->SetVisibility(false);
 
-		if (Character->DialogueWidgetClass && Character->IndexDialogue==1) 
+		/*if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 
 		{
 			Character->IndexDialogue = 0;
+			
 			Character->WidgetDialogue->RemoveFromParent();
-		}
+		}*/
 		
 	}
 }
