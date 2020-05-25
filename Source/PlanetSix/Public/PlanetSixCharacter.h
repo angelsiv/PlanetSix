@@ -11,6 +11,7 @@
 #include "PlanetSixCharacter.generated.h"
 
 class APlayerController;
+class AMapTravel;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
@@ -53,6 +54,9 @@ public:
 
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
+
+	//define portal
+	AMapTravel* Portal;
 
 	//this the incrementor for widgetclass 
 	UPROPERTY(EditAnywhere)
@@ -172,4 +176,6 @@ public:
 	void UpdateUI();
 	UFUNCTION(BlueprintCallable)
 		void ReceiveDamage(float Damage);
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 };

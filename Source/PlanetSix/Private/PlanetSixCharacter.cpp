@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "MapTravel.h"
 #include "Engine.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
@@ -74,6 +75,19 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 	else if (Attributes->Health.GetCurrentValue() > 0)
 	{
 		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
+}
+
+void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+	Portal = Cast<AMapTravel>(OtherActor);
+}
+
+void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
+{
+	if (Cast<AMapTravel>(OtherActor))
+	{
+		Portal = nullptr;
 	}
 }
 
@@ -176,13 +190,13 @@ EClassName APlanetSixCharacter::GetClassName()
 
 void APlanetSixCharacter::Interact()
 {
+	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
 	//check if the player is the perimiter of the NPC 
 	if (bIsInPerimiterOfNPC)
 	{
-
 		IndexDialogue++;
 
 		//If player controller is not null 
@@ -210,19 +224,19 @@ void APlanetSixCharacter::Interact()
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
-
-
 				}
-
 			}
-
 		}
-
 	}
-
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+	}
+
+	/* Interaction with Travel Portal */
+	if (Portal)
+	{
+		Portal->TravelTo();
 	}
 }
 
