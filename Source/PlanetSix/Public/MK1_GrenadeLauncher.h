@@ -21,7 +21,7 @@ protected:
 		USkeletalMeshComponent* MeshComp;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class USceneComponent* VR_MuzzleLocation;
+		class USceneComponent* MuzzleLocation;
 
 public:	
 	virtual void Tick(float DeltaTime) override;

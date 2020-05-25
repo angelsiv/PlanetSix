@@ -7,6 +7,8 @@ AMK1_GrenadeLauncher::AMK1_GrenadeLauncher()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
+	RootComponent = MeshComp;
 }
 
 void AMK1_GrenadeLauncher::BeginPlay()
