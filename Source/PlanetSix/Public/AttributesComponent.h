@@ -37,13 +37,17 @@ struct PLANETSIX_API FAttributesData
 		FAttributesData()
 		: BaseValue(1.f)
 		, CurrentValue(BaseValue)
+		, MaxValue(BaseValue)
+		, CurrentModifier((int32)CurrentValue / 2)
+		, MainUI()
 	{}
 
 	FAttributesData(float DefaultValue)
-		: BaseValue(1.f)
-		, CurrentValue(DefaultValue + BaseValue)
-		, MaxValue(DefaultValue + BaseValue)
+		: BaseValue(DefaultValue)
+		, CurrentValue(BaseValue)
+		, MaxValue(BaseValue)
 		, CurrentModifier((int32)CurrentValue / 2)
+		, MainUI()
 	{}
 
 	/** getter for basevalue */
@@ -52,8 +56,14 @@ struct PLANETSIX_API FAttributesData
 	/** getter for currentvalue */
 	float GetCurrentValue() const;
 
+	/** getter for maxvalue */
+	float GetMaxValue() const;
+
 	/** setter for currentvalue */
 	virtual void SetCurrentValue(const float NewValue);
+
+	/** setter for currentvalue */
+	virtual void SetMaxValue(const float NewValue);
 
 	/** getter for the modifier */
 	int32 GetCurrentModifier() const;
@@ -86,6 +96,10 @@ public:
 	@Params CurrentValue Current value for a certain value from the struct*/
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Getter")
 		static int32 GetCurrentModifier(UPARAM(ref) FAttributesData& AttributesData) { return AttributesData.GetCurrentModifier(); }
+	/** Blueprint Function to return the value of CurrentValue from the struct
+	@Params AttributesData value to get from the struct*/
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Getter")
+		static float GetMaxValue(UPARAM(ref) FAttributesData& AttributesData) { return AttributesData.GetMaxValue(); }
 
 	/* Setters */
 
@@ -93,6 +107,10 @@ public:
 	@Params AttributesData value to set in the struct */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Setter")
 		static void SetCurrentValue(UPARAM(ref) FAttributesData& AttributesData, const float Value) { AttributesData.SetCurrentValue(Value); }
+	/** Blueprint Function to set the value of CurrentValue from the struct
+	@Params AttributesData value to set in the struct */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Setter")
+		static void SetMaxValue(UPARAM(ref) FAttributesData& AttributesData, const float Value) { AttributesData.SetMaxValue(Value); }
 };
 
 UCLASS(ClassGroup = (Custom), meta = (Blueprintable))
