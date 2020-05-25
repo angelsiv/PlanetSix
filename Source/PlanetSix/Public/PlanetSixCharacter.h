@@ -12,6 +12,7 @@
 #include "PlanetSixCharacter.generated.h"
 
 class APlayerController;
+class ASkill;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
@@ -77,9 +78,6 @@ public:
 		UQuestWidget* WidgetQuestLog;
 
 		int Incrementor=0;
-
-	//getter for the character's class
-	EClassName GetClassName();
 
 	//Gets the players controller
 	//APlayerController* PC;

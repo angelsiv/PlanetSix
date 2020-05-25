@@ -9,10 +9,7 @@ ASkill::ASkill()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	if (GetInstigator() != nullptr)
-	{
-		OwnerCharacter = Cast<APlanetSixCharacter>(GetInstigator());
-	}
+
 }
 
 // Called when the game starts or when spawned
@@ -20,6 +17,15 @@ void ASkill::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (GetInstigator<APlanetSixCharacter>() != nullptr)
+	{
+		OwnerCharacter = GetInstigator<APlanetSixCharacter>();
+	}
+
+	if (ActivationTime != 0)
+	{
+		Duration += ActivationTime;
+	}
 }
 
 // Called every frame
@@ -27,6 +33,8 @@ void ASkill::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Duration -= DeltaTime;
+	ActivationTime -= DeltaTime;
 }
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.

@@ -32,7 +32,7 @@ enum class ESkillType : uint8
 	Instant = 1 UMETA(DisplayName = "Instant Skill"),
 	Passive = 2 UMETA(DisplayName = "Passive Skill"),
 	Casting = 4 UMETA(DisplayName = "Casting Skill"),
-	dd = 8 UMETA(DisplayName = "Casting Skill")
+	dd = 8 UMETA(DisplayName = "Non Skill")
 };
 
 UCLASS()
@@ -43,6 +43,9 @@ class PLANETSIX_API ASkill : public AActor
 public:
 	// Sets default values for this actor's properties
 	ASkill();
+
+	UFUNCTION(BlueprintGetter = "EnergyCost")
+		float GetEnergyCost() { return EnergyCost; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -55,6 +58,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		APlanetSixCharacter* OwnerCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float EnergyCost;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Duration;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ActivationTime;
@@ -63,7 +68,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ESkillType SkillType;
 
-	
 	/** factor for damage scaling on raw abilities */
 	const float DamageFactor_Raw = 5.f;
 	/** factor for damage scaling on area of effect abilities */

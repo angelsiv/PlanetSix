@@ -8,6 +8,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Skill.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine.h"
 
@@ -169,16 +170,11 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 }
 
-EClassName APlanetSixCharacter::GetClassName()
-{
-	return Class->GetClassName();
-}
-
 void APlanetSixCharacter::Interact()
 {
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
-	
+
 	//check if the player is the perimiter of the NPC 
 	if (bIsInPerimiterOfNPC)
 	{
@@ -203,7 +199,7 @@ void APlanetSixCharacter::Interact()
 
 				}
 
-				else 
+				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
 					WidgetDialogue->RemoveFromParent();
@@ -281,27 +277,27 @@ void APlanetSixCharacter::QuestLog()
 
 	if (Incrementor % 2 == 1)
 	{
-		
+
 		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
 		WidgetQuestLog->AddToViewport();
 		PC->SetInputMode(FInputModeGameAndUI());
 		PC->bShowMouseCursor = true;
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;
-		
-		
-	
+
+
+
 	}
 	else if (Incrementor % 2 == 0)
 	{
-		
+
 		WidgetQuestLog->RemoveFromParent();
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->bShowMouseCursor = false;
 		PC->bEnableClickEvents = false;
 		PC->bEnableMouseOverEvents = false;
 		CameraBoom->bUsePawnControlRotation = true;
-		
+
 	}
 
 }
@@ -377,7 +373,7 @@ void APlanetSixCharacter::OpenIngameMenu()
 		return;
 	}
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Cast<APlayerController>(Controller));
-	
+
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
