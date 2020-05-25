@@ -65,6 +65,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 	
 	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
+
 		if (Character->bIsInPerimiterOfNPC == true)
 		{
 

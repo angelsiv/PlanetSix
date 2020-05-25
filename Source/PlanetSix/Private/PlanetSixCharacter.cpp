@@ -59,6 +59,8 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
+
+
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
 
 
