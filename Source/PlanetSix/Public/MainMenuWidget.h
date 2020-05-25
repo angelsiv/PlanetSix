@@ -29,11 +29,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UButton* ExitButton;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		UEditableTextBox* NameReceiverTextBox;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		UButton* NameReceiverButton;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UUserWidget> RefOptionWidget;
@@ -53,9 +48,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void ExitGame();
-	
-	UFUNCTION(BlueprintCallable)
-		void EnterName();
+
 
 
 };

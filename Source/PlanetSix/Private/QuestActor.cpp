@@ -14,7 +14,6 @@ AQuestActor::AQuestActor()
 void AQuestActor::OrganiseQuestInEditor()
 {
 	auto parentLocation = GetAttachParentActor()->GetActorLocation();
-
 	SetActorLocation(parentLocation);
 
 }
@@ -25,6 +24,8 @@ void AQuestActor::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+
 
 // Called every frame
 void AQuestActor::Tick(float DeltaTime)

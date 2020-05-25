@@ -9,10 +9,30 @@
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
+
+
+USTRUCT(BlueprintType)
+struct PLANETSIX_API FPlayerInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	FString UserName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	int32 Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	bool HasQuestItem;
+
+};
 
 class APlayerController;
 class ASkill;
+class AMapTravel;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
@@ -33,8 +53,13 @@ public:
 	//Player Stats
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		FString UserName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		int32 Level;
+	//PlayerCharacter values
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FPlayerInfo Playerinfo;
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -50,14 +75,16 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
+
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
-
 
 	      /*Dialogue Sections */
 		//this the incrementor for widgetclass 
 		UPROPERTY(EditAnywhere, Category = "DialogueWidget")
 			int IndexDialogue = 0;
+
+		AMapTravel* Portal;
 
 
 		//this is to create the widget of the dialogue  
@@ -68,7 +95,6 @@ public:
 		UNPCDialogueWidget* WidgetDialogue;
 
 	
-
 		/*Quest Widget UI*/
 		//this is to create teh quest LOG 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
@@ -187,4 +213,6 @@ public:
 	void UpdateUI();
 	UFUNCTION(BlueprintCallable)
 		void ReceiveDamage(float Damage);
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 };

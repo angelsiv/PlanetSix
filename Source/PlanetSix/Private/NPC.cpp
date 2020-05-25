@@ -22,6 +22,8 @@ ANPC::ANPC()
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
 	skeleton->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+	
+
 
 }
 
@@ -43,10 +45,12 @@ void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
 	//Add rotation to the text NOT YET PERFECT	
 	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
+
 
 }
 
@@ -56,10 +60,16 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = true;
 
-	
+	auto test = SpecifiedQuestOFNPC->QuestName.ToString();
+	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();
+
 	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
+		/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);
+	
 		//set visible the Text renderer of the NPC
 		textrender->SetVisibility(true);
 		
@@ -75,8 +85,8 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 	if (Character != nullptr) 
 	{
 		
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
-		//set invisible the Text renderer of the NPC
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
+		////set invisible the Text renderer of the NPC
 		textrender->SetVisibility(false);
 
 		/*if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 

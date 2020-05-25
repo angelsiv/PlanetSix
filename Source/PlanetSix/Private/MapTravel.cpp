@@ -4,11 +4,13 @@
 #include "MapTravel.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine.h"
 #include "Components/TextRenderComponent.h"
 #include "PlanetSixCharacter.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text);
 
 // Sets default values
 AMapTravel::AMapTravel()
@@ -39,28 +41,17 @@ void AMapTravel::Tick(float DeltaTime)
 
 }
 
-void AMapTravel::NotifyActorBeginOverlap(AActor * OtherActor)
-{
-	auto Player = Cast<APlanetSixCharacter>(OtherActor);
-	print("overlapped with portal", -1);
-	if (Player && LevelName != "")
-	{
-		print("check", -1);
-		TravelTo(LevelName);
-	}
-}
-
-void AMapTravel::TravelTo(FString mapName)
+void AMapTravel::TravelTo()
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
-		if (GetWorld()->ServerTravel(mapName)) 
+		if (GetWorld()->ServerTravel(LevelName)) 
 		{
 			print("should travel", -1);	
 		}
-		else if (Role == ROLE_Authority)
+		else if (GetLocalRole() == ROLE_Authority)
 		{
-			UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName), true, "?listen");
+			UGameplayStatics::OpenLevel(GetWorld(), FName(*LevelName), true, "?listen");
 			print("single travel", -1);
 		}
 		else
@@ -68,6 +59,5 @@ void AMapTravel::TravelTo(FString mapName)
 			print("not allowed to travel", -1);
 		}
 	}
-	
 }
 
