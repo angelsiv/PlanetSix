@@ -31,11 +31,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	TSubclassOf<UDamageType> DamageType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
-		int CurrentAmmo;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 CurrentAmmo;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
-		int TotalAmmo;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 ReserveAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 MaxMagazine;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
 		float RecoilRate;

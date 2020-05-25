@@ -196,9 +196,7 @@ void APlanetSixCharacter::Interact()
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
 					PC->SetIgnoreMoveInput(true);
-
 				}
-
 				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
@@ -208,15 +206,10 @@ void APlanetSixCharacter::Interact()
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
 					PC->SetIgnoreMoveInput(false);
-
 				}
-
 			}
-
 		}
-
 	}
-
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
