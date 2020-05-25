@@ -213,7 +213,7 @@ void APlanetSixCharacter::Interact()
 				if (IndexDialogue % 2 == 1)
 				{
 					WidgetQuestNPC->AddToViewport();
-					PC->SetInputMode(FInputModeGameAndUI());
+					PC->SetInputMode(FInputModeUIOnly());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
@@ -224,7 +224,7 @@ void APlanetSixCharacter::Interact()
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
 					WidgetQuestNPC->RemoveFromParent();
-					PC->SetInputMode(FInputModeGameOnly());
+					/*PC->SetInputMode(FInputModeGameOnly());*/
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
