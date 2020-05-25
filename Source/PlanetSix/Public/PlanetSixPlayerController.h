@@ -14,7 +14,6 @@ class PLANETSIX_API APlanetSixPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-	virtual void BeginPlay() override;
 
 
 };

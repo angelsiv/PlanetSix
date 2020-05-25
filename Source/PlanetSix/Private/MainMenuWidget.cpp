@@ -36,30 +36,8 @@ void UMainMenuWidget::StartGame()
 
 	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test", 0));
 
-	//If Inputed name doesnt exist
-	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo.UserName == "") {
-		if (SavedGame) {
-			//If Saved game
-			Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo.UserName = SavedGame->PlayerInfo.UserName;
-			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo);
-
-			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->PlayerInfo.UserName + " has been registered", -1);
-
-		}
-	}
-	else {
-		if (GetOwningPlayer()) {
-
-
-			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo);
-			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->PlayerInfo.UserName + " has been registered", -1);
-		}
-		else {
-		
-			print("Kaboom", -1);
-		}
-	}
 	
+
 
 
 	UUserWidget* StartGameWidget = CreateWidget<UUserWidget>(GetWorld()->GetFirstPlayerController(), RefStartGameWidget);
