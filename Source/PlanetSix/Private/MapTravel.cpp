@@ -41,7 +41,7 @@ void AMapTravel::Tick(float DeltaTime)
 
 void AMapTravel::TravelTo()
 {
-	if (!(GetWorld()->IsInSeamlessTravel()))
+	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
 		if (GetWorld()->ServerTravel(LevelName)) 
 		{
@@ -49,7 +49,7 @@ void AMapTravel::TravelTo()
 		}
 		else if (GetLocalRole() == ROLE_Authority)
 		{
-			UGameplayStatics::OpenLevel(GetWorld(), FName(*LevelName), true, "listen");
+			UGameplayStatics::OpenLevel(GetWorld(), FName(*LevelName), true, "?listen");
 			print("single travel", -1);
 		}
 		else
