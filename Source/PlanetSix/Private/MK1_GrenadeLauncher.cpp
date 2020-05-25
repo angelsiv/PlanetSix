@@ -2,7 +2,8 @@
 
 
 #include "MK1_GrenadeLauncher.h"
-#include <GrenadeLauncherProjectile.h>
+#include "GrenadeLauncherProjectile.h"
+#include "PlanetSixCharacter.h"
 #include "Engine.h"
 
 AMK1_GrenadeLauncher::AMK1_GrenadeLauncher()
@@ -11,24 +12,30 @@ AMK1_GrenadeLauncher::AMK1_GrenadeLauncher()
 
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
-	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("VR_MuzzleLocation"));
-	MuzzleLocation->SetupAttachment(MeshComp);
+	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
+	MuzzleLocation->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AMK1_GrenadeLauncher::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	WRLD = GetWorld();
 }
 
-void AMK1_GrenadeLauncher::Fire() 
+void AMK1_GrenadeLauncher::Fire()
 {
-	AActor* MyOwner = GetOwner();
-	if (MyOwner) 
+	if (GetOwner() != nullptr)
 	{
-		const FRotator SpawnRotation = MuzzleLocation->GetComponentRotation();
-		const FVector SpawnLocation = MuzzleLocation->GetComponentLocation();
-		GetWorld()->SpawnActor <AGrenadeLauncherProjectile> (SpawnLocation, SpawnRotation);
+		auto MyOwner = Cast<APlanetSixCharacter>(GetOwner());
+		if (MyOwner)
+		{
+			const FRotator SpawnRotation = MuzzleLocation->GetComponentRotation();
+			const FVector SpawnLocation = MuzzleLocation->GetComponentLocation();
+			GEngine->AddOnScreenDebugMessage('c', 1.5, FColor::White, TEXT("trying to spawn projectile"));
+			WRLD->SpawnActor(GrenadeProjectile, &SpawnLocation, &SpawnRotation);
+			GEngine->AddOnScreenDebugMessage('c', 1.5, FColor::White, TEXT("Successfully spawned projectile"));
+		}
 	}
 }
 
