@@ -20,14 +20,8 @@ struct FObjectiveData
 {
 	GENERATED_BODY()
 
-		//this is the name of the quest 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FText QuestName;
-
-	//Quest description
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FText QuestDescription;
-
+		FText ObjectiveDescription;
+	
 	//Type OF objective
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TEnumAsByte<EObjectiveType> Objectivetype;
@@ -58,6 +52,15 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
+	//this is the name of the quest 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FText QuestName;
+
+	//Quest description
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FText QuestDescription;
+
+
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)
 		void OrganiseQuestInEditor();
@@ -70,12 +73,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsActive;
 
-
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsStoryQuest;
-
-
 
 protected:
 	// Called when the game starts or when spawned

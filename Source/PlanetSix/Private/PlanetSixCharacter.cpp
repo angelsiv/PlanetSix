@@ -183,6 +183,9 @@ void APlanetSixCharacter::Interact()
 		//If player controller is not null 
 		if (PC)
 		{
+
+
+
 			//check if Dialogue widget exists 
 			if (DialogueWidgetClass)
 			{
