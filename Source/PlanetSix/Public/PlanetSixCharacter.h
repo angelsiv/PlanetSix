@@ -9,7 +9,26 @@
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
+
+
+USTRUCT(BlueprintType)
+struct PLANETSIX_API FPlayerInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	FString UserName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	int32 Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	bool HasQuestItem;
+
+};
 
 class APlayerController;
 class ASkill;
@@ -35,6 +54,10 @@ public:
 		FString UserName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		int32 Level;
+	//PlayerCharacter values
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FPlayerInfo Playerinfo;
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
