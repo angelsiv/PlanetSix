@@ -4,27 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "PlanetSixCharacter.h"
 #include "PlanetSixPlayerState.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PLANETSIX_API APlanetSixPlayerState : public APlayerState
 {
 	GENERATED_BODY()
+
+
 public:
 	//Player Stats
-		FString UserName;
-		int32 Level;
+	FPlayerInfo PlayerInfo;
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
-	void ChangeName(const FString& name);
-	
-	void ChangeName_Implementation(const FString& name);
+		void ChangeInfo(const FPlayerInfo& info);
+
+	void ChangeInfo_Implementation(const FPlayerInfo& name);
 
 	UFUNCTION(BlueprintCallable)
-	FString GetName();
+		FPlayerInfo GetInfo();
 
 	// Used to copy properties from the current PlayerState to the passed one
 	virtual void CopyProperties(class APlayerState* PlayerState) override;

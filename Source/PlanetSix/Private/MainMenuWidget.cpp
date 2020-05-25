@@ -24,7 +24,7 @@ void UMainMenuWidget::NativeConstruct() {
 	StartButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartGame);
 	OptionsButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OpenOptions);
 	ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
-	NameReceiverButton->OnClicked.AddDynamic(this, &UMainMenuWidget::EnterName);
+	
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
@@ -37,13 +37,13 @@ void UMainMenuWidget::StartGame()
 	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::LoadGameFromSlot("Test", 0));
 
 	//If Inputed name doesnt exist
-	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
+	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo.UserName == "") {
 		if (SavedGame) {
 			//If Saved game
-			Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
-			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeName(Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName);
+			Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo.UserName = SavedGame->PlayerInfo.UserName;
+			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo);
 
-			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->PlayerInfo.UserName + " has been registered", -1);
 
 		}
 	}
@@ -51,8 +51,8 @@ void UMainMenuWidget::StartGame()
 		if (GetOwningPlayer()) {
 
 
-			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeName(Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName);
-			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo);
+			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->PlayerInfo.UserName + " has been registered", -1);
 		}
 		else {
 		
@@ -84,13 +84,3 @@ void UMainMenuWidget::ExitGame()
 
 }
 
-void UMainMenuWidget::EnterName()
-{
-	UGameInstance* GameInstance = UGameplayStatics::GetGameInstance(GetWorld());
-
-	UPlanetSixGameInstance* PSGameInstance = Cast<UPlanetSixGameInstance>(GameInstance);
-
-	PSGameInstance->UserName = NameReceiverTextBox->GetText().ToString();
-
-	print("Entered name: " + PSGameInstance->UserName, -1);
-}

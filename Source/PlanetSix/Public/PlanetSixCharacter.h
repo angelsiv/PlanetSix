@@ -11,6 +11,24 @@
 #include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
 
+
+USTRUCT(BlueprintType)
+struct PLANETSIX_API FPlayerInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	FString UserName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	int32 Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+	bool HasQuestItem;
+
+};
+
 class APlayerController;
 
 UCLASS(config = Game)
@@ -29,11 +47,10 @@ class APlanetSixCharacter : public ACharacter
 public:
 	APlanetSixCharacter();
 
-	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString UserName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 Level;
+	//PlayerCharacter values
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FPlayerInfo Playerinfo;
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

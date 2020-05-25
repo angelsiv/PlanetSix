@@ -7,17 +7,17 @@
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
 
-void APlanetSixPlayerState::ChangeName_Implementation(const FString& name)
+void APlanetSixPlayerState::ChangeInfo_Implementation(const FPlayerInfo& info)
 {
 
-	UserName = name;
+	PlayerInfo = info;
 }
 
 
 
-FString APlanetSixPlayerState::GetName()
+FPlayerInfo APlanetSixPlayerState::GetInfo()
 {
-	return UserName;
+	return PlayerInfo;
 }
 
 
@@ -27,7 +27,7 @@ void APlanetSixPlayerState::CopyProperties(APlayerState* PlayerState)
 	if (PlayerState) {
 		APlanetSixPlayerState* MyPlayerState = Cast<APlanetSixPlayerState>(PlayerState);
 		if (MyPlayerState)
-			MyPlayerState->UserName = UserName;
+			MyPlayerState->PlayerInfo = PlayerInfo;
 	}
 
 
@@ -40,7 +40,7 @@ void APlanetSixPlayerState::OverrideWith(APlayerState* PlayerState)
 	if (PlayerState) {
 		APlanetSixPlayerState* MyPlayerState = Cast<APlanetSixPlayerState>(PlayerState);
 		if (MyPlayerState)
-			UserName = MyPlayerState->UserName;
+			PlayerInfo = MyPlayerState->PlayerInfo;
 	}
 
 }
@@ -48,9 +48,8 @@ void APlanetSixPlayerState::OverrideWith(APlayerState* PlayerState)
 void APlanetSixPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!HasAuthority()) {
-		ChangeName(Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName);
-		//print("Used Game instance for name  " + Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName, -1);
-	}
+	
+	
+	
 
 }
