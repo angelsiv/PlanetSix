@@ -7,20 +7,13 @@
 #include "PlanetSixCharacter.h"
 #include "GameFramework/Controller.h"
 
-// Sets default values
 AMK1_Pistol::AMK1_Pistol()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
-}
-
-// Called when the game starts or when spawned
-void AMK1_Pistol::BeginPlay()
-{
-	Super::BeginPlay();
 	RecoilRate = .1f;
 
 	RecoilPitchTop = .25f;
@@ -30,10 +23,16 @@ void AMK1_Pistol::BeginPlay()
 	RecoilYawRight = 1.f;
 
 	CurrentAmmo = 12;
-	TotalAmmo = 36;
+	MaxMagazine = 12;
+	ReserveAmmo = 36;
 }
 
-void AMK1_Pistol::Fire() 
+void AMK1_Pistol::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void AMK1_Pistol::Fire()
 {
 	AActor* MyOwner = GetOwner();
 	if (MyOwner && CurrentAmmo > 0)
@@ -52,7 +51,7 @@ void AMK1_Pistol::Fire()
 		QueryParams.bTraceComplex = true;
 
 		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) 
+		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams))
 		{
 			AActor* HitActor = Hit.GetActor();
 			UGameplayStatics::ApplyPointDamage(HitActor, 1.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
@@ -68,7 +67,6 @@ void AMK1_Pistol::Fire()
 	}
 }
 
-// Called every frame
 void AMK1_Pistol::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -94,22 +92,27 @@ void AMK1_Pistol::StopRecoil()
 	//GetWorldTimerManager().ClearTimer(this, &AMK1_Pistol::StopRecoil);
 }
 
-void AMK1_Pistol::Reload() 
+void AMK1_Pistol::Reload()
 {
-	if (TotalAmmo <= 0 || CurrentAmmo >= 12) 
+	//if totalammo in reserves is empty OR magazine already full, don't reload
+	if (ReserveAmmo <= 0 || CurrentAmmo >= MaxMagazine)
 	{
-		return; 
+		return;
 	}
-
-	if (TotalAmmo < (12 - CurrentAmmo)) 
+	//reload
+	else
 	{
-		CurrentAmmo = CurrentAmmo + TotalAmmo;
-		TotalAmmo = 0;
-	}
-
-	else 
-	{
-		TotalAmmo = TotalAmmo - (12 - CurrentAmmo);
-		CurrentAmmo = 12;
+		//if totalammo in reserves and in the magazine is less than the full size of a magazine, reload what's left of ammo.
+		if (ReserveAmmo + CurrentAmmo < MaxMagazine)
+		{
+			CurrentAmmo += ReserveAmmo;
+			ReserveAmmo = 0;
+		}
+		//normal reload
+		else
+		{
+			ReserveAmmo -= MaxMagazine - CurrentAmmo;
+			CurrentAmmo = MaxMagazine;
+		}
 	}
 }

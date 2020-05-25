@@ -14,11 +14,9 @@ class PLANETSIX_API AMK1_Pistol : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AMK1_Pistol();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -33,11 +31,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	TSubclassOf<UDamageType> DamageType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
-		int CurrentAmmo;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 CurrentAmmo;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
-		int TotalAmmo;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 ReserveAmmo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 MaxMagazine;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
 		float RecoilRate;
@@ -60,7 +61,6 @@ protected:
 	float FinalRecoilYawDirection;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void Recoil();

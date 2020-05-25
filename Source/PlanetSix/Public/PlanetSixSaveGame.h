@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "PlanetSixCharacter.h"
 #include "PlanetSixSaveGame.generated.h"
 
 
@@ -30,9 +31,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		int32 UserIndex;
 	
-	//Player Character values
+	//PlayerCharacter values
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FString UserName;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		int32 Level;
+		FPlayerInfo PlayerInfo;
 };

@@ -6,22 +6,25 @@
 #include "Components/ActorComponent.h"
 #include "ClassComponent.generated.h"
 
+class ASkill;
+class APlanetSixCharacter;
+
 UENUM(BlueprintType)
 enum class EClassName : uint8
 {
 	None UMETA(DisplayName = "None"),
 	//pirate faction classes :
-	Pir_Surgeon UMETA(DisplayName = "Pir_Surgeon"),
-	Pir_QuarterMaster UMETA(DisplayName = "Pir_QuarterMaster"),
-	Pir_Gunner UMETA(DisplayName = "Pir_Gunner"),
+	Pir_Surgeon UMETA(DisplayName = "Pirate Surgeon"),
+	Pir_QuarterMaster UMETA(DisplayName = "Pirate QuarterMaster"),
+	Pir_Gunner UMETA(DisplayName = "Pirate Gunner"),
 	//vanguard faction classes :
-	Van_Physicien UMETA(DisplayName = "Van_Physicien"),
-	Van_Brigadier UMETA(DisplayName = "Van_Brigadier"),
-	Van_Volontaire UMETA(DisplayName = "Van_Volontaire"),
+	Van_Physicien UMETA(DisplayName = "Vanguard Physicien"),
+	Van_Brigadier UMETA(DisplayName = "Vanguard Brigadier"),
+	Van_Volontaire UMETA(DisplayName = "Vanguard Volontaire"),
 	//Unionists faction classes :
-	Uni_Sanitar UMETA(DisplayName = "Uni_Sanitar"),
-	Uni_Comissar UMETA(DisplayName = "Uni_Comissar"),
-	Uni_Comrade UMETA(DisplayName = "Uni_Comrade")
+	Uni_Sanitar UMETA(DisplayName = "Unionist Sanitar"),
+	Uni_Comissar UMETA(DisplayName = "Unionist Comissar"),
+	Uni_Comrade UMETA(DisplayName = "Unionist Comrade")
 };
 
 UENUM(BlueprintType)
@@ -41,17 +44,23 @@ public:
 	UClassComponent();
 
 	//getter for the class name
-	UFUNCTION(Blueprintable)
-		EClassName GetClassName();
+	UFUNCTION(BlueprintPure)
+		FString GetClassName() { return ClassTextName; }
 
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		TArray<ASkill*> AvailableSkillsArray;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		TArray<ASkill*> EquippedSkillsArray;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	/** checker if the skill is unlocked or not. CAN NOT cast skill if false */
+	bool bIsUnlocked = false;
+
 	UPROPERTY(VisibleAnywhere)
-		FName ClassTextName;
+		FString ClassTextName;
 	UPROPERTY(VisibleAnywhere)
 		FString ClassDescription;
 	UPROPERTY(VisibleAnywhere)
@@ -62,6 +71,14 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	/** Cast a Skill*/
-	UFUNCTION(Blueprintable)
-	void CastSkill(ESkillName SkillName);
+	/*UFUNCTION(Blueprintable)
+		void CastSkill(ASkill* SkillToCast, APlanetSixCharacter* Instigator);*/
+
+	UFUNCTION(BlueprintPure, BlueprintGetter = "IsUnlocked")
+		bool GetIsUnlocked() { return bIsUnlocked; }
+	UFUNCTION(BlueprintCallable, BlueprintSetter = "IsUnlocked")
+		void SetIsUnlocked(bool IsUnlocked) { bIsUnlocked = IsUnlocked; }
+
+	/** Checks if skill is castable, AND Reduces energy when casting a skill */
+	//bool IsSkillCastable(ASkill* SkillToCast, APlanetSixCharacter* Instigator);
 };
