@@ -5,6 +5,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Engine.h"
+#include "Components/StaticMeshComponent.h"
 
 AGrenadeLauncherProjectile::AGrenadeLauncherProjectile()
 {
@@ -18,10 +20,13 @@ AGrenadeLauncherProjectile::AGrenadeLauncherProjectile()
 
 	RootComponent = CollisionComp;
 
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	StaticMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
-	ProjectileMovement->InitialSpeed = 3000.f;
-	ProjectileMovement->MaxSpeed = 3000.f;
+	ProjectileMovement->InitialSpeed = 15.f;
+	ProjectileMovement->MaxSpeed = 15.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
@@ -65,6 +70,8 @@ void AGrenadeLauncherProjectile::OnDetonate()
 void AGrenadeLauncherProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	GEngine->AddOnScreenDebugMessage('c', 1.5, FColor::White, TEXT("trying to spawn projectile"));
+
 	FTimerHandle handle;
 	GetWorld()->GetTimerManager().SetTimer(handle, this, &AGrenadeLauncherProjectile::OnDetonate, 5.f, false);
 }

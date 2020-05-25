@@ -10,6 +10,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "MapTravel.h"
 #include "Engine.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
@@ -80,6 +81,20 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 	else if (Attributes->Health.GetCurrentValue() > 0)
 	{
 		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
+}
+
+void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+	Portal = Cast<AMapTravel>(OtherActor);
+	print("Press F to Interact with portal", 0);
+}
+
+void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
+{
+	if (Cast<AMapTravel>(OtherActor))
+	{
+		Portal = nullptr;
 	}
 }
 
@@ -177,6 +192,7 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 void APlanetSixCharacter::Interact()
 {
+	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
@@ -219,6 +235,12 @@ void APlanetSixCharacter::Interact()
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+	}
+
+	/* Interaction with Travel Portal */
+	if (Portal)
+	{
+		Portal->TravelTo();
 	}
 }
 

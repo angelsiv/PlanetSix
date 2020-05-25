@@ -17,17 +17,22 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPROPERTY(VisibleAnywhere, Category = "Components", BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		USkeletalMeshComponent* MeshComp;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleAnywhere, Category = Mesh, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class USceneComponent* MuzzleLocation;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+		TSubclassOf<class AGrenadeLauncherProjectile> GrenadeProjectile;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 		void Fire();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 		void Reload();
+
+	UWorld* WRLD;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
