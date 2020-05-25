@@ -79,14 +79,12 @@ public:
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
-	//this the incrementor for widgetclass 
-	UPROPERTY(EditAnywhere)
-		int IndexDialogue = 0;
-
 	      /*Dialogue Sections */
 		//this the incrementor for widgetclass 
 		UPROPERTY(EditAnywhere, Category = "DialogueWidget")
 			int IndexDialogue = 0;
+
+		AMapTravel* Portal;
 
 
 		//this is to create the widget of the dialogue  
