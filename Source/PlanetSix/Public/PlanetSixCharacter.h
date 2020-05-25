@@ -32,8 +32,10 @@ public:
 	//Player Stats
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		FString UserName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 		int32 Level;
+
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -48,6 +50,7 @@ public:
 
 	/** Interact with object or player */
 	void Interact();
+
 
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
@@ -67,7 +70,6 @@ public:
 		UNPCDialogueWidget* WidgetDialogue;
 
 	
-
 		/*Quest Widget UI*/
 		//this is to create teh quest LOG 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
