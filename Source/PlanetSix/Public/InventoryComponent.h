@@ -95,8 +95,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FItemData takeItem(int index);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 inventorySize;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)//, ExposeOnSpawn = "true")
+		int32 inventorySize UMETA(ExposeOnSpawn = "true");
 	TArray<FItemData> items;
 
 	UFUNCTION(BlueprintCallable)
