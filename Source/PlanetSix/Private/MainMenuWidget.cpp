@@ -27,7 +27,7 @@ void UMainMenuWidget::NativeConstruct() {
 	
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
+	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameAndUI());
 }
 
 void UMainMenuWidget::StartGame()
