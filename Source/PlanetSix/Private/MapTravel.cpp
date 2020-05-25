@@ -58,7 +58,7 @@ void AMapTravel::TravelTo(FString mapName)
 		{
 			print("should travel", -1);	
 		}
-		else if (Role == ROLE_Authority)
+		else if (GetLocalRole() == ROLE_Authority)
 		{
 			UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName), true, "?listen");
 			print("single travel", -1);

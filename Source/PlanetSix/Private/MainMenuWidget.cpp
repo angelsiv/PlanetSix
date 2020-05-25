@@ -40,10 +40,10 @@ void UMainMenuWidget::StartGame()
 	if (Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName == "") {
 		if (SavedGame) {
 			//If Saved game
-			//Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
-			//Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
+			Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName = SavedGame->UserName;
+			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeName(Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName);
 
-			//print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
 
 		}
 	}
@@ -51,8 +51,8 @@ void UMainMenuWidget::StartGame()
 		if (GetOwningPlayer()) {
 
 
-			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName = Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName;
-			//print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
+			Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->ChangeName(Cast<UPlanetSixGameInstance>(GetGameInstance())->UserName);
+			print(Cast<APlanetSixPlayerState>(GetOwningPlayer()->PlayerState)->UserName + " has been registered", -1);
 		}
 		else {
 		

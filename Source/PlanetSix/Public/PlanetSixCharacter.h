@@ -30,7 +30,7 @@ public:
 	APlanetSixCharacter();
 
 	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString UserName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 Level;
