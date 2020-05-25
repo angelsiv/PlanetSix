@@ -18,6 +18,7 @@ class PLANETSIX_API APlanetSixPlayerState : public APlayerState
 
 public:
 	//Player Stats
+	UPROPERTY(Replicated)
 	FPlayerInfo PlayerInfo;
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
@@ -33,6 +34,7 @@ public:
 	// Used to override the current PlayerState with the properties of the passed one
 	virtual void OverrideWith(class APlayerState* PlayerState) override;
 
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
 	virtual void BeginPlay() override;
 	
