@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "PlanetSixCharacter.h"
 #include "PlanetSixGameInstance.generated.h"
 
 /**
@@ -16,10 +17,7 @@ class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 
 public:
 	//PlayerCharacter values
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	FString UserName;
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	int32 Level;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FPlayerInfo PlayerInfo;
 
 };

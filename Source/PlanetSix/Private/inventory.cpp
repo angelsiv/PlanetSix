@@ -44,6 +44,10 @@ void Uinventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	// ...
 }
 
+void Uinventory::sort(sortingMode mode)
+{
+}
+
 
 // Description:
 //   add an item to the inventory.
@@ -207,6 +211,10 @@ void Uinventory::heapify(int n, int i, sortingMode mode)
 		// Recursively heapify the affected sub-tree 
 		heapify(n, largest, mode);
 	}
+}
+
+void Uinventory::heapSort(int n, sortingMode mode)
+{
 }
 
 

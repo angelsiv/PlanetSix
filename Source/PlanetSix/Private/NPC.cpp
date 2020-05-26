@@ -10,21 +10,19 @@ ANPC::ANPC()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-
-	
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	RootComponent = boxcomponent;
 	
-
 	//Declare TextRender
 	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
 	textrender->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-
 	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
 	skeleton->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	
 
 
 }
@@ -47,10 +45,12 @@ void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
 	//Add rotation to the text NOT YET PERFECT	
 	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
+
 
 }
 
@@ -58,38 +58,52 @@ void ANPC::Tick(float DeltaTime)
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
+
+	/*auto test = SpecifiedQuestOFNPC->QuestName.ToString();
+	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();*/
+
+	
+	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
 
-	
-	if (Character != nullptr && Character->bIsInPerimiterOfNPC ==true)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));
-		//set visible the Text renderer of the NPC
-		textrender->SetVisibility(true);
+		if (Character->bIsInPerimiterOfNPC == true)
+		{
 
-		
-	
+			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
+			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
+			//NPCQuestWidgetref->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
+
+			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
+
+			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);*/
+
+			//set visible the Text renderer of the NPC
+			textrender->SetVisibility(true);
+
+		}
 	}
 }
 
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
-
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	Character->bIsInPerimiterOfNPC = false;
 
 	if (Character != nullptr) 
 	{
-		//character->widgetDialogue->RemoveFromParent();
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
+		
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
+		////set invisible the Text renderer of the NPC
 		textrender->SetVisibility(false);
 
-		if (Character->DialogueWidgetClass && Character->IndexDialogue==1) 
+		/*if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 
 		{
 			Character->IndexDialogue = 0;
+			
 			Character->WidgetDialogue->RemoveFromParent();
-		}
+		}*/
 		
 	}
 }

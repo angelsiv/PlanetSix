@@ -6,18 +6,18 @@
 #include "ItemInv.h"
 
 // Sets default values for this component's properties
-FitemInv::FitemInv()
-{
-
-}
-FitemInv::FitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity): id(), displayName(),  weight(),  value(),  quantity()
-{
-	id = Id;
-	displayName = DisplayName;
-	value = Value;
-	weight = Weight;
-	quantity = Quantity;
-}
+//FitemInv::FitemInv()
+//{
+//
+//}
+//FitemInv::FitemInv(int Id, FString DisplayName, float Weight, float Value, int Quantity): id(), displayName(),  weight(),  value(),  quantity()
+//{
+//	id = Id;
+//	displayName = DisplayName;
+//	value = Value;
+//	weight = Weight;
+//	quantity = Quantity;
+//}
 //UitemInv::UitemInv(AItem_base &base)
 //{
 //	id = base.id;

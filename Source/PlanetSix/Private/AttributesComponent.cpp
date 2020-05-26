@@ -16,17 +16,15 @@ UAttributesComponent::UAttributesComponent()
 	, Health(100.f)
 	, Energy(50.f)
 	, Shield(10.f)
-	, ArmorReduction(1.f)
-	, WeaponDamage(1.f)
-	, AbilityDamage(1.f)
+	, ArmorReduction(25.f)
+	, WeaponDamage(5.f)
+	, AbilityDamage(25.f)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
-	SetIsReplicated(true);
-	//OwnerPawn = Cast<APawn>(GetOwner());
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -68,10 +66,20 @@ float FAttributesData::GetCurrentValue() const
 	return CurrentValue;
 }
 
+float FAttributesData::GetMaxValue() const
+{
+	return MaxValue;
+}
+
 //** setter for current value of attribute */
 void FAttributesData::SetCurrentValue(const float NewValue)
 {
 	CurrentValue = NewValue;
+}
+
+void FAttributesData::SetMaxValue(const float AddedValue)
+{
+	MaxValue = BaseValue + AddedValue;
 }
 
 int32 FAttributesData::GetCurrentModifier() const

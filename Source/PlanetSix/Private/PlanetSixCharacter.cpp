@@ -8,7 +8,9 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Skill.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "MapTravel.h"
 #include "Engine.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
@@ -62,6 +64,11 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
+
+
+	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
+
 }
 
 void APlanetSixCharacter::UpdateUI()
@@ -78,6 +85,20 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 	else if (Attributes->Health.GetCurrentValue() > 0)
 	{
 		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
+}
+
+void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+	Portal = Cast<AMapTravel>(OtherActor);
+	print("Press F to Interact with portal", 0);
+}
+
+void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
+{
+	if (Cast<AMapTravel>(OtherActor))
+	{
+		Portal = nullptr;
 	}
 }
 
@@ -173,60 +194,58 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 }
 
-EClassName APlanetSixCharacter::GetClassName()
-{
-	return Class->GetClassName();
-}
-
 void APlanetSixCharacter::Interact()
 {
+	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
 	//check if the player is the perimiter of the NPC 
 	if (bIsInPerimiterOfNPC)
 	{
-
 		IndexDialogue++;
 
 		//If player controller is not null 
 		if (PC)
 		{
 			//check if Dialogue widget exists 
-			if (DialogueWidgetClass)
+			if (NPCQuestWidgetClass)
 			{
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
+
 				//increment the dialogue varible to show the Widget if index = 1 
 				if (IndexDialogue % 2 == 1)
 				{
-					WidgetDialogue = CreateWidget<UNPCDialogueWidget>(GetWorld(), DialogueWidgetClass);
-					WidgetDialogue->AddToViewport();
+					WidgetQuestNPC->AddToViewport();
+					PC->SetInputMode(FInputModeUIOnly());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
-
-
+					PC->SetIgnoreMoveInput(true);
 				}
 
-				if (IndexDialogue % 2 == 0)
+				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-					WidgetDialogue->RemoveFromParent();
+					WidgetQuestNPC->RemoveFromParent();
+					/*PC->SetInputMode(FInputModeGameOnly());*/
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
-
-
+					PC->SetIgnoreMoveInput(false);
 				}
-
 			}
-
 		}
-
 	}
-
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+	}
+
+	/* Interaction with Travel Portal */
+	if (Portal)
+	{
+		Portal->TravelTo();
 	}
 }
 
@@ -245,29 +264,29 @@ void APlanetSixCharacter::MeleeAttack()
 /** Send a Skill */
 void APlanetSixCharacter::Skill(int32 SkillNumber)
 {
-	if (SkillNumber < 4 && SkillNumber > 0)
+	/*if (SkillNumber < 4 && SkillNumber > 0)
 	{
 		if (SkillNumber == 1)
 			Class->CastSkill(ESkill::Uni_Pylon);
-	}
+	}*/
 }
 
 /** skill 1 */
 void APlanetSixCharacter::Skill1()
 {
-	Skill(1);
+	//Skill(1);
 }
 
 /** skill 2 */
 void APlanetSixCharacter::Skill2()
 {
-	Skill(2);
+	//Skill(2);
 }
 
 /** skill 3 */
 void APlanetSixCharacter::Skill3()
 {
-	Skill(3);
+	//Skill(3);
 }
 
 /** Open the inventory */
@@ -279,6 +298,33 @@ void APlanetSixCharacter::Inventory()
 /** Open the quest log */
 void APlanetSixCharacter::QuestLog()
 {
+	auto PC = Cast<APlayerController>(GetController());
+	Incrementor++;
+
+	if (Incrementor % 2 == 1)
+	{
+
+		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
+		WidgetQuestLog->AddToViewport();
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->bShowMouseCursor = true;
+		PC->bEnableClickEvents = true;
+		PC->bEnableMouseOverEvents = true;
+
+
+
+	}
+	else if (Incrementor % 2 == 0)
+	{
+
+		WidgetQuestLog->RemoveFromParent();
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->bShowMouseCursor = false;
+		PC->bEnableClickEvents = false;
+		PC->bEnableMouseOverEvents = false;
+		CameraBoom->bUsePawnControlRotation = true;
+
+	}
 
 }
 
@@ -353,7 +399,7 @@ void APlanetSixCharacter::OpenIngameMenu()
 		return;
 	}
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(Cast<APlayerController>(Controller));
-	
+
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
