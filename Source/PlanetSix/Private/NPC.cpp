@@ -59,24 +59,21 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 
-	/*auto test = SpecifiedQuestOFNPC->QuestName.ToString();
-	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();*/
-
 	
 	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
 
 		if (Character->bIsInPerimiterOfNPC == true)
 		{
-
 			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
 			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
-			//NPCQuestWidgetref->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
 
-			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
-
-			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);*/
+			for (size_t i = 0; i < SpecifiedQuestOFNPC->objectives.Num(); i++)
+			{
+				Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->objectives[i].ObjectiveDescription;
+				
+			}
+			
 
 			//set visible the Text renderer of the NPC
 			textrender->SetVisibility(true);

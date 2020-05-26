@@ -20,6 +20,7 @@ struct FObjectiveData
 {
 	GENERATED_BODY()
 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FText ObjectiveDescription;
 	
 	//Type OF objective
