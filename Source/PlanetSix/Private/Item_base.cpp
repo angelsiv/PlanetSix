@@ -2,6 +2,7 @@
 
 
 #include "Item_base.h"
+#include "PlanetSixCharacter.h"
 #include "InventoryComponent.h"
 
 
@@ -16,6 +17,7 @@ AItem_base::AItem_base()
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	RootComponent = sphereCollider;
 	mesh->AttachToComponent(sphereCollider, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 	//init sphere
 	sphereCollider->InitSphereRadius(70.0f);
@@ -44,6 +46,19 @@ FItemData AItem_base::ToItemInv()
 	//auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
 
 	//return item;
-	return FItemData(id, displayName, weight, value, quantity,icon);
+	return FItemData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
+}
+
+void AItem_base::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+	auto Player = Cast<APlanetSixCharacter>(OtherActor);
+
+	if (Player)
+	{
+		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
+		{
+			Destroy(this);
+		}
+	}
 }
 

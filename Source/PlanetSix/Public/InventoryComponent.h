@@ -33,6 +33,13 @@ public:
 		value(0),
 		quantity(0)
 	{};
+	FItemData(FItemData* original)
+		:id(original->id),
+		displayName(original->displayName),
+		weight(original->weight),
+		value(original->value),
+		quantity(original->quantity)
+	{};
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -50,8 +57,8 @@ protected:
 
 public:
 
-	static int compare(FItemData* i1, FItemData* i2, int type);
-
+	static int compare(FItemData i1, FItemData i2, ECompareField type);
+		
 	int getId();
 	FString getDisplayName();
 	float getWeight();
@@ -62,7 +69,10 @@ public:
 	float getTotalWeight();
 	float getTotalValue();
 
-	bool Stack(FItemData* other);
+	bool Stack(FItemData other);
+
+	FItemData GetCopy(FItemData original);
+
 
 };
 
@@ -70,12 +80,22 @@ public:
 UENUM(BlueprintType)
 enum class ESortingMode : uint8
 { 
-	none UMETA(DisplayName = "None"), 
 	alphabetical UMETA(DisplayName = "Alphabetical"),
 	price UMETA(DisplayName = "Price"),
 	weight UMETA(DisplayName = "Weight"),
 	totalPrice UMETA(DisplayName = "Total Price"),
 	totalWeight UMETA(DisplayName = "Total Weight")
+};
+
+
+UENUM(BlueprintType)
+enum class ECompareField : uint8
+{
+	name UMETA(DisplayName = "name"),
+	price UMETA(DisplayName = "Price"),
+	weight UMETA(DisplayName = "Weight"),
+	id UMETA(DisplayName = "ID"),
+	quantity UMETA(DisplayName = "qunatity")
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -85,7 +105,7 @@ class PLANETSIX_API UInventoryComponent : public UActorComponent
 
 public:
 	// Sets default values for this component's properties
-	UInventoryComponent() ;
+	UInventoryComponent();
 	UInventoryComponent(int32 invSize);
 
 	UFUNCTION(BlueprintCallable)
@@ -107,9 +127,6 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	bool add(FItemData* item);
-	FItemData* swap(FItemData* item, int index);
-	FItemData* take(int index);
 	int count=0;
 	
 	void heapify(int n, int i, ESortingMode mode);

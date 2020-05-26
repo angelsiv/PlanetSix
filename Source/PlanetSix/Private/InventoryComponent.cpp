@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/Image.h"
 #include "InventoryComponent.h"
 
 
@@ -71,7 +70,7 @@ int UInventoryComponent::GetCount()
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool UInventoryComponent::add(FItemData* item)
+bool UInventoryComponent::add(FItemData item)
 {
 
 	//look for the first available spot.
@@ -93,7 +92,7 @@ bool UInventoryComponent::add(FItemData* item)
 		else
 		{
 			//place the item
-			items[i] = *item;
+			items[i] = item;
 			count++;
 			return true;
 		}
@@ -101,10 +100,6 @@ bool UInventoryComponent::add(FItemData* item)
 
 	//if there is no spot left
 	return false;
-}
-bool UInventoryComponent::add(FItemData item)
-{
-	return add(&item);
 }
 
 // Description:
@@ -115,10 +110,11 @@ bool UInventoryComponent::add(FItemData item)
 // Return:
 //   Return the Item in that spot.
 //
-FItemData* UInventoryComponent::swap(FItemData* item, int index)
+
+FItemData UInventoryComponent::swap(FItemData item, int index)
 {
 	//if the index is out of bound
-	if (index < 0 || index>sizeof(&items) / sizeof(&items[0]))
+	if (index < 0 || index > items.Num())
 	{
 		//give back the item you try to put in
 		return item;
@@ -126,25 +122,22 @@ FItemData* UInventoryComponent::swap(FItemData* item, int index)
 	else
 	{
 		//it item is the same
-		if (FItemData::compare(item, &items[index], 1) == 0)
+		if (FItemData::compare(item, items[index],ECompareField::id) == 0)
 		{
 			items[index].Stack(item);
-			return nullptr;
+			return FItemData();
+
+			
 		}
 		else
 		{
 			//place the item in the spot
-			//auto temp = items[index];
-			items[index] = *item;
-			//return what was there (can return null_ptr)
-			//return &temp;
-			return nullptr; //debug purposed -Alonso
+			auto temp = items[index];
+			items[index] = item;
+			//return what was there 
+			return temp;
 		}
 	}
-}
-FItemData UInventoryComponent::swap(FItemData item, int index)
-{
-	return *swap(&item, index);
 }
 
 
@@ -155,14 +148,10 @@ FItemData UInventoryComponent::swap(FItemData item, int index)
 // Return:
 //   Return the Item in that spot.
 //
-FItemData* UInventoryComponent::take(int index)
-{
-	//get the item at the index and set the spot empty
-	return swap(nullptr, index);
-}
+
 FItemData UInventoryComponent::takeItem(int index)
 {
-	return *take(index);
+	return swap(FItemData(), index);
 }
 
 
@@ -242,58 +231,64 @@ void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 #pragma region ItemData
 
 
-int FItemData::compare(FItemData * i1, FItemData * i2, int type)
+FItemData FItemData::GetCopy(FItemData original)
+{
+	return FItemData(original.id, original.displayName, original.weight, original.value, original.quantity,original.icon);
+}
+
+
+int FItemData::compare(FItemData  i1, FItemData  i2, ECompareField type)
 {
 
 	int result = 0;
 	switch (type)
 	{
-	case 1:
-		if (i1->displayName > i2->displayName)
+	case ECompareField::name:
+		if (i1.displayName > i2.displayName)
 		{
 			result = 1;
 		}
-		else if (i1->displayName < i2->displayName)
+		else if (i1.displayName < i2.displayName)
 		{
 			result = -1;
 		}
 		break;
-	case 2:
-		if (i1->value > i2->value)
+	case ECompareField::price:
+		if (i1.value > i2.value)
 		{
 			result = 1;
 		}
-		else if (i1->value < i2->value)
+		else if (i1.value < i2.value)
 		{
 			result = -1;
 		}
 		break;
-	case 3:
-		if (i1->weight > i2->weight)
+	case ECompareField::weight:
+		if (i1.weight > i2.weight)
 		{
 			result = 1;
 		}
-		else if (i1->weight < i2->weight)
+		else if (i1.weight < i2.weight)
 		{
 			result = -1;
 		}
 		break;
-	case 4:
-		if (i1->value * i1->quantity > i2->value * i2->quantity)
+	case ECompareField::id:
+		if (i1.id > i2.id)
 		{
 			result = 1;
 		}
-		else if (i1->value * i1->quantity < i2->value * i2->quantity)
+		else if (i1.id < i2.id)
 		{
 			result = -1;
 		}
 		break;
-	case 5:
-		if (i1->weight * i1->quantity > i2->weight * i2->quantity)
+	case ECompareField::quantity:
+		if (i1.quantity > i2.quantity)
 		{
 			result = 1;
 		}
-		else if (i1->weight * i1->quantity < i2->weight * i2->quantity)
+		else if (i1.quantity < i2.quantity)
 		{
 			result = -1;
 		}
@@ -301,12 +296,10 @@ int FItemData::compare(FItemData * i1, FItemData * i2, int type)
 	default:
 		break;
 	}
-
-
-
-
-	return false;
+	
+	return result;
 }
+
 
 int FItemData::getId()
 {
@@ -349,11 +342,11 @@ UTexture2D* FItemData::getIcon()
 }
 
 
-bool FItemData::Stack(FItemData * other)
+bool FItemData::Stack(FItemData other)
 {
-	if (id == other->id)
+	if (id == other.id)
 	{
-		quantity += other->quantity;
+		quantity += other.quantity;
 		return true;
 	}
 	else

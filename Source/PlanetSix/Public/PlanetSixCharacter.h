@@ -70,7 +70,7 @@ public:
 
 	/** Player's inventory. */
 	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
-		UAttributesComponent* InventoryComponent;
+		UInventoryComponent* InventoryComponent;
 
 	/** Player's attributes. */
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
