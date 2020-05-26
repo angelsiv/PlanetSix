@@ -2,7 +2,8 @@
 
 
 #include "Item_base.h"
-#include "ItemInv.h"
+#include "PlanetSixCharacter.h"
+#include "InventoryComponent.h"
 
 
 // Sets default values
@@ -14,7 +15,11 @@ AItem_base::AItem_base()
 
 	sphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("RootComponent"));
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(sphereCollider);
+	RootComponent = sphereCollider;
+	mesh->AttachToComponent(sphereCollider, FAttachmentTransformRules::KeepRelativeTransform);
+
+
+	//init sphere
 	sphereCollider->InitSphereRadius(70.0f);
 	sphereCollider->SetCollisionProfileName(TEXT("Item"));
 
@@ -35,12 +40,25 @@ void AItem_base::Tick(float DeltaTime)
 
 }
 
-FitemInv AItem_base::ToItemInv()
+FItemData AItem_base::ToItemInv()
 {
 	//return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
 	//auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
 
 	//return item;
-	return FitemInv(1, TEXT("item"), 2.0f, 3.0f, 1);
+	return FItemData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
+}
+
+void AItem_base::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+	auto Player = Cast<APlanetSixCharacter>(OtherActor);
+
+	if (Player)
+	{
+		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
+		{
+			Destroy(this);
+		}
+	}
 }
 

@@ -11,6 +11,7 @@
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
+#include "InventoryComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -120,6 +121,10 @@ public:
 
 	//Gets the players controller
 	//APlayerController* PC;
+
+	/** Player's inventory. */
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
+		UInventoryComponent* InventoryComponent;
 
 	/** Player's attributes. */
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")

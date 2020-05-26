@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ItemInv.h"
+#include "InventoryComponent.h"
 #include "Components/SphereComponent.h"
 #include "Item_base.generated.h"
 
@@ -20,16 +20,9 @@ class PLANETSIX_API AItem_base : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AItem_base();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int id;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString displayName;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float weight;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float value;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int quantity;
+	bool DestroyOnPickup=true;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,13 +32,17 @@ protected:
 		UStaticMeshComponent* mesh;
 	UPROPERTY(Category = Item, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		USphereComponent* sphereCollider;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UTexture2D* icon;
+		FItemData itemData UMETA(ExposeOnSpawn = "true");
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	FitemInv ToItemInv();
+		FItemData ToItemInv();
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
 };

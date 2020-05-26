@@ -58,6 +58,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 	//Initialize Class
 	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
 
+	//Initialize Inventory
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+	InventoryComponent->inventorySize = 12;
+
 	SetReplicates(true);
 	//bReplicateMovement = true;
 
