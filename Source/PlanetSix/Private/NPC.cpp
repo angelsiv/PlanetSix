@@ -59,7 +59,6 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 
-	
 	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
 
@@ -102,6 +101,5 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 			
 			Character->WidgetDialogue->RemoveFromParent();
 		}*/
-		
 	}
 }
