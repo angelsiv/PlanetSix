@@ -16,13 +16,12 @@ void UNPCQuestWidget::NativeConstruct() {
 	Accept->OnClicked.AddDynamic(this, &UNPCQuestWidget::AcceptQuest);
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 
-	
-
 
 }
 
 void UNPCQuestWidget::AcceptQuest()
 {
+	RemoveFromParent();
 
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questaccepted"));
 }
