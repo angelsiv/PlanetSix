@@ -6,20 +6,20 @@
 #include "GameFramework/Actor.h"
 #include "InventoryComponent.h"
 #include "Components/SphereComponent.h"
-#include "Item_base.generated.h"
+#include "ItemBase.generated.h"
 
 
 
 //struct FitemInv;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class PLANETSIX_API AItem_base : public AActor
+class PLANETSIX_API AItemBase : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AItem_base();
+	AItemBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DestroyOnPickup=true;
@@ -42,6 +42,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		FItemData ToItemInv();
+
+	void Init(FItemData item);
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 

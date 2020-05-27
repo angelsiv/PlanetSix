@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Item_base.h"
+#include "ItemBase.h"
 #include "PlanetSixCharacter.h"
 #include "InventoryComponent.h"
 
 
 // Sets default values
-AItem_base::AItem_base()
+AItemBase::AItemBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -27,20 +27,20 @@ AItem_base::AItem_base()
 }
 
 // Called when the game starts or when spawned
-void AItem_base::BeginPlay()
+void AItemBase::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
 
 // Called every frame
-void AItem_base::Tick(float DeltaTime)
+void AItemBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-FItemData AItem_base::ToItemInv()
+FItemData AItemBase::ToItemInv()
 {
 	//return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
 	//auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
@@ -49,7 +49,7 @@ FItemData AItem_base::ToItemInv()
 	return FItemData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
 }
 
-void AItem_base::NotifyActorBeginOverlap(AActor * OtherActor)
+void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
 {
 	auto Player = Cast<APlanetSixCharacter>(OtherActor);
 
@@ -57,8 +57,13 @@ void AItem_base::NotifyActorBeginOverlap(AActor * OtherActor)
 	{
 		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
 		{
-			Destroy(this);
+			this->Destroy();
 		}
 	}
+}
+
+void AItemBase::Init(FItemData item)
+{
+	itemData = item;
 }
 

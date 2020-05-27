@@ -217,10 +217,18 @@ protected:
 	/** Open Ingame Menu*/
 	void OpenIngameMenu();
 
+	/** Drop item on the ground*/
+	UFUNCTION(BlueprintCallable)
+	bool DropItem(FItemData item);
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
+
+	//the distance an item is drop from the player;
+	float DropDistance = 200;
+
 
 public:
 	/** Returns CameraBoom subobject **/
