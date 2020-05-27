@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "NPCDialogueWidget.h"
 #include "QuestWidget.h"
+#include "QuestActor.h"
+#include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
@@ -32,6 +34,7 @@ public:
 
 class APlayerController;
 class ASkill;
+class AMapTravel;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
@@ -78,21 +81,32 @@ public:
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
-
 	      /*Dialogue Sections */
 		//this the incrementor for widgetclass 
 		UPROPERTY(EditAnywhere, Category = "DialogueWidget")
 			int IndexDialogue = 0;
 
+		AMapTravel* Portal;
 
-		//this is to create the widget of the dialogue  
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
-			TSubclassOf<UUserWidget> DialogueWidgetClass;
+		
 
-		//this is for the specific dialogue 
-		UNPCDialogueWidget* WidgetDialogue;
+		////this is to create the widget of the dialogue  
+		//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+		//	TSubclassOf<UUserWidget> DialogueWidgetClass;
+
+		////this is for the specific dialogue 
+		//UNPCDialogueWidget* WidgetDialogue;
 
 	
+
+		//this is to create the widget of the NPCQuest  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
+
+		//this is for the specific dialogue 
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+		UNPCQuestWidget* WidgetQuestNPC;
+
 		/*Quest Widget UI*/
 		//this is to create teh quest LOG 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
@@ -100,6 +114,7 @@ public:
 
 		//this is for the WidgetQuestLog
 		UQuestWidget* WidgetQuestLog;
+
 
 		int Incrementor=0;
 
@@ -211,4 +226,6 @@ public:
 	void UpdateUI();
 	UFUNCTION(BlueprintCallable)
 		void ReceiveDamage(float Damage);
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 };

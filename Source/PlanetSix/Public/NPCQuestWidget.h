@@ -29,10 +29,10 @@ public:
 		UButton* Reject;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		FText TextDescription;
+		UTextBlock* TextDescription;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		FText TextName;
+		UTextBlock* TextName;
 
 	FObjectiveData data;
 

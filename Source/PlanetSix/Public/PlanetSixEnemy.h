@@ -34,8 +34,6 @@ protected:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UAttributesComponent* Attributes;
 	
-	
-
 	bool bIsDead;
 
 protected:
