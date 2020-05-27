@@ -59,25 +59,22 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 
-	/*auto test = SpecifiedQuestOFNPC->QuestName.ToString();
-	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();*/
-
-	
 	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
 
 		if (Character->bIsInPerimiterOfNPC == true)
 		{
+			if (SpecifiedQuestOFNPC) 
+			{
+				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->Questinfo.QuestName;
+				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->Questinfo.QuestDescription;
 
-			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
-			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
-			//NPCQuestWidgetref->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
+				for (int32 i = 0; i < SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
+				{
+					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
+				}
 
-			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
-
-			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);*/
-
+			}
 			//set visible the Text renderer of the NPC
 			textrender->SetVisibility(true);
 
@@ -104,6 +101,5 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 			
 			Character->WidgetDialogue->RemoveFromParent();
 		}*/
-		
 	}
 }

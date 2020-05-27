@@ -207,6 +207,7 @@ void APlanetSixCharacter::Interact()
 			//check if Dialogue widget exists 
 			if (NPCQuestWidgetClass)
 			{
+
 				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
 
 				//increment the dialogue varible to show the Widget if index = 1 
@@ -302,7 +303,7 @@ void APlanetSixCharacter::QuestLog()
 
 		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
 		WidgetQuestLog->AddToViewport();
-		PC->SetInputMode(FInputModeGameAndUI());
+		PC->SetInputMode(FInputModeUIOnly());
 		PC->bShowMouseCursor = true;
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;

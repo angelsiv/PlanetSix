@@ -7,7 +7,8 @@
 #include "QuestActor.generated.h"
 
 UENUM(BlueprintType)
-enum class EObjectiveType :uint8 {
+enum  EObjectiveType 
+{
 	None = 0 UMETA(DisplayName = "None"),
 	Kill = 1 UMETA(DisplayName = "Kill"),
 	Gathering = 2 UMETA(DisplayName = "Gather"),
@@ -15,12 +16,14 @@ enum class EObjectiveType :uint8 {
 	Location = 8 UMETA(DisplayName = "Location")
 };
 
+
 USTRUCT(BlueprintType)
 struct FObjectiveData
 {
 	GENERATED_BODY()
 
-		FText ObjectiveDescription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	     FText ObjectiveDescription;
 	
 	//Type OF objective
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -28,29 +31,25 @@ struct FObjectiveData
 
 	//Target of the objective
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		AActor* target;
+	//ID of Enemy,Number of Enemies,Also items 
+	TMap<int,int> Targets;
+
+
 	//Check if objective is complete
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
 
-	//Number 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		int Number;
 
 };
 
 
-
-
-UCLASS()
-class PLANETSIX_API AQuestActor : public AActor
+USTRUCT(BlueprintType)
+struct FQuestInfo 
 {
 	GENERATED_BODY()
 
-
-public:
-	// Sets default values for this actor's properties
-	AQuestActor();
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		int QuestID;
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -60,22 +59,34 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FText QuestDescription;
 
-
-	//Function to organize the quests in the  editor it attaches the location to the parent 
-	UFUNCTION(CallInEditor, BlueprintCallable)
-		void OrganiseQuestInEditor();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		bool IsStoryQuest;
 
 	//array of objective so that each quest can have a multiple objectives
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
-	//check if quest is active 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		bool IsActive;
+};
 
-	
+
+UCLASS()
+class PLANETSIX_API AQuestActor : public AActor
+{
+	GENERATED_BODY()
+
+public:
+	// Sets default values for this actor's properties
+	AQuestActor();
+
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		bool IsStoryQuest;
+	FQuestInfo Questinfo;
+
+	//Function to organize the quests in the  editor it attaches the location to the parent 
+	UFUNCTION(CallInEditor, BlueprintCallable)
+		void OrganiseQuestInEditor();
+
 
 protected:
 	// Called when the game starts or when spawned
