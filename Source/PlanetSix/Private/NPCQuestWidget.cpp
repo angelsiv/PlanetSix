@@ -21,6 +21,7 @@ void UNPCQuestWidget::NativeConstruct() {
 
 void UNPCQuestWidget::AcceptQuest()
 {
+	RemoveFromParent();
 
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questaccepted"));
 }

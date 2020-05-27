@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
+#include "ItemBase.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -57,6 +58,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	//Initialize Class
 	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+
+	//Initialize Inventory
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+	InventoryComponent->inventorySize = 12;
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
@@ -213,17 +218,18 @@ void APlanetSixCharacter::Interact()
 				if (IndexDialogue % 2 == 1)
 				{
 					WidgetQuestNPC->AddToViewport();
-					PC->SetInputMode(FInputModeGameAndUI());
+					PC->SetInputMode(FInputModeUIOnly());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
 					PC->SetIgnoreMoveInput(true);
 				}
+
 				else
 				{
 					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
 					WidgetQuestNPC->RemoveFromParent();
-					PC->SetInputMode(FInputModeGameOnly());
+					/*PC->SetInputMode(FInputModeGameOnly());*/
 					PC->bShowMouseCursor = false;
 					PC->bEnableClickEvents = false;
 					PC->bEnableMouseOverEvents = false;
@@ -400,4 +406,22 @@ void APlanetSixCharacter::OpenIngameMenu()
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
 
 	Cast<APlayerController>(Controller)->bShowMouseCursor = true;
+}
+
+bool APlanetSixCharacter::DropItem(FItemData item)
+{
+	if (item.getId() != 0)
+	{
+		FVector forward = GetTransform().GetLocation().ForwardVector * DropDistance;
+		FVector playerLocation = GetTransform().GetLocation();
+		FVector DropLocation = forward + playerLocation;
+		FRotator rotation = GetTransform().GetRotation().Rotator();
+		TSubclassOf<AItemBase> ItemClass;
+
+
+		AItemBase* Spawneditem = (AItemBase*)GetWorld()->SpawnActor(ItemClass, &DropLocation, &rotation);
+		Spawneditem->Init(item);
+		return true;
+	}
+	return false;
 }
