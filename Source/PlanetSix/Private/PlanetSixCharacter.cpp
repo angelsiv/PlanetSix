@@ -416,16 +416,11 @@ bool APlanetSixCharacter::DropItem(FItemData item)
 		FVector playerLocation = GetTransform().GetLocation();
 		FVector DropLocation = forward + playerLocation;
 		FRotator rotation = GetTransform().GetRotation().Rotator();
-		FTransform DropTransform = FTransform(rotation, DropLocation, FVector::OneVector);
-		FActorSpawnParameters spawnParam = FActorSpawnParameters();
 		TSubclassOf<AItemBase> ItemClass;
 
 
-		AItemBase* Spawneditem = GetWorld()->SpawnActorDeferred<AItemBase>(ItemClass, DropTransform);
-		AItemBase cafds = AItemBase::AItemBase();
-		Spawneditem = &cafds;
+		AItemBase* Spawneditem = (AItemBase*)GetWorld()->SpawnActor(ItemClass, &DropLocation, &rotation);
 		Spawneditem->Init(item);
-		Spawneditem->FinishSpawning(DropTransform);
 		return true;
 	}
 	return false;

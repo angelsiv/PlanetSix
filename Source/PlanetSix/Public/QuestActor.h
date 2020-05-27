@@ -7,7 +7,7 @@
 #include "QuestActor.generated.h"
 
 UENUM(BlueprintType)
-enum class EObjectiveType :uint8 {
+enum  EObjectiveType  {
 	None = 0 UMETA(DisplayName = "None"),
 	Kill = 1 UMETA(DisplayName = "Kill"),
 	Gathering = 2 UMETA(DisplayName = "Gather"),
