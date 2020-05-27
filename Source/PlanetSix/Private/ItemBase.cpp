@@ -1,12 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Item_base.h"
-#include "ItemInv.h"
+#include "ItemBase.h"
+#include "PlanetSixCharacter.h"
+#include "InventoryComponent.h"
 
 
 // Sets default values
-AItem_base::AItem_base()
+AItemBase::AItemBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -14,7 +15,11 @@ AItem_base::AItem_base()
 
 	sphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("RootComponent"));
 	mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	SetRootComponent(sphereCollider);
+	RootComponent = sphereCollider;
+	mesh->AttachToComponent(sphereCollider, FAttachmentTransformRules::KeepRelativeTransform);
+
+
+	//init sphere
 	sphereCollider->InitSphereRadius(70.0f);
 	sphereCollider->SetCollisionProfileName(TEXT("Item"));
 
@@ -22,25 +27,43 @@ AItem_base::AItem_base()
 }
 
 // Called when the game starts or when spawned
-void AItem_base::BeginPlay()
+void AItemBase::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
 
 // Called every frame
-void AItem_base::Tick(float DeltaTime)
+void AItemBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-FitemInv AItem_base::ToItemInv()
+FItemData AItemBase::ToItemInv()
 {
 	//return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
 	//auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
 
 	//return item;
-	return FitemInv(1, TEXT("item"), 2.0f, 3.0f, 1);
+	return FItemData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
+}
+
+void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
+{
+	auto Player = Cast<APlanetSixCharacter>(OtherActor);
+
+	if (Player)
+	{
+		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
+		{
+			this->Destroy();
+		}
+	}
+}
+
+void AItemBase::Init(FItemData item)
+{
+	itemData = item;
 }
 

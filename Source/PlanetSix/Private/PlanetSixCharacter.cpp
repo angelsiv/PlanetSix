@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
+#include "ItemBase.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -57,6 +58,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	//Initialize Class
 	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+
+	//Initialize Inventory
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+	InventoryComponent->inventorySize = 12;
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
@@ -401,4 +406,27 @@ void APlanetSixCharacter::OpenIngameMenu()
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
 
 	Cast<APlayerController>(Controller)->bShowMouseCursor = true;
+}
+
+bool APlanetSixCharacter::DropItem(FItemData item)
+{
+	if (item.getId() != 0)
+	{
+		FVector forward = GetTransform().GetLocation().ForwardVector * DropDistance;
+		FVector playerLocation = GetTransform().GetLocation();
+		FVector DropLocation = forward + playerLocation;
+		FRotator rotation = GetTransform().GetRotation().Rotator();
+		FTransform DropTransform = FTransform(rotation, DropLocation, FVector::OneVector);
+		FActorSpawnParameters spawnParam = FActorSpawnParameters();
+		TSubclassOf<AItemBase> ItemClass;
+
+
+		AItemBase* Spawneditem = GetWorld()->SpawnActorDeferred<AItemBase>(ItemClass, DropTransform);
+		AItemBase cafds = AItemBase::AItemBase();
+		Spawneditem = &cafds;
+		Spawneditem->Init(item);
+		Spawneditem->FinishSpawning(DropTransform);
+		return true;
+	}
+	return false;
 }

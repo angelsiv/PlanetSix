@@ -11,6 +11,7 @@
 #include "AttributesComponent.h"
 #include "ClassComponent.h"
 #include "Components/WidgetComponent.h"
+#include "InventoryComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -121,6 +122,10 @@ public:
 	//Gets the players controller
 	//APlayerController* PC;
 
+	/** Player's inventory. */
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
+		UInventoryComponent* InventoryComponent;
+
 	/** Player's attributes. */
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UAttributesComponent* Attributes;
@@ -212,10 +217,18 @@ protected:
 	/** Open Ingame Menu*/
 	void OpenIngameMenu();
 
+	/** Drop item on the ground*/
+	UFUNCTION(BlueprintCallable)
+	bool DropItem(FItemData item);
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
+
+	//the distance an item is drop from the player;
+	float DropDistance = 200;
+
 
 public:
 	/** Returns CameraBoom subobject **/
