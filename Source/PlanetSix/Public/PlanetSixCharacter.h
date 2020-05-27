@@ -33,6 +33,8 @@ public:
 
 };
 
+
+
 class APlayerController;
 class ASkill;
 class AMapTravel;
@@ -82,23 +84,23 @@ public:
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
+
 	      /*Dialogue Sections */
 		//this the incrementor for widgetclass 
-		UPROPERTY(EditAnywhere, Category = "DialogueWidget")
-			int IndexDialogue = 0;
+		int IndexDialogue = 0;
+		int Incrementor = 0;
 
+		//Specified Portal  
 		AMapTravel* Portal;
 
-		
 
-		////this is to create the widget of the dialogue  
-		//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
-		//	TSubclassOf<UUserWidget> DialogueWidgetClass;
+		/*//this is to create the widget of the dialogue  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+			TSubclassOf<UUserWidget> DialogueWidgetClass;
 
-		////this is for the specific dialogue 
-		//UNPCDialogueWidget* WidgetDialogue;
+		//this is for the specific dialogue 
+		UNPCDialogueWidget* WidgetDialogue;*/
 
-	
 
 		//this is to create the widget of the NPCQuest  
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
@@ -116,11 +118,12 @@ public:
 		//this is for the WidgetQuestLog
 		UQuestWidget* WidgetQuestLog;
 
+	//QuestInfos for player 
+		TArray<FQuestInfo> QuestInfos;
 
-		int Incrementor=0;
+	//Quest Accepted By Player
+		FQuestInfo QuestAccepted;
 
-	//Gets the players controller
-	//APlayerController* PC;
 
 	/** Player's inventory. */
 	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
@@ -241,4 +244,8 @@ public:
 		void ReceiveDamage(float Damage);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+
+
+
+
 };

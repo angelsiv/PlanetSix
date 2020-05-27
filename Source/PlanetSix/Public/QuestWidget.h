@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Quest.h"
 #include "QuestWidget.generated.h"
 
 /**
@@ -25,7 +24,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		FText ObjectivesQuest;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<UQuest> Uquest;
+
 
 };
