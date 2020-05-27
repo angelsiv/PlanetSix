@@ -31,14 +31,40 @@ struct FObjectiveData
 
 	//Target of the objective
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		AActor* target;
+	//ID of Enemy,Number of Enemies,Also items 
+	TMap<int,int> Targets;
+
+
 	//Check if objective is complete
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
 
-	//Number 
+
+};
+
+
+USTRUCT(BlueprintType)
+struct FQuestInfo 
+{
+	GENERATED_BODY()
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		int QuestID;
+
+	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		int Number;
+		FText QuestName;
+
+	//Quest description
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FText QuestDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		bool IsStoryQuest;
+
+	//array of objective so that each quest can have a multiple objectives
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		TArray<FObjectiveData> objectives;
 
 };
 
@@ -52,33 +78,15 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
-	int CurrentObjective;
 
 
-	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FText QuestName;
-
-	//Quest description
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FText QuestDescription;
-
+	FQuestInfo Questinfo;
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)
 		void OrganiseQuestInEditor();
 
-	//array of objective so that each quest can have a multiple objectives
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		TArray<FObjectiveData> objectives;
-
-	//check if quest is active 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		bool IsActive;
-
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		bool IsStoryQuest;
 
 protected:
 	// Called when the game starts or when spawned
