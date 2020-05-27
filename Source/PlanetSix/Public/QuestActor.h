@@ -7,7 +7,8 @@
 #include "QuestActor.generated.h"
 
 UENUM(BlueprintType)
-enum class EObjectiveType :uint8 {
+enum  EObjectiveType 
+{
 	None = 0 UMETA(DisplayName = "None"),
 	Kill = 1 UMETA(DisplayName = "Kill"),
 	Gathering = 2 UMETA(DisplayName = "Gather"),
@@ -15,13 +16,14 @@ enum class EObjectiveType :uint8 {
 	Location = 8 UMETA(DisplayName = "Location")
 };
 
+
 USTRUCT(BlueprintType)
 struct FObjectiveData
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FText ObjectiveDescription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	     FText ObjectiveDescription;
 	
 	//Type OF objective
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -41,17 +43,17 @@ struct FObjectiveData
 };
 
 
-
-
 UCLASS()
 class PLANETSIX_API AQuestActor : public AActor
 {
 	GENERATED_BODY()
 
-
 public:
 	// Sets default values for this actor's properties
 	AQuestActor();
+
+	int CurrentObjective;
+
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")

@@ -65,16 +65,17 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 
 		if (Character->bIsInPerimiterOfNPC == true)
 		{
-			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
-			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
-
-			for (size_t i = 0; i < SpecifiedQuestOFNPC->objectives.Num(); i++)
+			if (SpecifiedQuestOFNPC) 
 			{
-				Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->objectives[i].ObjectiveDescription;
-				
-			}
-			
+				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
+				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
 
+				for (size_t i = 0; i < SpecifiedQuestOFNPC->objectives.Num(); i++)
+				{
+					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->objectives[i].ObjectiveDescription;
+				}
+
+			}
 			//set visible the Text renderer of the NPC
 			textrender->SetVisibility(true);
 
