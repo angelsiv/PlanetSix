@@ -86,11 +86,10 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
-	Character->bIsInPerimiterOfNPC = false;
-
+	
 	if (Character != nullptr) 
 	{
-		
+		Character->bIsInPerimiterOfNPC = false;
 		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		////set invisible the Text renderer of the NPC
 		textrender->SetVisibility(false);

@@ -192,6 +192,7 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 void APlanetSixCharacter::Interact()
 {
+	
 	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
