@@ -7,8 +7,8 @@
 
 UInventoryComponent::UInventoryComponent()
 {
-	items = TArray<FItemData>();
-	items.Init(FItemData(), 10);
+	items = TArray<FItemBaseData>();
+	items.Init(FItemBaseData(), 10);
 }
 
 
@@ -29,7 +29,7 @@ UInventoryComponent::UInventoryComponent(int32 invSize)
 }
 
 
-TArray<FItemData> UInventoryComponent::GetItems()
+TArray<FItemBaseData> UInventoryComponent::GetItems()
 {
 	return items;
 }
@@ -70,7 +70,7 @@ int UInventoryComponent::GetCount()
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool UInventoryComponent::add(FItemData item)
+bool UInventoryComponent::add(FItemBaseData item)
 {
 
 	//look for the first available spot.
@@ -111,7 +111,7 @@ bool UInventoryComponent::add(FItemData item)
 //   Return the Item in that spot.
 //
 
-FItemData UInventoryComponent::swap(FItemData item, int index)
+FItemBaseData UInventoryComponent::swap(FItemBaseData item, int index)
 {
 	//if the index is out of bound
 	if (index < 0 || index > items.Num())
@@ -122,10 +122,10 @@ FItemData UInventoryComponent::swap(FItemData item, int index)
 	else
 	{
 		//it item is the same
-		if (FItemData::compare(item, items[index],ECompareField::id) == 0)
+		if (FItemBaseData::compare(item, items[index],ECompareField::id) == 0)
 		{
 			items[index].Stack(item);
-			return FItemData();
+			return FItemBaseData();
 
 			
 		}
@@ -149,9 +149,9 @@ FItemData UInventoryComponent::swap(FItemData item, int index)
 //   Return the Item in that spot.
 //
 
-FItemData UInventoryComponent::takeItem(int index)
+FItemBaseData UInventoryComponent::takeItem(int index)
 {
-	return swap(FItemData(), index);
+	return swap(FItemBaseData(), index);
 }
 
 
@@ -231,13 +231,13 @@ void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 #pragma region ItemData
 
 
-FItemData FItemData::GetCopy(FItemData original)
+FItemBaseData FItemBaseData::GetCopy(FItemBaseData original)
 {
-	return FItemData(original.id, original.displayName, original.weight, original.value, original.quantity,original.icon);
+	return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity,original.icon);
 }
 
 
-int FItemData::compare(FItemData  i1, FItemData  i2, ECompareField type)
+int FItemBaseData::compare(FItemBaseData  i1, FItemBaseData  i2, ECompareField type)
 {
 
 	int result = 0;
@@ -301,48 +301,48 @@ int FItemData::compare(FItemData  i1, FItemData  i2, ECompareField type)
 }
 
 
-int FItemData::getId()
+int FItemBaseData::getId()
 {
 	return id;
 }
 
-FString FItemData::getDisplayName()
+FString FItemBaseData::getDisplayName()
 {
 	return displayName;
 }
 
-float FItemData::getWeight()
+float FItemBaseData::getWeight()
 {
 	return weight;
 }
 
-float FItemData::getValue()
+float FItemBaseData::getValue()
 {
 	return value;
 }
 
-int FItemData::getQuantity()
+int FItemBaseData::getQuantity()
 {
 	return quantity;
 }
 
-float FItemData::getTotalWeight()
+float FItemBaseData::getTotalWeight()
 {
 	return weight * quantity;
 }
 
-float FItemData::getTotalValue()
+float FItemBaseData::getTotalValue()
 {
 	return value * quantity;
 }
 
-UTexture2D* FItemData::getIcon()
+UTexture2D* FItemBaseData::getIcon()
 {
 	return icon;
 }
 
 
-bool FItemData::Stack(FItemData other)
+bool FItemBaseData::Stack(FItemBaseData other)
 {
 	if (id == other.id)
 	{

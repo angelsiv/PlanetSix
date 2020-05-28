@@ -9,7 +9,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
-#include "ItemBase.h"
+#include "NPCDialogueWidget.h"
+#include "QuestWidget.h"
+#include "Net/UnrealNetwork.h"
+#include "NPCQuestWidget.h"
+#include "Components/WidgetComponent.h"
+
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -410,7 +415,7 @@ void APlanetSixCharacter::OpenIngameMenu()
 	Cast<APlayerController>(Controller)->bShowMouseCursor = true;
 }
 
-bool APlanetSixCharacter::DropItem(FItemData item)
+bool APlanetSixCharacter::DropItem(FItemBaseData item)
 {
 	if (item.getId() != 0)
 	{
