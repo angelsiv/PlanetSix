@@ -9,6 +9,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
+#include "NPCDialogueWidget.h"
+#include "QuestWidget.h"
+#include "Net/UnrealNetwork.h"
+#include "NPCQuestWidget.h"
+#include "Components/WidgetComponent.h"
+
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -57,6 +63,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	//Initialize Class
 	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
+
+	//Initialize Inventory
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+	InventoryComponent->inventorySize = 12;
 
 	SetReplicates(true);
 	//bReplicateMovement = true;
@@ -403,4 +413,22 @@ void APlanetSixCharacter::OpenIngameMenu()
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
 
 	Cast<APlayerController>(Controller)->bShowMouseCursor = true;
+}
+
+bool APlanetSixCharacter::DropItem(FItemBaseData item)
+{
+	if (item.getId() != 0)
+	{
+		FVector forward = GetTransform().GetLocation().ForwardVector * DropDistance;
+		FVector playerLocation = GetTransform().GetLocation();
+		FVector DropLocation = forward + playerLocation;
+		FRotator rotation = GetTransform().GetRotation().Rotator();
+		TSubclassOf<AItemBase> ItemClass;
+
+
+		AItemBase* Spawneditem = (AItemBase*)GetWorld()->SpawnActor(ItemClass, &DropLocation, &rotation);
+		Spawneditem->Init(item);
+		return true;
+	}
+	return false;
 }

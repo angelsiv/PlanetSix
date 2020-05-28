@@ -3,17 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "NPCDialogueWidget.h"
-#include "QuestWidget.h"
+#include "ItemBase.h"
 #include "QuestActor.h"
-#include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
+#include "InventoryComponent.h"
+#include "WeaponComponent.h"
 #include "ClassComponent.h"
-#include "Components/WidgetComponent.h"
-#include "Net/UnrealNetwork.h"
+#include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
+class UNPCQuestWidget;
+class UQuestWidget;
+class AQuestActor;
+class APlayerController;
+class ASkill;
+class AMapTravel;
 
 USTRUCT(BlueprintType)
 struct PLANETSIX_API FPlayerInfo
@@ -22,21 +26,15 @@ struct PLANETSIX_API FPlayerInfo
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-	FString UserName;
+		FString UserName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-	int32 Level;
+		int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-	bool HasQuestItem;
+		bool HasQuestItem;
 
 };
-
-
-
-class APlayerController;
-class ASkill;
-class AMapTravel;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
@@ -75,54 +73,48 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
 
-
 	/** Interact with object or player */
 	void Interact();
-
 
 	//boolean variable to check if player is in the perimeter of the player
 	bool bIsInPerimiterOfNPC = false;
 
+	/*Dialogue Sections */
+  //this the incrementor for widgetclass 
+	int IndexDialogue = 0;
+	int Incrementor = 0;
 
-	      /*Dialogue Sections */
-		//this the incrementor for widgetclass 
-		int IndexDialogue = 0;
-		int Incrementor = 0;
+	//Specified Portal  
+	AMapTravel* Portal;
 
-		//Specified Portal  
-		AMapTravel* Portal;
+	/*//this is to create the widget of the dialogue
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+		TSubclassOf<UUserWidget> DialogueWidgetClass;
 
+	//this is for the specific dialogue
+	UNPCDialogueWidget* WidgetDialogue;*/
 
-		/*//this is to create the widget of the dialogue  
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
-			TSubclassOf<UUserWidget> DialogueWidgetClass;
+	//this is to create the widget of the NPCQuest  
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+		TSubclassOf<UUserWidget>NPCQuestWidgetClass;
 
-		//this is for the specific dialogue 
-		UNPCDialogueWidget* WidgetDialogue;*/
-
-
-		//this is to create the widget of the NPCQuest  
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
-			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
-
-		//this is for the specific dialogue 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+	//this is for the specific dialogue 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
 		UNPCQuestWidget* WidgetQuestNPC;
 
-		/*Quest Widget UI*/
-		//this is to create teh quest LOG 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
-			TSubclassOf<UUserWidget> QuestWidgetLog;
+	/*Quest Widget UI*/
+	//this is to create teh quest LOG 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
+		TSubclassOf<UUserWidget> QuestWidgetLog;
 
-		//this is for the WidgetQuestLog
-		UQuestWidget* WidgetQuestLog;
+	//this is for the WidgetQuestLog
+	UQuestWidget* WidgetQuestLog;
 
 	//QuestInfos for player 
-		TArray<FQuestInfo> QuestInfos;
+	TArray<FQuestInfo> QuestInfos;
 
 	//Quest Accepted By Player
-		FQuestInfo QuestAccepted;
-
+	FQuestInfo QuestAccepted;
 
 	/** Player's attributes. */
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
@@ -131,6 +123,14 @@ public:
 	/** Player's class. */
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UClassComponent* Class;
+
+	/** Player's inventory. */
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
+		UInventoryComponent* InventoryComponent;
+
+	/** Player's weapons. */
+	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
+		UWeaponComponent* WeaponComponent;
 
 	/** Player's HUD. */
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
@@ -215,10 +215,18 @@ protected:
 	/** Open Ingame Menu*/
 	void OpenIngameMenu();
 
+	/** Drop item on the ground*/
+	UFUNCTION(BlueprintCallable)
+		bool DropItem(FItemBaseData item);
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
+
+	//the distance an item is drop from the player;
+	float DropDistance = 200;
+
 
 public:
 	/** Returns CameraBoom subobject **/
