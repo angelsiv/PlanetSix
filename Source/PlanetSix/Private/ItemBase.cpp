@@ -18,6 +18,14 @@ AItemBase::AItemBase()
 	RootComponent = sphereCollider;
 	mesh->AttachToComponent(sphereCollider, FAttachmentTransformRules::KeepRelativeTransform);
 
+	itemData = FItemData();
+
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("R:/git/PlanetSix/Content/Geometry/Meshes/1M_Cube_Chamfer.1M_Cube_Chamfer"));
+	UStaticMesh* Asset = MeshAsset.Object;
+
+	mesh->SetStaticMesh(Asset);
+
 
 	//init sphere
 	sphereCollider->InitSphereRadius(70.0f);
