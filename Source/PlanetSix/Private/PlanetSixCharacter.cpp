@@ -415,18 +415,50 @@ bool APlanetSixCharacter::DropItem(FItemData item)
 		FVector forward = GetTransform().GetLocation().ForwardVector * DropDistance;
 		FVector playerLocation = GetTransform().GetLocation();
 		FVector DropLocation = forward + playerLocation;
+
 		FRotator rotation = GetTransform().GetRotation().Rotator();
+
 		FTransform DropTransform = FTransform(rotation, DropLocation, FVector::OneVector);
-		FActorSpawnParameters spawnParam = FActorSpawnParameters();
-		TSubclassOf<AItemBase> ItemClass;
 
 
-		AItemBase* Spawneditem = GetWorld()->SpawnActorDeferred<AItemBase>(ItemClass, DropTransform);
-		AItemBase cafds = AItemBase::AItemBase();
-		Spawneditem = &cafds;
-		Spawneditem->Init(item);
-		Spawneditem->FinishSpawning(DropTransform);
-		return true;
+		//spawnitem->Init(item);
+
+
+		//AItemBase * spawn =  (AItemBase*)GetWorld()->SpawnActor(ItemBP,&DropLocation,&rotation);
+		//
+		//spawn->Init(item);
+
+		//return true;
+
+
+
+
+
+
+
+
+
+
+
+		//FActorSpawnParameters spawnParam = FActorSpawnParameters();
+		//AItemBase* Spawneditem = GetWorld()->SpawnActorDeferred<AItemBase>(It DropTransform, GetOwner(), GetOwner()->Instigator);
+
+
+
+
+		UClass* ItemClass = AItemBase::StaticClass();
+		AItemBase* Spawneditem = GetWorld()->SpawnActorDeferred<AItemBase>(ItemBP->GetClass(), DropTransform, GetOwner(), GetOwner()->Instigator);
+
+		 //Always make sure actor was created
+		if (Spawneditem)
+		{
+			// AActor->Owner is replicated
+			Spawneditem->Init(item);
+
+			UGameplayStatics::FinishSpawningActor(Spawneditem, Spawneditem->GetTransform());
+			return true;
+		}
+		
 	}
 	return false;
 }

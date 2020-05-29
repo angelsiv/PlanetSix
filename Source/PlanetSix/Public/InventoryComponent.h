@@ -9,10 +9,10 @@
 
 
 class UTexture2D;
-
+class AItemBase;
 
 USTRUCT(BlueprintType)
-struct PLANETSIX_API FItemData //: public UObject
+struct PLANETSIX_API FItemData 
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -123,6 +123,8 @@ public:
 		TArray<FItemData> GetItems();
 	UFUNCTION(BlueprintCallable)
 		FString Test();
+
+
 
 protected:
 	// Called when the game starts

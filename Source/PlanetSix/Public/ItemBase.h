@@ -4,13 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "InventoryComponent.h"
 #include "Components/SphereComponent.h"
+#include "InventoryComponent.h"
 #include "ItemBase.generated.h"
 
 
-
-//struct FitemInv;
+//struct FItemData;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API AItemBase : public AActor
