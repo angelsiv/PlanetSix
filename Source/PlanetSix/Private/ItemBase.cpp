@@ -48,13 +48,13 @@ void AItemBase::Tick(float DeltaTime)
 
 }
 
-FItemData AItemBase::ToItemInv()
+FItemBaseData AItemBase::ToItemInv()
 {
 	//return  NewObject<UitemInv>(GetTransientPackage(), MakeUniqueObjectName(GetTransientPackage(), UitemInv::StaticClass(), TEXT("Item")));
 	//auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
 
 	//return item;
-	return FItemData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
+	return FItemBaseData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
 }
 
 void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
@@ -70,7 +70,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
 	}
 }
 
-void AItemBase::Init(FItemData item)
+void AItemBase::Init(FItemBaseData item)
 {
 	itemData = item;
 }

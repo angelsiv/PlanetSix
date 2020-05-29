@@ -12,13 +12,13 @@ class UTexture2D;
 class AItemBase;
 
 USTRUCT(BlueprintType)
-struct PLANETSIX_API FItemData 
+struct PLANETSIX_API FItemBaseData //: public UObject
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	// Sets default values for this component's properties
-	FItemData(int Id, FString DisplayName, float Weight, float Value, int Quantity, UTexture2D* Icon)
+	FItemBaseData(int Id, FString DisplayName, float Weight, float Value, int Quantity, UTexture2D* Icon)
 		:id(Id),
 		displayName(DisplayName),
 		weight(Weight),
@@ -26,14 +26,14 @@ public:
 		quantity(Quantity),
 		icon(Icon)
 	{}
-	FItemData()
+	FItemBaseData()
 		:id(0),
 		displayName(),
 		weight(0),
 		value(0),
 		quantity(0)
 	{};
-	FItemData(FItemData* original)
+	FItemBaseData(FItemBaseData* original)
 		:id(original->id),
 		displayName(original->displayName),
 		weight(original->weight),
@@ -57,7 +57,7 @@ protected:
 
 public:
 
-	static int compare(FItemData i1, FItemData i2, ECompareField type);
+	static int compare(FItemBaseData i1, FItemBaseData i2, ECompareField type);
 		
 	int getId();
 	FString getDisplayName();
@@ -69,9 +69,9 @@ public:
 	float getTotalWeight();
 	float getTotalValue();
 
-	bool Stack(FItemData other);
+	bool Stack(FItemBaseData other);
 
-	FItemData GetCopy(FItemData original);
+	FItemBaseData GetCopy(FItemBaseData original);
 
 
 };
@@ -109,18 +109,18 @@ public:
 	UInventoryComponent(int32 invSize);
 
 	UFUNCTION(BlueprintCallable)
-	bool add(FItemData item);
+	bool add(FItemBaseData item);
 	UFUNCTION(BlueprintCallable)
-		FItemData swap(FItemData item, int index);
+		FItemBaseData swap(FItemBaseData item, int index);
 	UFUNCTION(BlueprintCallable)
-		FItemData takeItem(int index);
+		FItemBaseData takeItem(int index);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)//, ExposeOnSpawn = "true")
 		int32 inventorySize UMETA(ExposeOnSpawn = "true");
-	TArray<FItemData> items;
+	TArray<FItemBaseData> items;
 
 	UFUNCTION(BlueprintCallable)
-		TArray<FItemData> GetItems();
+		TArray<FItemBaseData> GetItems();
 	UFUNCTION(BlueprintCallable)
 		FString Test();
 
