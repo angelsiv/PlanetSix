@@ -132,6 +132,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
 		UWeaponComponent* WeaponComponent;
 
+	/** Vector to shoot towards */
+	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
+		FVector CameraCrosshair;
+
 	/** Player's HUD. */
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		UUserWidget* MainHUD;
