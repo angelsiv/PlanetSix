@@ -4,13 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "InventoryComponent.h"
 #include "Components/SphereComponent.h"
+#include "InventoryComponent.h"
 #include "ItemBase.generated.h"
 
 
-
-//struct FitemInv;
+//struct FItemData;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API AItemBase : public AActor
@@ -34,16 +33,16 @@ protected:
 		USphereComponent* sphereCollider;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FItemData itemData UMETA(ExposeOnSpawn = "true");
+		FItemBaseData itemData UMETA(ExposeOnSpawn = "true");
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-		FItemData ToItemInv();
+		FItemBaseData ToItemInv();
 
-	void Init(FItemData item);
+	void Init(FItemBaseData item);
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
