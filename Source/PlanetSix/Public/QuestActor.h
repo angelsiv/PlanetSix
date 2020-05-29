@@ -77,7 +77,7 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
-
+	bool IsQuestActive=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FQuestInfo Questinfo;

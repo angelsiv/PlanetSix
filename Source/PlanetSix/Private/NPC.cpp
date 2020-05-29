@@ -54,22 +54,6 @@ void ANPC::Tick(float DeltaTime)
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
 	
-
-	//This is to Show The informations of the Quest in the Widget 
-
-	//		if (SpecifiedQuestOFNPC) 
-	//		{
-	//			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->Questinfo.QuestName;
-	//			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->Questinfo.QuestDescription;
-
-	//			for (int32 i = 0; i < SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
-	//			{
-	//				Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
-	//			}
-
-	
-
-		
 	
 }
 

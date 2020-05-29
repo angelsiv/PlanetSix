@@ -84,14 +84,26 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 	}
 }
 
-void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
+void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Portal = Cast<AMapTravel>(OtherActor);
 	NPCReference = Cast<ANPC>(OtherActor);
 
-	if (NPCReference) 
+	if (NPCReference)
 	{
 		NPCReference->textrender->SetVisibility(true);
+
+		if (NPCReference->SpecifiedQuestOFNPC)
+		{
+			WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.QuestName;
+			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.QuestDescription;
+
+			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
+			{
+				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
+
+			}
+		}
 	}
 }
 
@@ -101,7 +113,6 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
 	{
 		Portal = nullptr;
 	}
-
 	if (Cast<ANPC>(OtherActor)) 
 	{
 		NPCReference->textrender->SetVisibility(false);
@@ -199,7 +210,6 @@ void APlanetSixCharacter::MoveRight(float Value)
 void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
 }
 
 void APlanetSixCharacter::Interact()
@@ -217,19 +227,27 @@ void APlanetSixCharacter::Interact()
 			//check if Dialogue widget exists 
 			if (NPCQuestWidgetClass)
 			{
-					WidgetQuestNPC->AddToViewport();
-					PC->SetInputMode(FInputModeUIOnly());
-					PC->bShowMouseCursor = true;
-					PC->bEnableClickEvents = true;
-					PC->bEnableMouseOverEvents = true;
-					PC->SetIgnoreMoveInput(true);
-				
+					
+				if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive) 
+				 {
+				 print("Quest is Already activated",5);
+				 }
+
+					else 
+					{
+						WidgetQuestNPC->AddToViewport();
+						PC->SetInputMode(FInputModeUIOnly());
+						PC->bShowMouseCursor = true;
+						PC->bEnableClickEvents = true;
+						PC->bEnableMouseOverEvents = true;
+						PC->SetIgnoreMoveInput(true);
+					}
 			}
 		}
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
 	}
 
 	/* Interaction with Travel Portal */
@@ -237,6 +255,7 @@ void APlanetSixCharacter::Interact()
 	{
 		Portal->TravelTo();
 	}
+
 
 }
 
@@ -302,12 +321,9 @@ void APlanetSixCharacter::QuestLog()
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;
 
-
-
 	}
 	else if (Incrementor % 2 == 0)
 	{
-
 		WidgetQuestLog->RemoveFromParent();
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->bShowMouseCursor = false;
@@ -316,7 +332,6 @@ void APlanetSixCharacter::QuestLog()
 		CameraBoom->bUsePawnControlRotation = true;
 
 	}
-
 }
 
 /** Open the skills menu */
