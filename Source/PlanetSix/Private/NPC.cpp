@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NPC.h"
-#include "Components/BoxComponent.h"
 #include"Engine.h"
 
 // Sets default values
@@ -21,9 +20,6 @@ ANPC::ANPC()
 	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
 	skeleton->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-	
-
 
 }
 

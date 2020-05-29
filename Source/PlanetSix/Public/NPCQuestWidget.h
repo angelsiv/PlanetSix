@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "QuestActor.h"
 #include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine.h"
-#include "Components/CanvasPanel.h"
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
 #include "NPCQuestWidget.generated.h"
@@ -36,11 +34,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UTextBlock* TextObjectives;
-
-
-	FObjectiveData data;
-
-
 
 public:
 
