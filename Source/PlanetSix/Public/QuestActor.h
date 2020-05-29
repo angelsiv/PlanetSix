@@ -39,7 +39,6 @@ struct FObjectiveData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
 
-
 };
 
 

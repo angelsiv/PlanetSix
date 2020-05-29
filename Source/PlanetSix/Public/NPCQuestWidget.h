@@ -6,13 +6,10 @@
 #include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine.h"
-#include "Components/Button.h"
 #include "Components/EditableTextBox.h"
 #include "NPCQuestWidget.generated.h"
 
-
 class UButton;
-
 
 UCLASS()
 class PLANETSIX_API UNPCQuestWidget : public UUserWidget
@@ -35,6 +32,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UTextBlock* TextObjectives;
 
+	
 public:
 
 	UNPCQuestWidget(const FObjectInitializer& ObjectInitializer);

@@ -62,8 +62,8 @@ APlanetSixCharacter::APlanetSixCharacter()
 	//bReplicateMovement = true;
 
 
+	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
-
 
 }
 
@@ -87,7 +87,12 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
 {
 	Portal = Cast<AMapTravel>(OtherActor);
-	print("Press F to Interact with portal", 0);
+	NPCReference = Cast<ANPC>(OtherActor);
+
+	if (NPCReference) 
+	{
+		NPCReference->textrender->SetVisibility(true);
+	}
 }
 
 void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
@@ -96,6 +101,13 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
 	{
 		Portal = nullptr;
 	}
+
+	if (Cast<ANPC>(OtherActor)) 
+	{
+		NPCReference->textrender->SetVisibility(false);
+		NPCReference = nullptr;
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -191,47 +203,27 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 }
 
 void APlanetSixCharacter::Interact()
-{
-	
+{	
 	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
 	//check if the player is the perimiter of the NPC 
-	if (bIsInPerimiterOfNPC)
+	if (NPCReference)
 	{
-		IndexDialogue++;
-
 		//If player controller is not null 
 		if (PC)
 		{
 			//check if Dialogue widget exists 
 			if (NPCQuestWidgetClass)
 			{
-
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
-
-				//increment the dialogue varible to show the Widget if index = 1 
-				if (IndexDialogue % 2 == 1)
-				{
 					WidgetQuestNPC->AddToViewport();
 					PC->SetInputMode(FInputModeUIOnly());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
 					PC->SetIgnoreMoveInput(true);
-				}
-
-				else
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-					WidgetQuestNPC->RemoveFromParent();
-					/*PC->SetInputMode(FInputModeGameOnly());*/
-					PC->bShowMouseCursor = false;
-					PC->bEnableClickEvents = false;
-					PC->bEnableMouseOverEvents = false;
-					PC->SetIgnoreMoveInput(false);
-				}
+				
 			}
 		}
 	}
@@ -245,6 +237,7 @@ void APlanetSixCharacter::Interact()
 	{
 		Portal->TravelTo();
 	}
+
 }
 
 /** Reload the player's weapon */

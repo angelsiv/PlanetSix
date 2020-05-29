@@ -53,48 +53,28 @@ void ANPC::Tick(float DeltaTime)
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	auto Character = Cast<APlanetSixCharacter>(OtherActor);
+	
 
-	if (Character) {
-	Character->bIsInPerimiterOfNPC = true;
+	//This is to Show The informations of the Quest in the Widget 
 
-		if (Character->bIsInPerimiterOfNPC == true)
-		{
-			if (SpecifiedQuestOFNPC) 
-			{
-				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->Questinfo.QuestName;
-				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->Questinfo.QuestDescription;
+	//		if (SpecifiedQuestOFNPC) 
+	//		{
+	//			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->Questinfo.QuestName;
+	//			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->Questinfo.QuestDescription;
 
-				for (int32 i = 0; i < SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
-				{
-					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
-				}
+	//			for (int32 i = 0; i < SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
+	//			{
+	//				Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
+	//			}
 
-			}
-			//set visible the Text renderer of the NPC
-			textrender->SetVisibility(true);
+	
 
-		}
-	}
+		
+	
 }
 
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	
-	if (Character != nullptr) 
-	{
-		Character->bIsInPerimiterOfNPC = false;
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
-		////set invisible the Text renderer of the NPC
-		textrender->SetVisibility(false);
-
-		/*if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 
-		{
-			Character->IndexDialogue = 0;
-			
-			Character->WidgetDialogue->RemoveFromParent();
-		}*/
-	}
 }

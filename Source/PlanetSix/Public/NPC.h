@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PlanetSixCharacter.h"
+//#include "PlanetSixCharacter.h"
 #include "QuestActor.h"
 #include "NPC.generated.h"
 
