@@ -42,6 +42,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed")
 		float FireRate;
 
+	/** Condition of the weapon : determines if the weapon jams faster or not */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Condition")
+		float WeaponCondition;
+
+	/** Is the weapon jammed */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Condition")
+		bool bIsWeaponJammed;
+
 	/** when shooting, percentage of recoil */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
 		float RecoilRate;
@@ -82,6 +90,7 @@ protected:
 
 	void Recoil();
 	void StopRecoil();
+	bool IsWeaponJammed();
 
 public:	
 	// Called every frame

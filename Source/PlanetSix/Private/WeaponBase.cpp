@@ -23,6 +23,14 @@ void AWeaponBase::BeginPlay()
 
 void AWeaponBase::Fire()
 {
+	//logic of firing : can't fire if jammed
+	if (bIsWeaponJammed == false)
+	{
+
+	}
+
+	//did the weapon jam ? (it should be a low percentage of chance)
+	bIsWeaponJammed = IsWeaponJammed();
 }
 
 void AWeaponBase::Reload()
@@ -33,10 +41,17 @@ void AWeaponBase::Reload()
 
 void AWeaponBase::Recoil()
 {
+
 }
 
 void AWeaponBase::StopRecoil()
 {
+
+}
+
+bool AWeaponBase::IsWeaponJammed()
+{
+	return false;
 }
 
 // Called every frame
@@ -45,4 +60,3 @@ void AWeaponBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
