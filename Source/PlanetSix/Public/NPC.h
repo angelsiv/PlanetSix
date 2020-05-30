@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PlanetSixCharacter.h"
-#include "NPCQuestWidget.h"
 #include "QuestActor.h"
 #include "NPC.generated.h"
 
@@ -14,20 +12,14 @@ class UTextRenderComponent;
 class USkeletalMeshComponent;
 
 
-
-
 UCLASS()
 class PLANETSIX_API ANPC : public AActor
 {
 	GENERATED_BODY()
 
-
 public:	
 	// Sets default values for this actor's properties
 	ANPC();
-
-	UPROPERTY(EditAnywhere)
-		USceneComponent* ScenecomponentRoot;
 
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* boxcomponent;
@@ -44,9 +36,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		AQuestActor* SpecifiedQuestOFNPC;
 
-	UPROPERTY(EditAnywhere)
-	UNPCQuestWidget* NPCQuestWidgetref;
-	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -59,7 +48,6 @@ public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
-
 	
 
 };

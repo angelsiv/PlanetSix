@@ -7,14 +7,9 @@
 #include "NPCDialogueWidget.generated.h"
 
 
-
-
-
 UCLASS()
 class PLANETSIX_API UNPCDialogueWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
-
 
 };

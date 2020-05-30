@@ -74,7 +74,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 
+
+	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
 }
 
 void APlanetSixCharacter::UpdateUI()
@@ -94,10 +97,27 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 	}
 }
 
-void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
+void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Portal = Cast<AMapTravel>(OtherActor);
-	print("Press F to Interact with portal", 0);
+	NPCReference = Cast<ANPC>(OtherActor);
+
+	if (NPCReference)
+	{
+		NPCReference->textrender->SetVisibility(true);
+
+		if (NPCReference->SpecifiedQuestOFNPC)
+		{
+			WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.QuestName;
+			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.QuestDescription;
+
+			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
+			{
+				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
+
+			}
+		}
+	}
 }
 
 void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
@@ -106,6 +126,12 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
 	{
 		Portal = nullptr;
 	}
+	if (Cast<ANPC>(OtherActor)) 
+	{
+		NPCReference->textrender->SetVisibility(false);
+		NPCReference = nullptr;
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,57 +223,44 @@ void APlanetSixCharacter::MoveRight(float Value)
 void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
 }
 
 void APlanetSixCharacter::Interact()
-{
-	
+{	
 	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
 	//check if the player is the perimiter of the NPC 
-	if (bIsInPerimiterOfNPC)
+	if (NPCReference)
 	{
-		IndexDialogue++;
-
 		//If player controller is not null 
 		if (PC)
 		{
 			//check if Dialogue widget exists 
 			if (NPCQuestWidgetClass)
 			{
+					
+				if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive) 
+				 {
+				 print("Quest is Already activated",5);
+				 }
 
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
-
-				//increment the dialogue varible to show the Widget if index = 1 
-				if (IndexDialogue % 2 == 1)
-				{
-					WidgetQuestNPC->AddToViewport();
-					PC->SetInputMode(FInputModeUIOnly());
-					PC->bShowMouseCursor = true;
-					PC->bEnableClickEvents = true;
-					PC->bEnableMouseOverEvents = true;
-					PC->SetIgnoreMoveInput(true);
-				}
-
-				else
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-					WidgetQuestNPC->RemoveFromParent();
-					/*PC->SetInputMode(FInputModeGameOnly());*/
-					PC->bShowMouseCursor = false;
-					PC->bEnableClickEvents = false;
-					PC->bEnableMouseOverEvents = false;
-					PC->SetIgnoreMoveInput(false);
-				}
+					else 
+					{
+						WidgetQuestNPC->AddToViewport();
+						PC->SetInputMode(FInputModeUIOnly());
+						PC->bShowMouseCursor = true;
+						PC->bEnableClickEvents = true;
+						PC->bEnableMouseOverEvents = true;
+						PC->SetIgnoreMoveInput(true);
+					}
 			}
 		}
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
 	}
 
 	/* Interaction with Travel Portal */
@@ -255,6 +268,8 @@ void APlanetSixCharacter::Interact()
 	{
 		Portal->TravelTo();
 	}
+
+
 }
 
 /** Reload the player's weapon */
@@ -319,12 +334,9 @@ void APlanetSixCharacter::QuestLog()
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;
 
-
-
 	}
 	else if (Incrementor % 2 == 0)
 	{
-
 		WidgetQuestLog->RemoveFromParent();
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->bShowMouseCursor = false;
@@ -333,7 +345,6 @@ void APlanetSixCharacter::QuestLog()
 		CameraBoom->bUsePawnControlRotation = true;
 
 	}
-
 }
 
 /** Open the skills menu */
