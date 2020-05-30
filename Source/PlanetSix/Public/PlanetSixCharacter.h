@@ -143,6 +143,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
 		TSubclassOf<UUserWidget> InGameMenu;
 
+	UPROPERTY(EditAnywhere, Category = "Item")
+		 TSubclassOf<AItemBase> ItemBP;
+
+	UPROPERTY(EditAnywhere, Category = "Item")
+	UStaticMesh* ItemMesh;
+
 protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);

@@ -433,6 +433,7 @@ bool APlanetSixCharacter::DropItem(FItemBaseData item)
 		FVector forward = GetTransform().GetLocation().ForwardVector * DropDistance;
 		FVector playerLocation = GetTransform().GetLocation();
 		FVector DropLocation = forward + playerLocation;
+
 		FRotator rotation = GetTransform().GetRotation().Rotator();
 		TSubclassOf<AItemBase> ItemClass;
 

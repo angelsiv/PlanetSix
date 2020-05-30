@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InventoryComponent.h"
+#include "ItemBase.h"
+#include "Engine.h"
 
 
 #pragma region Inventory
@@ -9,6 +11,7 @@ UInventoryComponent::UInventoryComponent()
 {
 	items = TArray<FItemBaseData>();
 	items.Init(FItemBaseData(), 10);
+	
 }
 
 
