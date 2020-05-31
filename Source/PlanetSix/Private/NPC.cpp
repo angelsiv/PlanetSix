@@ -66,12 +66,12 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 		{
 			if (SpecifiedQuestOFNPC) 
 			{
-				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->Questinfo.QuestName;
-				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->Questinfo.QuestDescription;
+				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestData.QuestName;
+				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestData.QuestDescription;
 
-				for (int32 i = 0; i < SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
+				for (int32 i = 0; i < SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
 				{
-					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
+					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
 				}
 
 			}

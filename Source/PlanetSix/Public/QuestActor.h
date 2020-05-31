@@ -44,7 +44,7 @@ struct FObjectiveData
 
 
 USTRUCT(BlueprintType)
-struct FQuestInfo 
+struct FQuestData 
 {
 	GENERATED_BODY()
 
@@ -81,7 +81,7 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	FQuestInfo Questinfo;
+	FQuestData QuestData;
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)
