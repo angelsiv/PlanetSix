@@ -12,6 +12,21 @@
 
 class APlanetSixCharacter;
 
+USTRUCT()
+
+struct PLANETSIX_API FEnemyInfo
+{
+
+	GENERATED_USTRUCT_BODY()
+
+public:
+	int32 EnemyID;
+	bool bIsDead;
+
+
+};
+
+
 UCLASS()
 class PLANETSIX_API APlanetSixEnemy : public APawn
 {
@@ -34,7 +49,9 @@ protected:
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UAttributesComponent* Attributes;
 	
-	bool bIsDead;
+	//Enemy Stats
+	FEnemyInfo Info;
+
 
 protected:
 	// Called when the game starts or when spawned

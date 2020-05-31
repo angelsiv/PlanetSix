@@ -8,7 +8,7 @@
 
 
 
-class AItem_base;
+class AItemBase;
 //enum  componentType { Id, Name, Value, Weight, Quantity };
 
 ///** Base Attributes for all characters. */

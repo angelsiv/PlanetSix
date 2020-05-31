@@ -62,7 +62,7 @@ void APlanetSixEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 bool APlanetSixEnemy::IsDead(float damage) {
 
-	return bIsDead;
+	return Info.bIsDead;
 
 }
 
