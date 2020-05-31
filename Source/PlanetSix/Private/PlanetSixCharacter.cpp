@@ -108,12 +108,12 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 
 		if (NPCReference->SpecifiedQuestOFNPC)
 		{
-			WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.QuestName;
-			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.QuestDescription;
+			WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
+			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
 
-			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->Questinfo.objectives.Num(); i++)
+			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
 			{
-				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->Questinfo.objectives[i].ObjectiveDescription;
+				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
 
 			}
 		}

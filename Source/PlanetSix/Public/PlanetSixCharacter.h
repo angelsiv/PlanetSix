@@ -54,12 +54,12 @@ class APlanetSixCharacter : public ACharacter
 public:
 	APlanetSixCharacter();
 
-	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		FString UserName;
+	////Player Stats
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	//	FString UserName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		int32 Level;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	//	int32 Level;
 	//PlayerCharacter values
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FPlayerInfo Playerinfo;
@@ -107,10 +107,10 @@ public:
 	UQuestWidget* WidgetQuestLog;
 
 	    //QuestInfos for player 
-		TArray<FQuestInfo> QuestInfos;
+		TArray<FQuestData> QuestInfos;
 
 	   //Quest Accepted By Player
-		FQuestInfo QuestAccepted;
+		FQuestData QuestAccepted;
 
 	   //Reference to NPC Actor
 		ANPC* NPCReference;

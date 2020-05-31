@@ -2,4 +2,20 @@
 
 
 #include "PlanetSixGameInstance.h"
+#include "PlanetSixPlayerState.h"
 
+void UPlanetSixGameInstance::SetPlayerInfo(FPlayerInfo info)
+{
+	PlayerInfo = info;
+	
+	
+	
+	ReloadNetwork();
+}
+
+void UPlanetSixGameInstance::ReloadNetwork()
+{
+	APlanetSixPlayerState* PlayerState = GetPrimaryPlayerController()->GetPlayerState<APlanetSixPlayerState>();
+	PlayerState->ReloadPlayerInfo();
+
+}
