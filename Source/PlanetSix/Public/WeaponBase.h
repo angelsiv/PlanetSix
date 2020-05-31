@@ -26,6 +26,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Components")
 		USkeletalMeshComponent* SKMeshComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = Mesh, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		class USceneComponent* MuzzleLocation;
+
 	/** ammo currently stored in the magazine. when shooting, this is the ammo used. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		int32 AmmoInMagazine;
@@ -48,7 +51,7 @@ protected:
 
 	/** Is the weapon jammed */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Condition")
-		bool bIsWeaponJammed;
+		bool bIsWeaponJammed = false;
 
 	/** when shooting, percentage of recoil */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")
