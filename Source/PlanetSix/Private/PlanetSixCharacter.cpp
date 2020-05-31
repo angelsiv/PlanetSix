@@ -9,6 +9,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
+#include "NPCDialogueWidget.h"
+#include "QuestWidget.h"
+#include "Net/UnrealNetwork.h"
+#include "NPCQuestWidget.h"
+#include "Components/WidgetComponent.h"
+
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -41,7 +47,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
+	CameraBoom->TargetArmLength = 270.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
 	// Create a follow camera
@@ -49,6 +55,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	//CameraCrosshair = CreateDefaultSubobject<FVector>(TEXT("Camera Crosshair"));
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
@@ -58,13 +65,16 @@ APlanetSixCharacter::APlanetSixCharacter()
 	//Initialize Class
 	Class = CreateDefaultSubobject<UClassComponent>(TEXT("Class Component"));
 
-	SetReplicates(true);
-	//bReplicateMovement = true;
+	//Initialize Inventory
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
+	InventoryComponent->inventorySize = 12;
 
+	//Initialize weapon component
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon Component"));
+
+	SetReplicates(true);
 
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
-
-
 }
 
 void APlanetSixCharacter::UpdateUI()
@@ -192,6 +202,7 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 
 void APlanetSixCharacter::Interact()
 {
+	
 	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
@@ -207,6 +218,7 @@ void APlanetSixCharacter::Interact()
 			//check if Dialogue widget exists 
 			if (NPCQuestWidgetClass)
 			{
+
 				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
 
 				//increment the dialogue varible to show the Widget if index = 1 
@@ -302,7 +314,7 @@ void APlanetSixCharacter::QuestLog()
 
 		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
 		WidgetQuestLog->AddToViewport();
-		PC->SetInputMode(FInputModeGameAndUI());
+		PC->SetInputMode(FInputModeUIOnly());
 		PC->bShowMouseCursor = true;
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;
@@ -401,4 +413,28 @@ void APlanetSixCharacter::OpenIngameMenu()
 	CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
 
 	Cast<APlayerController>(Controller)->bShowMouseCursor = true;
+}
+
+bool APlanetSixCharacter::DropItem(FItemBaseData item)
+{
+	if (item.getId() != 0)
+	{
+		FVector forward = GetTransform().GetLocation().ForwardVector * DropDistance;
+		FVector playerLocation = GetTransform().GetLocation();
+		FVector DropLocation = forward + playerLocation;
+
+		FRotator rotation = GetTransform().GetRotation().Rotator();
+		TSubclassOf<AItemBase> ItemClass;
+
+
+		AItemBase* Spawneditem = (AItemBase*)GetWorld()->SpawnActor(ItemClass, &DropLocation, &rotation);
+		Spawneditem->Init(item);
+		return true;
+	}
+	return false;
+}
+
+void APlanetSixCharacter::Tick(float DeltaSeconds)
+{
+	//CameraCrosshair = FollowCamera->GetForwardVector();
 }

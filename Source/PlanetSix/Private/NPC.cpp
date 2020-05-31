@@ -59,25 +59,22 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 
-	/*auto test = SpecifiedQuestOFNPC->QuestName.ToString();
-	auto test2 = SpecifiedQuestOFNPC->QuestDescription.ToString();*/
-
-	
 	if (Character) {
 	Character->bIsInPerimiterOfNPC = true;
 
 		if (Character->bIsInPerimiterOfNPC == true)
 		{
+			if (SpecifiedQuestOFNPC) 
+			{
+				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestData.QuestName;
+				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestData.QuestDescription;
 
-			Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestName;
-			Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
-			//NPCQuestWidgetref->TextDescription->Text = SpecifiedQuestOFNPC->QuestDescription;
+				for (int32 i = 0; i < SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
+				{
+					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
+				}
 
-			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Show me text"));*/
-
-			/*GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test);
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, test2);*/
-
+			}
 			//set visible the Text renderer of the NPC
 			textrender->SetVisibility(true);
 
@@ -89,11 +86,10 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	auto Character = Cast<APlanetSixCharacter>(OtherActor);
-	Character->bIsInPerimiterOfNPC = false;
-
+	
 	if (Character != nullptr) 
 	{
-		
+		Character->bIsInPerimiterOfNPC = false;
 		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
 		////set invisible the Text renderer of the NPC
 		textrender->SetVisibility(false);
@@ -104,6 +100,5 @@ void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 			
 			Character->WidgetDialogue->RemoveFromParent();
 		}*/
-		
 	}
 }
