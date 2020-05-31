@@ -59,10 +59,15 @@ FItemBaseData AItemBase::ToItemInv()
 
 void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
 {
+	//publish
 	auto Player = Cast<APlanetSixCharacter>(OtherActor);
+
+	
 
 	if (Player)
 	{
+		auto fs = OnPickUp.Execute(itemData.getId(),itemData.getQuantity());
+
 		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
 		{
 			this->Destroy();
