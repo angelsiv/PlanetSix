@@ -31,10 +31,11 @@ void AWeaponBase::Fire()
 	//logic of firing : can't fire if jammed
 	if (bIsWeaponJammed == false)
 	{
+		APlayerCameraManager* CameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		FVector StartFiringLocation;
 		FVector EndFiringLocation;
 		StartFiringLocation = MuzzleLocation->GetComponentLocation();
-		EndFiringLocation = OwnerPlayer->CameraCrosshair;
+		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(OwnerPlayer);
 		QueryParams.AddIgnoredActor(this);
@@ -43,8 +44,9 @@ void AWeaponBase::Fire()
 		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
-
+			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
+			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
 	}
 
@@ -55,7 +57,7 @@ void AWeaponBase::Fire()
 void AWeaponBase::Reload()
 {
 	// check if owner player has enough ammo in his bag
-	OwnerPlayer->WeaponComponent->GetPrimaryAmmo().CurrentAmmo;
+	//OwnerPlayer->WeaponComponent->GetPrimaryAmmo();
 }
 
 void AWeaponBase::Recoil()

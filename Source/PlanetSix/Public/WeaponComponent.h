@@ -62,15 +62,15 @@ protected:
 	virtual void BeginPlay() override;
 
 	/** primary ammo currently stored in the backpack. when reloading, this is the ammo used. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo")
 		FAmmoData PrimaryAmmo;
 
 	/** secondary ammo currently stored in the backpack. when reloading, this is the ammo used. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo")
 		FAmmoData SecondaryAmmo;
 
 	/** tertiary ammo currently stored in the backpack. when reloading, this is the ammo used. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo")
 		FAmmoData TertiaryAmmo;
 
 public:
@@ -78,12 +78,22 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	/** Get the primary Ammo in the bag */
+	UFUNCTION(BlueprintPure)
+		float GetPrimaryAmmo() { return PrimaryAmmo.GetCurrentValue(); }
+	/** Get the secondary Ammo in the bag */
+	UFUNCTION(BlueprintPure)
+		float GetSecondaryAmmo() { return SecondaryAmmo.GetCurrentValue(); }
+	/** Get the tertiary Ammo in the bag */
+	UFUNCTION(BlueprintPure)
+		float GetTertiaryAmmo() { return TertiaryAmmo.GetCurrentValue(); }
+
+	/** Get the primary Ammo in the bag */
 	UFUNCTION(Blueprintable)
-		FAmmoData GetPrimaryAmmo() { return PrimaryAmmo; }
+		void SetPrimaryAmmo(float NewValue) { PrimaryAmmo.SetCurrentValue(NewValue); }
 	/** Get the secondary Ammo in the bag */
 	UFUNCTION(Blueprintable)
-		FAmmoData GetSecondaryAmmo() { return SecondaryAmmo; }
+		void SetSecondaryAmmo(float NewValue) { SecondaryAmmo.SetCurrentValue(NewValue); }
 	/** Get the tertiary Ammo in the bag */
 	UFUNCTION(Blueprintable)
-		FAmmoData GetTertiaryAmmo() { return TertiaryAmmo; }
+		void SetTertiaryAmmo(float NewValue) { TertiaryAmmo.SetCurrentValue(NewValue); }
 };

@@ -2,6 +2,7 @@
 
 
 #include "WeaponComponent.h"
+#include "Engine.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -23,7 +24,8 @@ void UWeaponComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("WeaponComp Initiated"));
+
 }
 
 
