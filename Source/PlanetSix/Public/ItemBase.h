@@ -59,7 +59,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(Category = Item, VisibleAnywhere, BlueprintReadWrite,meta = (AllowPrivateAccess = "true"))
-		UStaticMeshComponent* mesh;
+		class UStaticMeshComponent* mesh;
 	UPROPERTY(Category = Item, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		USphereComponent* sphereCollider;
 	

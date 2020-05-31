@@ -11,7 +11,7 @@ UInventoryComponent::UInventoryComponent()
 {
 	items = TArray<FItemBaseData>();
 	items.Init(FItemBaseData(), 10);
-	
+	//GEngine->AddOnScreenDebugMessage(TEXT("fewqef "), FColor::Emerald);
 }
 
 
