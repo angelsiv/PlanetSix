@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h"
+#include "UObject/ConstructorHelpers.h"
 #include "QuestActor.generated.h"
 
 
@@ -42,26 +44,26 @@ struct FObjectiveData
 
 
 USTRUCT(BlueprintType)
-struct FQuestData 
+struct FQuestData :public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	    int QuestID;//=questdatatable.questID 
 
 	//this is the name of the quest 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FText QuestName;
 
 	//Quest description
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FText QuestDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsStoryQuest;
 
 	//array of objective so that each quest can have a multiple objectives
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
 	bool operator==(const FQuestData& Q) const;
@@ -86,7 +88,14 @@ public:
 	bool IsQuestActive=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	FQuestData QuestData;
+	FName NameOfQuest;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	class UDataTable* QuestDatable;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FQuestData QuestData;
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)

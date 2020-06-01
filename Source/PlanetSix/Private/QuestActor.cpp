@@ -3,11 +3,24 @@
 
 #include "QuestActor.h"
 
+
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 // Sets default values
 AQuestActor::AQuestActor()
 {
+	
+
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
+	if (QuestActorDataObject.Succeeded()) 
+	{
+		QuestDatable = QuestActorDataObject.Object;
+		
+	}
+
 
 }
 
@@ -23,6 +36,8 @@ void AQuestActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
+
 }
 
 
