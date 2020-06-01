@@ -48,7 +48,6 @@ struct FQuestData :public FTableRowBase
 {
 	GENERATED_BODY()
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	    int QuestID;//=questdatatable.questID 
 
@@ -90,6 +89,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FName NameOfQuest;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	class UDataTable* QuestDatable;
