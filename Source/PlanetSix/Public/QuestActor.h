@@ -39,7 +39,6 @@ struct FObjectiveData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
 
-
 };
 
 
@@ -66,8 +65,15 @@ struct FQuestData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
+	bool operator==(const FQuestData& Q) const;
+
 };
 
+///Quest Data FORCEINLINES
+FORCEINLINE bool FQuestData::operator==(const FQuestData& Q) const
+{
+	return QuestID == Q.QuestID;
+}
 
 UCLASS()
 class PLANETSIX_API AQuestActor : public AActor
@@ -78,7 +84,7 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
-
+	bool IsQuestActive=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FQuestData QuestData;

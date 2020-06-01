@@ -22,12 +22,17 @@ void UNPCQuestWidget::NativeConstruct() {
 void UNPCQuestWidget::AcceptQuest()
 {
 	RemoveFromParent();
-
+/*	if (NPCRef) 
+	{
+		NPCRef->SpecifiedQuestOFNPC->IsQuestActive = true;
+	}*/
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questaccepted"));
 }
 
 void UNPCQuestWidget::RejectQuest()
 {
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questrejected"));
 
 }

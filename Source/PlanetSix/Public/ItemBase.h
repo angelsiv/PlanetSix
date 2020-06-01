@@ -12,27 +12,27 @@
 //struct FItemData;
 DECLARE_DELEGATE_RetVal_TwoParams(int, FItemPickUp, int, int)
 
-USTRUCT(BlueprintType)
-struct PLANETSIX_API FQuestInfo //: public UObject
-{
-	GENERATED_USTRUCT_BODY()
-
-public:
-	FQuestInfo() {};
-	FQuestInfo(int Id,int Quantity)
-		: QuestId(Id),
-		quantity(Quantity)
-	{};
-
-
-protected:
-	int QuestId;
-	int quantity;
-
-public:
-
-	
-};
+//USTRUCT(BlueprintType)
+//struct PLANETSIX_API FQuestInfo //: public UObject
+//{
+//	GENERATED_USTRUCT_BODY()
+//
+//public:
+//	FQuestInfo() {};
+//	FQuestInfo(int Id,int Quantity)
+//		: QuestId(Id),
+//		quantity(Quantity)
+//	{};
+//
+//
+//protected:
+//	int QuestId;
+//	int quantity;
+//
+//public:
+//
+//	
+//};
 
 
 

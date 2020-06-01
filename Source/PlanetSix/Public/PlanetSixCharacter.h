@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "ItemBase.h"
 #include "QuestActor.h"
+#include "NPC.h"
+#include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
 #include "InventoryComponent.h"
 #include "WeaponComponent.h"
@@ -32,7 +34,7 @@ public:
 		int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-		bool HasQuestItem;
+		TArray<FQuestData> QuestsRegistered;
 
 };
 
@@ -52,15 +54,15 @@ class APlanetSixCharacter : public ACharacter
 public:
 	APlanetSixCharacter();
 
-	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		FString UserName;
+	////Player Stats
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	//	FString UserName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		int32 Level;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	//	int32 Level;
 	//PlayerCharacter values
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FPlayerInfo Playerinfo;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		//FPlayerInfo Playerinfo;
 
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -76,29 +78,23 @@ public:
 	/** Interact with object or player */
 	void Interact();
 
-	//boolean variable to check if player is in the perimeter of the player
-	bool bIsInPerimiterOfNPC = false;
-
-	/*Dialogue Sections */
-  //this the incrementor for widgetclass 
-	int IndexDialogue = 0;
+	/*Incrementor For the Quest Widget Log*/
 	int Incrementor = 0;
 
 	//Specified Portal  
-	AMapTravel* Portal;
+		AMapTravel* Portal;
+	
+		/*//this is to create the widget of the dialogue  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
+			TSubclassOf<UUserWidget> DialogueWidgetClass;
 
-	/*//this is to create the widget of the dialogue
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
-		TSubclassOf<UUserWidget> DialogueWidgetClass;
+		//this is for the specific dialogue 
+		UNPCDialogueWidget* WidgetDialogue;*/
 
-	//this is for the specific dialogue
-	UNPCDialogueWidget* WidgetDialogue;*/
+		//this is to create the widget of the NPCQuest  
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
 
-	//this is to create the widget of the NPCQuest  
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
-		TSubclassOf<UUserWidget>NPCQuestWidgetClass;
-
-	//this is for the specific dialogue 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
 		UNPCQuestWidget* WidgetQuestNPC;
 
@@ -110,11 +106,15 @@ public:
 	//this is for the WidgetQuestLog
 	UQuestWidget* WidgetQuestLog;
 
-	//QuestInfos for player 
-	TArray<FQuestInfo> QuestInfos;
+	    //QuestInfos for player 
+		//TArray<FQuestData> QuestInfos;
 
-	//Quest Accepted By Player
-	FQuestInfo QuestAccepted;
+	   //Quest Accepted By Player
+		FQuestData QuestAccepted;
+
+	   //Reference to NPC Actor
+		ANPC* NPCReference;
+
 
 	/** Player's attributes. */
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
@@ -172,6 +172,8 @@ protected:
 	void Reload();
 
 	/** Crouch  */
+
+
 
 	/** Melee Attack with any weapon */
 	void MeleeAttack();

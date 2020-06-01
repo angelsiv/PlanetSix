@@ -3,18 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "QuestActor.h"
 #include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
+#include "NPC.h"
 #include "Engine.h"
-#include "Components/CanvasPanel.h"
-#include "Components/Button.h"
 #include "Components/EditableTextBox.h"
 #include "NPCQuestWidget.generated.h"
 
-
 class UButton;
-
 
 UCLASS()
 class PLANETSIX_API UNPCQuestWidget : public UUserWidget
@@ -37,11 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UTextBlock* TextObjectives;
 
-
-	FObjectiveData data;
-
-
-
+	//Reference of NPC 
+	ANPC* NPCRef;
 public:
 
 	UNPCQuestWidget(const FObjectInitializer& ObjectInitializer);

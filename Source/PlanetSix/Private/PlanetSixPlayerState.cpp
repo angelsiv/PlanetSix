@@ -59,8 +59,8 @@ void APlanetSixPlayerState::BeginPlay() {
 	}*/
 
 	//if (!HasAuthority()) {
-		ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo);
-		print("Connecting to game instance with name: " + Cast<UPlanetSixGameInstance>(GetGameInstance())->PlayerInfo.UserName, -1);
+		ReloadPlayerInfo();
+		print("Connecting to game instance with name: " + Cast<UPlanetSixGameInstance>(GetGameInstance())->GetPlayerInfo().UserName, -1);
 	//}
 }
 
@@ -70,4 +70,11 @@ void APlanetSixPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APlanetSixPlayerState, PlayerInfo);
+}
+
+
+void APlanetSixPlayerState::ReloadPlayerInfo() {
+
+	ChangeInfo(Cast<UPlanetSixGameInstance>(GetGameInstance())->GetPlayerInfo());
+
 }
