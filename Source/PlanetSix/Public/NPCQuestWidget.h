@@ -6,6 +6,7 @@
 #include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
 #include "NPC.h"
+#include "Engine/DataTable.h"
 #include "Engine.h"
 #include "Components/EditableTextBox.h"
 #include "NPCQuestWidget.generated.h"
@@ -30,6 +31,8 @@ public:
 
 	//Reference of NPC 
 	ANPC* NPCRef;
+
+
 public:
 
 	UNPCQuestWidget(const FObjectInitializer& ObjectInitializer);
