@@ -21,7 +21,7 @@ FPlayerInfo UPlanetSixGameInstance::GetPlayerInfo()
 
 void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 {
-	if (PlayerInfo.QuestsRegistered.Contains(Quest)) {
+	if (!PlayerInfo.QuestsRegistered.Contains(Quest)) {
 		
 		PlayerInfo.QuestsRegistered.Add(Quest);
 		PlayerInfo.QuestsRegistered.Sort([](const FQuestData& a, const FQuestData& b) {return a.QuestID < b.QuestID; });
