@@ -3,18 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "NPCDialogueWidget.h"
-#include "QuestWidget.h"
+#include "ItemBase.h"
 #include "QuestActor.h"
 #include "NPC.h"
 #include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
+#include "InventoryComponent.h"
+#include "WeaponComponent.h"
 #include "ClassComponent.h"
-#include "Components/WidgetComponent.h"
-#include "Net/UnrealNetwork.h"
+#include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
+class UNPCQuestWidget;
+class UQuestWidget;
+class AQuestActor;
+class APlayerController;
+class ASkill;
+class AMapTravel;
 
 USTRUCT(BlueprintType)
 struct PLANETSIX_API FPlayerInfo
@@ -23,21 +28,15 @@ struct PLANETSIX_API FPlayerInfo
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-	FString UserName;
+		FString UserName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-	int32 Level;
+		int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-	bool HasQuestItem;
+		TArray<FQuestData> QuestsRegistered;
 
 };
-
-
-
-class APlayerController;
-class ASkill;
-class AMapTravel;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ACharacter
@@ -55,15 +54,15 @@ class APlanetSixCharacter : public ACharacter
 public:
 	APlanetSixCharacter();
 
-	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		FString UserName;
+	////Player Stats
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	//	FString UserName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		int32 Level;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
+	//	int32 Level;
 	//PlayerCharacter values
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FPlayerInfo Playerinfo;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		//FPlayerInfo Playerinfo;
 
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -75,7 +74,6 @@ public:
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 		float BaseLookUpRate;
-
 
 	/** Interact with object or player */
 	void Interact();
@@ -97,21 +95,22 @@ public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
 			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
 
-		UPROPERTY(BlueprintReadWrite) UNPCQuestWidget* WidgetQuestNPC;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+		UNPCQuestWidget* WidgetQuestNPC;
 
-		/*Quest Widget UI*/
-		//this is to create teh quest LOG 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
-			TSubclassOf<UUserWidget> QuestWidgetLog;
+	/*Quest Widget UI*/
+	//this is to create teh quest LOG 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
+		TSubclassOf<UUserWidget> QuestWidgetLog;
 
-		//this is for the WidgetQuestLog
-		UQuestWidget* WidgetQuestLog;
+	//this is for the WidgetQuestLog
+	UQuestWidget* WidgetQuestLog;
 
 	    //QuestInfos for player 
-		TArray<FQuestInfo> QuestInfos;
+		//TArray<FQuestData> QuestInfos;
 
 	   //Quest Accepted By Player
-		FQuestInfo QuestAccepted;
+		FQuestData QuestAccepted;
 
 	   //Reference to NPC Actor
 		ANPC* NPCReference;
@@ -125,12 +124,30 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UClassComponent* Class;
 
+	/** Player's inventory. */
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
+		UInventoryComponent* InventoryComponent;
+
+	/** Player's weapons. */
+	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
+		UWeaponComponent* WeaponComponent;
+
+	/** Vector to shoot towards */
+	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
+		FVector CameraCrosshair;
+
 	/** Player's HUD. */
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 		UUserWidget* MainHUD;
 
 	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
 		TSubclassOf<UUserWidget> InGameMenu;
+
+	UPROPERTY(EditAnywhere, Category = "Item")
+		 TSubclassOf<AItemBase> ItemBP;
+
+	UPROPERTY(EditAnywhere, Category = "Item")
+	UStaticMesh* ItemMesh;
 
 protected:
 	/** Called for forwards/backward input */
@@ -210,10 +227,18 @@ protected:
 	/** Open Ingame Menu*/
 	void OpenIngameMenu();
 
+	/** Drop item on the ground*/
+	UFUNCTION(BlueprintCallable)
+		bool DropItem(FItemBaseData item);
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
+
+	//the distance an item is drop from the player;
+	float DropDistance = 200;
+
 
 public:
 	/** Returns CameraBoom subobject **/
@@ -226,8 +251,5 @@ public:
 		void ReceiveDamage(float Damage);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
-
-
-
-
+	virtual void Tick(float DeltaSeconds) override;
 };
