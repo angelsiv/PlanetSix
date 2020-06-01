@@ -95,6 +95,11 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 	}
 }
 
+float APlanetSixCharacter::WeaponDamage()
+{
+	return Attributes->WeaponDamage.GetCurrentValue() + FMath::CeilToFloat(FMath::Sqrt(Attributes->Level.GetCurrentValue()*10));
+}
+
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	

@@ -43,11 +43,19 @@ void AWeaponBase::Fire()
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
 		{
+			auto ActorHit = Cast<APlanetSixCharacter>(Hit.GetActor());
+			if (ActorHit != nullptr)
+			{
+				ActorHit->ReceiveDamage(OwnerPlayer->WeaponDamage());
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot touched"));
+			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
 			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
 			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
+		AmmoInMagazine--;
+		Recoil();
 	}
 
 	//did the weapon jam ? (it should be a low percentage of chance)
@@ -57,7 +65,27 @@ void AWeaponBase::Fire()
 void AWeaponBase::Reload()
 {
 	// check if owner player has enough ammo in his bag
-	//OwnerPlayer->WeaponComponent->GetPrimaryAmmo();
+	//if totalammo in reserves is empty OR magazine already full, don't reload
+	if (OwnerPlayer->WeaponComponent->GetPrimaryAmmo() <= 0 || AmmoInMagazine >= AmmoMaxInMagazine)
+	{
+		return;
+	}
+	//reload
+	else
+	{
+		//if totalammo in reserves and in the magazine is less than the full size of a magazine, reload what's left of ammo.
+		if (OwnerPlayer->WeaponComponent->GetPrimaryAmmo() + AmmoInMagazine < AmmoMaxInMagazine)
+		{
+			AmmoInMagazine += OwnerPlayer->WeaponComponent->GetPrimaryAmmo();
+			OwnerPlayer->WeaponComponent->SetPrimaryAmmo(0);
+		}
+		//normal reload
+		else
+		{
+			OwnerPlayer->WeaponComponent->SetPrimaryAmmo(OwnerPlayer->WeaponComponent->GetPrimaryAmmo() - AmmoMaxInMagazine - AmmoInMagazine);
+			AmmoInMagazine = AmmoMaxInMagazine;
+		}
+	}
 }
 
 void AWeaponBase::Recoil()

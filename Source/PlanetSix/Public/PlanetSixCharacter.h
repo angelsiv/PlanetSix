@@ -247,8 +247,13 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	/** Updates the UI with the proper numbers */
 	void UpdateUI();
+
+	/** Method that lowers the health of the character it is called upon */
 	UFUNCTION(BlueprintCallable)
 		void ReceiveDamage(float Damage);
+	/** Method that returns weapon damage  */
+	UFUNCTION(BlueprintCallable)
+		float WeaponDamage();
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	virtual void Tick(float DeltaSeconds) override;
