@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h"
+#include "UObject/ConstructorHelpers.h"
 #include "QuestActor.generated.h"
 
 
@@ -42,9 +44,10 @@ struct FObjectiveData
 
 
 USTRUCT(BlueprintType)
-struct FQuestData 
+struct FQuestData :public FTableRowBase
 {
 	GENERATED_BODY()
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	    int QuestID;//=questdatatable.questID 
@@ -86,7 +89,14 @@ public:
 	bool IsQuestActive=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	FQuestData QuestData;
+	FName NameOfQuest;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	class UDataTable* QuestDatable;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FQuestData QuestData;
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)

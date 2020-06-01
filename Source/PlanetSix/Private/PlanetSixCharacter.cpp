@@ -76,7 +76,18 @@ APlanetSixCharacter::APlanetSixCharacter()
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
 
+
+
+	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
+	if (QuestActorDataObject.Succeeded()) 
+	{
+		
+	}*/
+
 }
+
+
+
 
 void APlanetSixCharacter::UpdateUI()
 {
@@ -102,7 +113,6 @@ float APlanetSixCharacter::WeaponDamage()
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	
 	NPCReference = Cast<ANPC>(OtherActor);
 
 	if (NPCReference)
@@ -111,14 +121,14 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 
 		if (NPCReference->SpecifiedQuestOFNPC)
 		{
-			WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
+		/*	WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
 			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
 
 			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
 			{
 				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
-
 			}
+			*/
 		}
 	}
 }

@@ -95,7 +95,7 @@ public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
 			TSubclassOf<UUserWidget>NPCQuestWidgetClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+	UPROPERTY(BlueprintReadWrite)
 		UNPCQuestWidget* WidgetQuestNPC;
 
 	/*Quest Widget UI*/
