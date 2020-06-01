@@ -2,6 +2,9 @@
 
 #include "NPC.h"
 #include"Engine.h"
+#include "PlanetSixPlayerState.h"
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::Orange,text)
 
 // Sets default values
 ANPC::ANPC()
@@ -35,26 +38,30 @@ void ANPC::BeginPlay()
 	skeleton->PlayAnimation(AnimIdle, true);
 }
 
-
 // Called every frame
 void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 
 	//Add rotation to the text NOT YET PERFECT	
 	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
 
-
 }
-
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
+	auto x = Cast<ACharacter>(OtherActor);
 	
-	
+	if (x) 
+	{
+		if (x->GetPlayerState() == UGameplayStatics::GetPlayerControllerFromID(GetWorld(),0)->PlayerState) 
+		{
+			auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
+			print(y->GetPlayerName(), -1);
+		}
+	}
 }
 
 
