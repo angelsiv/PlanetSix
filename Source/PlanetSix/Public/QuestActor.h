@@ -6,16 +6,16 @@
 #include "GameFramework/Actor.h"
 #include "QuestActor.generated.h"
 
+
 UENUM(BlueprintType)
-enum  EObjectiveType 
+enum EObjectiveType 
 {
 	None = 0 UMETA(DisplayName = "None"),
 	Kill = 1 UMETA(DisplayName = "Kill"),
 	Gathering = 2 UMETA(DisplayName = "Gather"),
 	TalkToNpc = 4 UMETA(DisplayName = "Talktonpc"),
-	Location = 8 UMETA(DisplayName = "Location")
+	Location = 8 UMETA(DisplayName = "Location")//change to delegates 
 };
-
 
 USTRUCT(BlueprintType)
 struct FObjectiveData
@@ -34,7 +34,6 @@ struct FObjectiveData
 	//ID of Enemy,Number of Enemies,Also items 
 	TMap<int,int> Targets;
 
-
 	//Check if objective is complete
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
@@ -47,8 +46,8 @@ struct FQuestData
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		int QuestID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	    int QuestID;//=questdatatable.questID 
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")

@@ -11,8 +11,6 @@ void UPlanetSixGameInstance::SetPlayerInfo(FPlayerInfo info)
 {
 	PlayerInfo = info;
 
-
-
 	ReloadNetwork();
 }
 
@@ -28,7 +26,6 @@ void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 		PlayerInfo.QuestsRegistered.Add(Quest);
 		PlayerInfo.QuestsRegistered.Sort([](const FQuestData& a, const FQuestData& b) {return a.QuestID < b.QuestID; });
 		ReloadNetwork();
-	
 	}
 	else {
 		print("Quest already registered", -1);
