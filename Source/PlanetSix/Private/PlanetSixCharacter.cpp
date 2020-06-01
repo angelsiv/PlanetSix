@@ -14,7 +14,6 @@
 #include "Net/UnrealNetwork.h"
 #include "NPCQuestWidget.h"
 #include "Components/WidgetComponent.h"
-
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -74,7 +73,6 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 
-
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
 
@@ -99,7 +97,7 @@ void APlanetSixCharacter::ReceiveDamage(float Damage)
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	Portal = Cast<AMapTravel>(OtherActor);
+	
 	NPCReference = Cast<ANPC>(OtherActor);
 
 	if (NPCReference)
@@ -126,7 +124,8 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
 	{
 		Portal = nullptr;
 	}
-	if (Cast<ANPC>(OtherActor)) 
+
+	if (NPCReference) 
 	{
 		NPCReference->textrender->SetVisibility(false);
 		NPCReference = nullptr;
@@ -253,7 +252,7 @@ void APlanetSixCharacter::Interact()
 						PC->bShowMouseCursor = true;
 						PC->bEnableClickEvents = true;
 						PC->bEnableMouseOverEvents = true;
-						PC->SetIgnoreMoveInput(true);
+						
 					}
 			}
 		}
