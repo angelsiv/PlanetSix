@@ -15,16 +15,24 @@ class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-public:
+private:
 
 
 	//PlayerCharacter values
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FPlayerInfo PlayerInfo;
 
 public:
 
+	UFUNCTION(BlueprintCallable)
 	void SetPlayerInfo(FPlayerInfo info);
+	
+	UFUNCTION(BlueprintCallable)
+	FPlayerInfo GetPlayerInfo();
+	
+	UFUNCTION(BlueprintCallable)
+	void AddQuest(FQuestData quest);
 
+	UFUNCTION(BlueprintCallable)
 	void ReloadNetwork();
 };

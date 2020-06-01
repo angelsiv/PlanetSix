@@ -34,7 +34,7 @@ public:
 		int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-		bool HasQuestItem;
+		TArray<FQuestData> QuestsRegistered;
 
 };
 
@@ -61,8 +61,8 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
 	//	int32 Level;
 	//PlayerCharacter values
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FPlayerInfo Playerinfo;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		//FPlayerInfo Playerinfo;
 
 	/** Property replication */
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -107,7 +107,7 @@ public:
 	UQuestWidget* WidgetQuestLog;
 
 	    //QuestInfos for player 
-		TArray<FQuestData> QuestInfos;
+		//TArray<FQuestData> QuestInfos;
 
 	   //Quest Accepted By Player
 		FQuestData QuestAccepted;
