@@ -48,22 +48,23 @@ struct FQuestData :public FTableRowBase
 {
 	GENERATED_BODY()
 
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	    int QuestID;//=questdatatable.questID 
 
 	//this is the name of the quest 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FText QuestName;
 
 	//Quest description
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FText QuestDescription;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsStoryQuest;
 
 	//array of objective so that each quest can have a multiple objectives
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
 	bool operator==(const FQuestData& Q) const;
