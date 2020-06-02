@@ -22,8 +22,8 @@ struct PLANETSIX_API FAmmoData
 	GENERATED_USTRUCT_BODY()
 
 		FAmmoData()
-		: CurrentAmmo(1.f)
-		, MaxAmmo(1.f)
+		: CurrentAmmo(60.f)
+		, MaxAmmo(200.f)
 	{}
 
 	FAmmoData(float DefaultValue)
@@ -32,14 +32,14 @@ struct PLANETSIX_API FAmmoData
 	{}
 
 	/** getter for CurrentValue */
-	float GetCurrentValue() const { return CurrentAmmo; };
+	float GetCurrentValue() const;
 	/** getter for MaxValue */
-	float GetMaxValue() const { return MaxAmmo; };
+	float GetMaxValue() const;
 
 	/** setter for CurrentValue */
-	virtual void SetCurrentValue(const float NewValue) { CurrentAmmo = NewValue; };
+	virtual void SetCurrentValue(const float NewValue);
 	/** setter for MaxValue */
-	virtual void SetMaxValue(const float NewValue) { MaxAmmo = NewValue; };
+	virtual void SetMaxValue(const float NewValue);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
@@ -48,7 +48,7 @@ public:
 		float MaxAmmo;
 };
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (Custom), meta = (Blueprintable))
 class PLANETSIX_API UWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -57,43 +57,34 @@ public:
 	// Sets default values for this component's properties
 	UWeaponComponent();
 
-protected:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	/** primary ammo currently stored in the backpack. when reloading, this is the ammo used. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo", ReplicatedUsing = OnRep_PrimaryAmmo)
 		FAmmoData PrimaryAmmo;
-
 	/** secondary ammo currently stored in the backpack. when reloading, this is the ammo used. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo", ReplicatedUsing = OnRep_SecondaryAmmo)
 		FAmmoData SecondaryAmmo;
-
 	/** tertiary ammo currently stored in the backpack. when reloading, this is the ammo used. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Ammo", ReplicatedUsing = OnRep_TertiaryAmmo)
 		FAmmoData TertiaryAmmo;
 
 public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	void OnPrimaryAmmoUpdate();
+	void OnSecondaryAmmoUpdate();
+	void OnTertiaryAmmoUpdate();
 
-	/** Get the primary Ammo in the bag */
-	UFUNCTION(BlueprintPure)
-		float GetPrimaryAmmo() { return PrimaryAmmo.GetCurrentValue(); }
-	/** Get the secondary Ammo in the bag */
-	UFUNCTION(BlueprintPure)
-		float GetSecondaryAmmo() { return SecondaryAmmo.GetCurrentValue(); }
-	/** Get the tertiary Ammo in the bag */
-	UFUNCTION(BlueprintPure)
-		float GetTertiaryAmmo() { return TertiaryAmmo.GetCurrentValue(); }
+	UFUNCTION()
+		virtual void OnRep_PrimaryAmmo();
+	UFUNCTION()
+		virtual void OnRep_SecondaryAmmo();
+	UFUNCTION()
+		virtual void OnRep_TertiaryAmmo();
 
-	/** Get the primary Ammo in the bag */
-	UFUNCTION(Blueprintable)
-		void SetPrimaryAmmo(float NewValue) { PrimaryAmmo.SetCurrentValue(NewValue); }
-	/** Get the secondary Ammo in the bag */
-	UFUNCTION(Blueprintable)
-		void SetSecondaryAmmo(float NewValue) { SecondaryAmmo.SetCurrentValue(NewValue); }
-	/** Get the tertiary Ammo in the bag */
-	UFUNCTION(Blueprintable)
-		void SetTertiaryAmmo(float NewValue) { TertiaryAmmo.SetCurrentValue(NewValue); }
+	UPROPERTY(VisibleAnywhere)
+		class APawn* OwnerPawn;
 };

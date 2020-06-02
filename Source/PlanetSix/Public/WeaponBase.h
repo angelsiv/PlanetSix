@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WeaponComponent.h"
 #include "WeaponBase.generated.h"
 
 class USkeletalMeshComponent;
@@ -36,6 +37,10 @@ protected:
 	/** max ammo that can fit inside a magazine. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		int32 AmmoMaxInMagazine;
+
+	/** max ammo that can fit inside a magazine. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		EAmmoType AmmoType;
 
 	/** Reload Speed of the weapon */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed")
