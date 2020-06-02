@@ -4,6 +4,7 @@
 #include "ItemBase.h"
 #include "PlanetSixCharacter.h"
 #include "InventoryComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 
 // Sets default values
@@ -21,10 +22,10 @@ AItemBase::AItemBase()
 	itemData = FItemBaseData();
 
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("R:/git/PlanetSix/Content/Geometry/Meshes/1M_Cube_Chamfer.1M_Cube_Chamfer"));
-	UStaticMesh* Asset = MeshAsset.Object;
+	//static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("R:/git/PlanetSix/Content/Geometry/Meshes/1M_Cube_Chamfer.1M_Cube_Chamfer"));
+	//UStaticMesh* Asset = MeshAsset.Object;
 
-	mesh->SetStaticMesh(Asset);
+	//mesh->SetStaticMesh(Asset);
 
 
 	//init sphere
@@ -59,10 +60,15 @@ FItemBaseData AItemBase::ToItemInv()
 
 void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
 {
+	//publish
 	auto Player = Cast<APlanetSixCharacter>(OtherActor);
+
+	
 
 	if (Player)
 	{
+		//auto fs = OnPickUp.Execute(itemData.getId(),itemData.getQuantity());
+
 		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
 		{
 			this->Destroy();

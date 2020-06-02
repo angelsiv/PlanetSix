@@ -2,6 +2,9 @@
 
 
 #include "WeaponComponent.h"
+#include "Engine.h"
+#include "UMG/Public/Blueprint/UserWidget.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -16,6 +19,14 @@ UWeaponComponent::UWeaponComponent()
 	// ...
 }
 
+void UWeaponComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UWeaponComponent, PrimaryAmmo);
+	DOREPLIFETIME(UWeaponComponent, SecondaryAmmo);
+	DOREPLIFETIME(UWeaponComponent, TertiaryAmmo);
+}
 
 // Called when the game starts
 void UWeaponComponent::BeginPlay()
@@ -23,15 +34,48 @@ void UWeaponComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::Printf(TEXT("%f, %f, %f"), PrimaryAmmo.CurrentAmmo, SecondaryAmmo.CurrentAmmo, TertiaryAmmo.CurrentAmmo));
+	PrimaryAmmo.SetCurrentValue(200);
 }
 
-
-// Called every frame
-void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UWeaponComponent::OnPrimaryAmmoUpdate()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
 }
 
+void UWeaponComponent::OnSecondaryAmmoUpdate()
+{
+
+}
+
+void UWeaponComponent::OnTertiaryAmmoUpdate()
+{
+
+}
+
+#pragma region OnRep_Attributes
+//this is all for rep_notifies : everytime a value is changed, the engine calls this for multiplayer purposes
+void UWeaponComponent::OnRep_PrimaryAmmo() { UWeaponComponent::OnPrimaryAmmoUpdate(); }
+void UWeaponComponent::OnRep_SecondaryAmmo() { UWeaponComponent::OnSecondaryAmmoUpdate(); }
+void UWeaponComponent::OnRep_TertiaryAmmo() { UWeaponComponent::OnTertiaryAmmoUpdate(); }
+#pragma endregion
+
+float FAmmoData::GetCurrentValue() const
+{
+	return CurrentAmmo;
+}
+
+float FAmmoData::GetMaxValue() const
+{
+	return MaxAmmo;
+}
+
+void FAmmoData::SetCurrentValue(const float NewValue)
+{
+	CurrentAmmo = NewValue;
+}
+
+void FAmmoData::SetMaxValue(const float NewValue)
+{
+	MaxAmmo = NewValue;
+}

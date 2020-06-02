@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WeaponComponent.h"
 #include "WeaponBase.generated.h"
 
 class USkeletalMeshComponent;
@@ -26,6 +27,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Components")
 		USkeletalMeshComponent* SKMeshComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = Mesh, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		class USceneComponent* MuzzleLocation;
+
 	/** ammo currently stored in the magazine. when shooting, this is the ammo used. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		int32 AmmoInMagazine;
@@ -33,6 +37,10 @@ protected:
 	/** max ammo that can fit inside a magazine. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		int32 AmmoMaxInMagazine;
+
+	/** max ammo that can fit inside a magazine. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		EAmmoType AmmoType;
 
 	/** Reload Speed of the weapon */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed")
@@ -48,7 +56,7 @@ protected:
 
 	/** Is the weapon jammed */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon Condition")
-		bool bIsWeaponJammed;
+		bool bIsWeaponJammed = false;
 
 	/** when shooting, percentage of recoil */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Recoil")

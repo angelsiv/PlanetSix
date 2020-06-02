@@ -10,6 +10,33 @@
 
 
 //struct FItemData;
+DECLARE_DELEGATE_RetVal_TwoParams(int, FItemPickUp, int, int)
+
+//USTRUCT(BlueprintType)
+//struct PLANETSIX_API FQuestInfo //: public UObject
+//{
+//	GENERATED_USTRUCT_BODY()
+//
+//public:
+//	FQuestInfo() {};
+//	FQuestInfo(int Id,int Quantity)
+//		: QuestId(Id),
+//		quantity(Quantity)
+//	{};
+//
+//
+//protected:
+//	int QuestId;
+//	int quantity;
+//
+//public:
+//
+//	
+//};
+
+
+
+
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API AItemBase : public AActor
@@ -23,12 +50,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DestroyOnPickup=true;
 
+
+	FItemPickUp OnPickUp;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(Category = Item, VisibleAnywhere, BlueprintReadWrite,meta = (AllowPrivateAccess = "true"))
-		UStaticMeshComponent* mesh;
+		class UStaticMeshComponent* mesh;
 	UPROPERTY(Category = Item, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		USphereComponent* sphereCollider;
 	

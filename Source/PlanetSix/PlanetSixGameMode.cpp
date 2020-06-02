@@ -11,6 +11,7 @@ APlanetSixGameMode::APlanetSixGameMode()
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
-		bUseSeamlessTravel = true;
 	}
+	//Set seamless travel true by default
+	bUseSeamlessTravel = true;
 }

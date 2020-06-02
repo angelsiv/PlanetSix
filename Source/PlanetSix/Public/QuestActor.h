@@ -4,18 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Engine/DataTable.h"
+#include "UObject/ConstructorHelpers.h"
 #include "QuestActor.generated.h"
 
+
 UENUM(BlueprintType)
-enum  EObjectiveType 
+enum EObjectiveType 
 {
 	None = 0 UMETA(DisplayName = "None"),
 	Kill = 1 UMETA(DisplayName = "Kill"),
 	Gathering = 2 UMETA(DisplayName = "Gather"),
 	TalkToNpc = 4 UMETA(DisplayName = "Talktonpc"),
-	Location = 8 UMETA(DisplayName = "Location")
+	Location = 8 UMETA(DisplayName = "Location")//change to delegates 
 };
-
 
 USTRUCT(BlueprintType)
 struct FObjectiveData
@@ -34,22 +36,20 @@ struct FObjectiveData
 	//ID of Enemy,Number of Enemies,Also items 
 	TMap<int,int> Targets;
 
-
 	//Check if objective is complete
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
-
 
 };
 
 
 USTRUCT(BlueprintType)
-struct FQuestInfo 
+struct FQuestData :public FTableRowBase
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		int QuestID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	    int QuestID;//=questdatatable.questID 
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -66,8 +66,15 @@ struct FQuestInfo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
+	bool operator==(const FQuestData& Q) const;
+
 };
 
+///Quest Data FORCEINLINES
+FORCEINLINE bool FQuestData::operator==(const FQuestData& Q) const
+{
+	return QuestID == Q.QuestID;
+}
 
 UCLASS()
 class PLANETSIX_API AQuestActor : public AActor
@@ -78,10 +85,18 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
+	bool IsQuestActive=false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+	FName NameOfQuest;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	FQuestInfo Questinfo;
+	class UDataTable* QuestDatable;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FQuestData QuestData;
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)

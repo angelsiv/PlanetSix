@@ -5,10 +5,13 @@
 #include "CoreMinimal.h"
 #include "ItemBase.h"
 #include "QuestActor.h"
+#include "NPC.h"
+#include "NPCQuestWidget.h"
 #include "AttributesComponent.h"
 #include "InventoryComponent.h"
 #include "WeaponComponent.h"
 #include "ClassComponent.h"
+#include "BaseCharacter.h"
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -19,28 +22,12 @@ class APlayerController;
 class ASkill;
 class AMapTravel;
 
-USTRUCT(BlueprintType)
-struct PLANETSIX_API FPlayerInfo
-{
-	GENERATED_USTRUCT_BODY()
-
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-		FString UserName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-		int32 Level;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
-		bool HasQuestItem;
-
-};
-
 UCLASS(config = Game)
-class APlanetSixCharacter : public ACharacter
+class APlanetSixCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
+		virtual void BeginPlay() override;
 		/** Camera boom positioning the camera behind the character */
 		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
@@ -49,61 +36,27 @@ class APlanetSixCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* FollowCamera;
 
+	float BaseTurnRate;
+	float BaseLookUpRate;
 public:
 	APlanetSixCharacter();
 
-	//Player Stats
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		FString UserName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, replicated)
-		int32 Level;
-	//PlayerCharacter values
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FPlayerInfo Playerinfo;
-
-	/** Property replication */
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
-	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseTurnRate;
-
-	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseLookUpRate;
-
-	/** Interact with object or player */
-	void Interact();
-
-	//boolean variable to check if player is in the perimeter of the player
-	bool bIsInPerimiterOfNPC = false;
-
-	/*Dialogue Sections */
-  //this the incrementor for widgetclass 
-	int IndexDialogue = 0;
+	/*Incrementor For the Quest Widget Log*/
 	int Incrementor = 0;
 
-	//Specified Portal  
+	//Specified Portal
 	AMapTravel* Portal;
 
-	/*//this is to create the widget of the dialogue
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DialogueWidgetUI")
-		TSubclassOf<UUserWidget> DialogueWidgetClass;
-
-	//this is for the specific dialogue
-	UNPCDialogueWidget* WidgetDialogue;*/
-
+#pragma region(Quests Logic)
 	//this is to create the widget of the NPCQuest  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
 		TSubclassOf<UUserWidget>NPCQuestWidgetClass;
 
-	//this is for the specific dialogue 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
+	UPROPERTY(BlueprintReadWrite)
 		UNPCQuestWidget* WidgetQuestNPC;
 
 	/*Quest Widget UI*/
-	//this is to create teh quest LOG 
+	//this is to create the quest LOG 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
@@ -111,18 +64,14 @@ public:
 	UQuestWidget* WidgetQuestLog;
 
 	//QuestInfos for player 
-	TArray<FQuestInfo> QuestInfos;
+	//TArray<FQuestData> QuestInfos;
 
-	//Quest Accepted By Player
-	FQuestInfo QuestAccepted;
+   //Quest Accepted By Player
+	FQuestData QuestAccepted;
 
-	/** Player's attributes. */
-	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
-		UAttributesComponent* Attributes;
-
-	/** Player's class. */
-	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
-		UClassComponent* Class;
+	//Reference to NPC Actor
+	ANPC* NPCReference;
+#pragma endregion
 
 	/** Player's inventory. */
 	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
@@ -144,12 +93,13 @@ public:
 		TSubclassOf<UUserWidget> InGameMenu;
 
 	UPROPERTY(EditAnywhere, Category = "Item")
-		 TSubclassOf<AItemBase> ItemBP;
+		TSubclassOf<AItemBase> ItemBP;
 
 	UPROPERTY(EditAnywhere, Category = "Item")
-	UStaticMesh* ItemMesh;
+		UStaticMesh* ItemMesh;
 
 protected:
+#pragma region(Character Move & Input Actions)
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
 
@@ -172,6 +122,9 @@ protected:
 	void Reload();
 
 	/** Crouch  */
+
+	/** Interact with object or player */
+	void Interact();
 
 	/** Melee Attack with any weapon */
 	void MeleeAttack();
@@ -225,32 +178,29 @@ protected:
 	/** Open Ingame Menu*/
 	void OpenIngameMenu();
 
+	// APawn interface
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	// End of APawn interface
+#pragma endregion
+
 	/** Drop item on the ground*/
 	UFUNCTION(BlueprintCallable)
 		bool DropItem(FItemBaseData item);
 
-protected:
-	// APawn interface
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	// End of APawn interface
-
 	//the distance an item is drop from the player;
 	float DropDistance = 200;
-
 
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	/** Updates the UI with the proper numbers */
-	void UpdateUI();
-	UFUNCTION(BlueprintCallable)
-		void ReceiveDamage(float Damage);
+
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+	virtual void Tick(float DeltaSeconds) override;
 
-
-
+	/** Property replication */
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 };
