@@ -48,7 +48,7 @@ void AWeaponBase::Fire()
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
 		{
-			auto* ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
+			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
 			if (ActorHit != nullptr)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot touched"));
