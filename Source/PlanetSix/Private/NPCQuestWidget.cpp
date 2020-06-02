@@ -13,14 +13,17 @@ void UNPCQuestWidget::NativeConstruct() {
 
 	Super::NativeConstruct();
 
+	
 	Accept->OnClicked.AddDynamic(this, &UNPCQuestWidget::AcceptQuest);
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 
+	
 
 }
 
 void UNPCQuestWidget::AcceptQuest()
 {
+
 	RemoveFromParent();
 /*	if (NPCRef) 
 	{
@@ -28,6 +31,7 @@ void UNPCQuestWidget::AcceptQuest()
 	}*/
 	
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questaccepted"));
+
 }
 
 void UNPCQuestWidget::RejectQuest()
