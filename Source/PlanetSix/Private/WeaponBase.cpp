@@ -3,8 +3,8 @@
 
 #include "WeaponBase.h"
 #include "PlanetSixCharacter.h"
-#include "Engine.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Engine.h"
 
 // Sets default values
 AWeaponBase::AWeaponBase()
@@ -16,6 +16,7 @@ AWeaponBase::AWeaponBase()
 	RootComponent = SKMeshComponent;
 	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
 	MuzzleLocation->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	AmmoType = EAmmoType::PrimaryAmmo;
 }
 
 // Called when the game starts or when spawned
@@ -23,13 +24,17 @@ void AWeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OwnerPlayer = Cast<APlanetSixCharacter>(GetOwner());
+	if (GetOwner() != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Owner is setup yes"));
+		OwnerPlayer = Cast<APlanetSixCharacter>(GetOwner());
+	}
 }
 
 void AWeaponBase::Fire()
 {
 	//logic of firing : can't fire if jammed
-	if (bIsWeaponJammed == false)
+	if (bIsWeaponJammed == false && AmmoInMagazine > 0)
 	{
 		APlayerCameraManager* CameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		FVector StartFiringLocation;
@@ -43,11 +48,25 @@ void AWeaponBase::Fire()
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
 		{
+			auto* ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
+			if (ActorHit != nullptr)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot touched"));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"), OwnerPlayer->WeaponDamage()));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f"), ActorHit->Attributes->Health.GetCurrentValue()));
+				ActorHit->ReceiveDamage(OwnerPlayer->WeaponDamage());
+				if (ActorHit->IsDead())
+				{
+					ActorHit->Death();
+				}
+			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
 			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
 			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
+		AmmoInMagazine--;
+		Recoil();
 	}
 
 	//did the weapon jam ? (it should be a low percentage of chance)
@@ -57,7 +76,27 @@ void AWeaponBase::Fire()
 void AWeaponBase::Reload()
 {
 	// check if owner player has enough ammo in his bag
-	//OwnerPlayer->WeaponComponent->GetPrimaryAmmo();
+	//if totalammo in reserves is empty OR magazine already full, don't reload
+	if (OwnerPlayer->WeaponComponent->PrimaryAmmo.GetCurrentValue() <= 0 || AmmoInMagazine >= AmmoMaxInMagazine)
+	{
+		return;
+	}
+	//reload
+	else
+	{
+		//if totalammo in reserves and in the magazine is less than the full size of a magazine, reload what's left of ammo.
+		if (OwnerPlayer->WeaponComponent->PrimaryAmmo.GetCurrentValue() + AmmoInMagazine < AmmoMaxInMagazine)
+		{
+			AmmoInMagazine += OwnerPlayer->WeaponComponent->PrimaryAmmo.GetCurrentValue();
+			OwnerPlayer->WeaponComponent->PrimaryAmmo.SetCurrentValue(0);
+		}
+		//normal reload
+		else
+		{
+			OwnerPlayer->WeaponComponent->PrimaryAmmo.SetCurrentValue(OwnerPlayer->WeaponComponent->PrimaryAmmo.GetCurrentValue() - (AmmoMaxInMagazine - AmmoInMagazine));
+			AmmoInMagazine = AmmoMaxInMagazine;
+		}
+	}
 }
 
 void AWeaponBase::Recoil()

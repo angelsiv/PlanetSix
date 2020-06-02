@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "NPC.h"
-#include "Components/BoxComponent.h"
 #include"Engine.h"
+#include "PlanetSixPlayerState.h"
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::Orange,text)
 
 // Sets default values
 ANPC::ANPC()
@@ -22,9 +24,6 @@ ANPC::ANPC()
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
 	skeleton->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
 
-	
-
-
 }
 
 // Called when the game starts or when spawned
@@ -39,45 +38,28 @@ void ANPC::BeginPlay()
 	skeleton->PlayAnimation(AnimIdle, true);
 }
 
-
 // Called every frame
 void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 
 	//Add rotation to the text NOT YET PERFECT	
 	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
 
-
 }
-
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	auto Character = Cast<APlanetSixCharacter>(OtherActor);
-
-	if (Character) {
-	Character->bIsInPerimiterOfNPC = true;
-
-		if (Character->bIsInPerimiterOfNPC == true)
+	auto x = Cast<ACharacter>(OtherActor);
+	
+	if (x) 
+	{
+		if (x->GetPlayerState() == UGameplayStatics::GetPlayerControllerFromID(GetWorld(),0)->PlayerState) 
 		{
-			if (SpecifiedQuestOFNPC) 
-			{
-				Character->WidgetQuestNPC->TextName->Text = SpecifiedQuestOFNPC->QuestData.QuestName;
-				Character->WidgetQuestNPC->TextDescription->Text = SpecifiedQuestOFNPC->QuestData.QuestDescription;
-
-				for (int32 i = 0; i < SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
-				{
-					Character->WidgetQuestNPC->TextObjectives->Text = SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
-				}
-
-			}
-			//set visible the Text renderer of the NPC
-			textrender->SetVisibility(true);
-
+			auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
+			print(y->GetPlayerName(), -1);
 		}
 	}
 }
@@ -85,20 +67,5 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	auto Character = Cast<APlanetSixCharacter>(OtherActor);
 	
-	if (Character != nullptr) 
-	{
-		Character->bIsInPerimiterOfNPC = false;
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("bye bye text"));
-		////set invisible the Text renderer of the NPC
-		textrender->SetVisibility(false);
-
-		/*if (Character->DialogueWidgetClass && Character->IndexDialogue % 2 == 1) 
-		{
-			Character->IndexDialogue = 0;
-			
-			Character->WidgetDialogue->RemoveFromParent();
-		}*/
-	}
 }

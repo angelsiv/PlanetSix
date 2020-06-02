@@ -14,7 +14,6 @@
 #include "Net/UnrealNetwork.h"
 #include "NPCQuestWidget.h"
 #include "Components/WidgetComponent.h"
-
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -74,38 +73,58 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	SetReplicates(true);
 
+	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
-}
 
-void APlanetSixCharacter::UpdateUI()
-{
 
-}
 
-void APlanetSixCharacter::ReceiveDamage(float Damage)
-{
-	if (Attributes->Shield.GetCurrentValue() > 0)
+	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
+	if (QuestActorDataObject.Succeeded()) 
 	{
-		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
-	}
-	else if (Attributes->Health.GetCurrentValue() > 0)
-	{
-		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
-	}
+		
+	}*/
+
 }
 
-void APlanetSixCharacter::NotifyActorBeginOverlap(AActor * OtherActor)
+void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
+
+	NPCReference = Cast<ANPC>(OtherActor);
+
+	if (NPCReference)
+	{
+		NPCReference->textrender->SetVisibility(true);
+
+		if (NPCReference->SpecifiedQuestOFNPC)
+		{
+		/*	WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
+			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
+
+			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
+			{
+				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
+			}
+			*/
+		}
+	}
+
 	Portal = Cast<AMapTravel>(OtherActor);
 	print("Press F to Interact with portal", 0);
 }
 
-void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
+void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AMapTravel>(OtherActor))
 	{
 		Portal = nullptr;
 	}
+
+	if (NPCReference)
+	{
+		NPCReference->textrender->SetVisibility(false);
+		NPCReference = nullptr;
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,21 +216,17 @@ void APlanetSixCharacter::MoveRight(float Value)
 void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
 }
 
 void APlanetSixCharacter::Interact()
 {
-	
 	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
 
 	//check if the player is the perimiter of the NPC 
-	if (bIsInPerimiterOfNPC)
+	if (NPCReference)
 	{
-		IndexDialogue++;
-
 		//If player controller is not null 
 		if (PC)
 		{
@@ -219,35 +234,26 @@ void APlanetSixCharacter::Interact()
 			if (NPCQuestWidgetClass)
 			{
 
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("Widget Assigned "));
+				if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
+				{
+					print("Quest is Already activated", 5);
+				}
 
-				//increment the dialogue varible to show the Widget if index = 1 
-				if (IndexDialogue % 2 == 1)
+				else
 				{
 					WidgetQuestNPC->AddToViewport();
 					PC->SetInputMode(FInputModeUIOnly());
 					PC->bShowMouseCursor = true;
 					PC->bEnableClickEvents = true;
 					PC->bEnableMouseOverEvents = true;
-					PC->SetIgnoreMoveInput(true);
-				}
 
-				else
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("remove text from viewport"));
-					WidgetQuestNPC->RemoveFromParent();
-					/*PC->SetInputMode(FInputModeGameOnly());*/
-					PC->bShowMouseCursor = false;
-					PC->bEnableClickEvents = false;
-					PC->bEnableMouseOverEvents = false;
-					PC->SetIgnoreMoveInput(false);
 				}
 			}
 		}
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("go near an NPC "));
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
 	}
 
 	/* Interaction with Travel Portal */
@@ -255,6 +261,8 @@ void APlanetSixCharacter::Interact()
 	{
 		Portal->TravelTo();
 	}
+
+
 }
 
 /** Reload the player's weapon */
@@ -319,12 +327,9 @@ void APlanetSixCharacter::QuestLog()
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;
 
-
-
 	}
 	else if (Incrementor % 2 == 0)
 	{
-
 		WidgetQuestLog->RemoveFromParent();
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->bShowMouseCursor = false;
@@ -333,7 +338,6 @@ void APlanetSixCharacter::QuestLog()
 		CameraBoom->bUsePawnControlRotation = true;
 
 	}
-
 }
 
 /** Open the skills menu */
@@ -357,7 +361,7 @@ void APlanetSixCharacter::Zoom()
 /** Shoot */
 void APlanetSixCharacter::Shoot()
 {
-
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"), WeaponComponent->PrimaryAmmo.CurrentAmmo));
 }
 
 /** Change Weapon depending on 1, 2, 3 or scrollwheel */
@@ -436,5 +440,19 @@ bool APlanetSixCharacter::DropItem(FItemBaseData item)
 
 void APlanetSixCharacter::Tick(float DeltaSeconds)
 {
-	//CameraCrosshair = FollowCamera->GetForwardVector();
+	Super::Tick(DeltaSeconds);
+}
+
+void APlanetSixCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (WeaponComponent != nullptr)
+	{
+		WeaponComponent->PrimaryAmmo.SetCurrentValue(200.f);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
+	}
 }

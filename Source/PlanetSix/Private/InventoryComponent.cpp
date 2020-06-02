@@ -45,7 +45,7 @@ FString UInventoryComponent::Test()
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
-	//Super::BeginPlay();
+	Super::BeginPlay();
 
 	// ...
 
@@ -55,7 +55,7 @@ void UInventoryComponent::BeginPlay()
 // Called every frame
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	//Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
@@ -231,7 +231,7 @@ void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 #pragma endregion
 
 // Sets default values for this component's properties
-#pragma region ItemData
+#pragma region ItemBaseData
 
 
 FItemBaseData FItemBaseData::GetCopy(FItemBaseData original)
