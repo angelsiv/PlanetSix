@@ -12,6 +12,7 @@ class UTextRenderComponent;
 class USkeletalMeshComponent;
 
 
+
 UCLASS()
 class PLANETSIX_API ANPC : public AActor
 {
