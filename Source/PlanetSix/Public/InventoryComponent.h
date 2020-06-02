@@ -41,7 +41,7 @@ public:
 		quantity(original->quantity)
 	{};
 
-protected:
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int id;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -126,7 +126,7 @@ public:
 
 
 
-protected:
+public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	int count=0;

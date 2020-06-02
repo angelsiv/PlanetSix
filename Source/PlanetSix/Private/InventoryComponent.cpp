@@ -231,7 +231,7 @@ void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 #pragma endregion
 
 // Sets default values for this component's properties
-#pragma region ItemData
+#pragma region ItemBaseData
 
 
 FItemBaseData FItemBaseData::GetCopy(FItemBaseData original)
