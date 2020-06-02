@@ -40,7 +40,7 @@ void AWeaponBase::Fire()
 		FVector StartFiringLocation;
 		FVector EndFiringLocation;
 		StartFiringLocation = MuzzleLocation->GetComponentLocation();
-		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
+		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 1000;
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(OwnerPlayer);
 		QueryParams.AddIgnoredActor(this);
