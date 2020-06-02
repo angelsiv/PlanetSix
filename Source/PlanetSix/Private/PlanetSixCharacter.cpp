@@ -99,6 +99,9 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 			}
 		}
 	}
+
+	Portal = Cast<AMapTravel>(OtherActor);
+	print("Press F to Interact with portal", 0);
 }
 
 void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
