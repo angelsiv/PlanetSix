@@ -30,7 +30,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite/*, meta = (BindWidget)*/) UTextBlock* TextObjectives;
 
 	//Reference of NPC 
-	ANPC* NPCRef;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FQuestData QuestData;
 
 
 public:

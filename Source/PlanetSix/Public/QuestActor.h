@@ -39,6 +39,9 @@ struct FObjectiveData
 	//Check if objective is complete
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsCompleted;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		FString LocationToGo;
 
 };
 

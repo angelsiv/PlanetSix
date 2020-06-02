@@ -14,12 +14,16 @@ UCLASS()
 class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FString LevelToGo;
+
 
 private:
 
 
 	//PlayerCharacter values
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FPlayerInfo PlayerInfo;
 
 public:
