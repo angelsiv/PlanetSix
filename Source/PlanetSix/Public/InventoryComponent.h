@@ -108,16 +108,20 @@ public:
 	UInventoryComponent();
 	UInventoryComponent(int32 invSize);
 
-	UFUNCTION(BlueprintCallable)
-	bool add(FItemBaseData item);
+	bool add(FItemBaseData item,bool IsQuest);
+	bool add(FItemBaseData item,int numberOfQuestItems);
 	UFUNCTION(BlueprintCallable)
 		FItemBaseData swap(FItemBaseData item, int index);
 	UFUNCTION(BlueprintCallable)
 		FItemBaseData takeItem(int index);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)//, ExposeOnSpawn = "true")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 inventorySize UMETA(ExposeOnSpawn = "true");
+
 	TArray<FItemBaseData> items;
+
+	TArray<FItemBaseData> QuestItems;
+
 
 	UFUNCTION(BlueprintCallable)
 		TArray<FItemBaseData> GetItems();
