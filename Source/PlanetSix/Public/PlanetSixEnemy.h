@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "BaseCharacter.h"
 #include "Components/BoxComponent.h"
 #include "AttributesComponent.h"
 #include "EnemyController.h"
@@ -12,23 +13,8 @@
 
 class APlanetSixCharacter;
 
-USTRUCT()
-
-struct PLANETSIX_API FEnemyInfo
-{
-
-	GENERATED_USTRUCT_BODY()
-
-public:
-	int32 EnemyID;
-	bool bIsDead;
-
-
-};
-
-
 UCLASS()
-class PLANETSIX_API APlanetSixEnemy : public APawn
+class PLANETSIX_API APlanetSixEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -37,27 +23,22 @@ public:
 	APlanetSixEnemy(const FObjectInitializer& ObjectInitializer);
 protected:
 
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	/*UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UStaticMeshComponent* Mesh;
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* Collider;
+		UBoxComponent* Collider;*/
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UFloatingPawnMovement* MovComp;
-	
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		UAttributesComponent* Attributes;
-	
+
+protected:
 	//Enemy Stats
 	FEnemyInfo Info;
-
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	
 
 public:	
 	// Called every frame
@@ -67,5 +48,5 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Called to do damage calcs and check if Enemy is dead
-	bool IsDead(float damage = 0);
+	//bool IsDead(float damage = 0);
 };

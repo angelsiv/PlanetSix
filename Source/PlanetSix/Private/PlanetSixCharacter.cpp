@@ -78,31 +78,9 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 }
 
-void APlanetSixCharacter::UpdateUI()
-{
-
-}
-
-void APlanetSixCharacter::ReceiveDamage(float Damage)
-{
-	if (Attributes->Shield.GetCurrentValue() > 0)
-	{
-		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
-	}
-	else if (Attributes->Health.GetCurrentValue() > 0)
-	{
-		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
-	}
-}
-
-float APlanetSixCharacter::WeaponDamage()
-{
-	return Attributes->WeaponDamage.GetCurrentValue() + FMath::CeilToFloat(FMath::Sqrt(Attributes->Level.GetCurrentValue()*10));
-}
-
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	
+
 	NPCReference = Cast<ANPC>(OtherActor);
 
 	if (NPCReference)
@@ -123,14 +101,14 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	}
 }
 
-void APlanetSixCharacter::NotifyActorEndOverlap(AActor * OtherActor)
+void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AMapTravel>(OtherActor))
 	{
 		Portal = nullptr;
 	}
 
-	if (NPCReference) 
+	if (NPCReference)
 	{
 		NPCReference->textrender->SetVisibility(false);
 		NPCReference = nullptr;
@@ -230,7 +208,7 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 }
 
 void APlanetSixCharacter::Interact()
-{	
+{
 	/* Interaction with NPC */
 	//Cast the player controller to get controller 
 	auto PC = Cast<APlayerController>(GetController());
@@ -244,21 +222,21 @@ void APlanetSixCharacter::Interact()
 			//check if Dialogue widget exists 
 			if (NPCQuestWidgetClass)
 			{
-					
-				if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive) 
-				 {
-				 print("Quest is Already activated",5);
-				 }
 
-					else 
-					{
-						WidgetQuestNPC->AddToViewport();
-						PC->SetInputMode(FInputModeUIOnly());
-						PC->bShowMouseCursor = true;
-						PC->bEnableClickEvents = true;
-						PC->bEnableMouseOverEvents = true;
-						
-					}
+				if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
+				{
+					print("Quest is Already activated", 5);
+				}
+
+				else
+				{
+					WidgetQuestNPC->AddToViewport();
+					PC->SetInputMode(FInputModeUIOnly());
+					PC->bShowMouseCursor = true;
+					PC->bEnableClickEvents = true;
+					PC->bEnableMouseOverEvents = true;
+
+				}
 			}
 		}
 	}
@@ -372,7 +350,7 @@ void APlanetSixCharacter::Zoom()
 /** Shoot */
 void APlanetSixCharacter::Shoot()
 {
-
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"), WeaponComponent->PrimaryAmmo.CurrentAmmo));
 }
 
 /** Change Weapon depending on 1, 2, 3 or scrollwheel */
@@ -451,5 +429,19 @@ bool APlanetSixCharacter::DropItem(FItemBaseData item)
 
 void APlanetSixCharacter::Tick(float DeltaSeconds)
 {
-	//CameraCrosshair = FollowCamera->GetForwardVector();
+	Super::Tick(DeltaSeconds);
+}
+
+void APlanetSixCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (WeaponComponent != nullptr)
+	{
+		WeaponComponent->PrimaryAmmo.SetCurrentValue(200.f);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
+	}
 }

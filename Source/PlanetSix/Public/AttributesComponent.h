@@ -69,7 +69,7 @@ struct PLANETSIX_API FAttributesData
 	int32 GetCurrentModifier() const;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
 		float BaseValue = 1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		float CurrentValue;
@@ -154,7 +154,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Armor", ReplicatedUsing = OnRep_ArmorReduction)
 		FAttributesData ArmorReduction;
 	/** weapon damage attribute for the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", ReplicatedUsing = OnRep_WeaponDamage)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", ReplicatedUsing = OnRep_WeaponDamage, meta = (AllowPrivateAccess = "true"))
 		FAttributesData WeaponDamage;
 	/** Ability damage attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", ReplicatedUsing = OnRep_AbilityDamage)
