@@ -11,7 +11,9 @@ UInventoryComponent::UInventoryComponent()
 {
 	items = TArray<FItemBaseData>();
 	items.Init(FItemBaseData(), 10);
-	//GEngine->AddOnScreenDebugMessage(TEXT("fewqef "), FColor::Emerald);
+	QuestItems = TArray<FItemBaseData>();
+	GEngine->AddOnScreenDebugMessage(1, 10, FColor::Emerald, TEXT("fewqef "));
+	inventorySize = 10;
 }
 
 
@@ -35,6 +37,10 @@ UInventoryComponent::UInventoryComponent(int32 invSize)
 TArray<FItemBaseData> UInventoryComponent::GetItems()
 {
 	return items;
+}
+TArray<FItemBaseData> UInventoryComponent::GetQuestItems()
+{
+	return QuestItems;
 }
 
 FString UInventoryComponent::Test()
@@ -73,19 +79,27 @@ int UInventoryComponent::GetCount()
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool UInventoryComponent::add(FItemBaseData item)
+bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
 {
+	TArray<FItemBaseData>* TargetInv = &items;
+	if (IsQuest)
+	{
+		TargetInv = &QuestItems;
+	}
+
 
 	//look for the first available spot.
-	for (int i = 0; i < items.Num(); i++)
+	for (int i = 0; i < TargetInv->Num(); i++)
 	{
+
+
 		//if there is someting
-		if (!items[i].getId() == 0)
+		if (!TargetInv->operator[](i).getId() == 0)
 		{
 			//it item already in inventory
 			//return items[i].Stack(item);
 
-			if (items[i].Stack(item))
+			if (TargetInv->operator[](i).Stack(item))
 			{
 				return true;
 			}
@@ -95,7 +109,7 @@ bool UInventoryComponent::add(FItemBaseData item)
 		else
 		{
 			//place the item
-			items[i] = item;
+			TargetInv->operator[](i) = item;
 			count++;
 			return true;
 		}
@@ -103,6 +117,27 @@ bool UInventoryComponent::add(FItemBaseData item)
 
 	//if there is no spot left
 	return false;
+}
+
+// Description:
+//   add an item to the inventory.
+// Parameters:
+//   item - Item to add to the inventory.
+//	  numberOfQuestItems - Number of items to put in the quest inventory
+// Returns:
+//   Return true if it was able to add the item, otherwise return false.
+//
+bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
+{
+	if (numberOfQuestItems > 0)
+	{
+		FItemBaseData QuestItem = FItemBaseData(&item);
+		add(QuestItem, true);
+
+	}
+	FItemBaseData NormalItem = FItemBaseData(&item);
+
+	return add(NormalItem);
 }
 
 // Description:
