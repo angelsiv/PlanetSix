@@ -43,11 +43,15 @@ void AWeaponBase::Fire_Implementation()
 		StartFiringLocation = MuzzleLocation->GetComponentLocation();
 		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
 		FCollisionQueryParams QueryParams;
+		FCollisionObjectQueryParams ObjectQueryParams;
+		//ObjectQueryParams.AllObjects;
+		QueryParams = QueryParams.DefaultQueryParam;
 		QueryParams.AddIgnoredActor(OwnerPlayer);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
+		//if (GetWorld()->LineTraceSingleByObjectType(Hit, StartFiringLocation, EndFiringLocation, ObjectQueryParams.AllObjects, QueryParams))
 		{
 			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
 			if (ActorHit != nullptr)
@@ -58,7 +62,7 @@ void AWeaponBase::Fire_Implementation()
 				ActorHit->ReceiveDamage(OwnerPlayer->WeaponDamage());
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
-			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
+			//OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
