@@ -52,7 +52,7 @@ void ANPC::Tick(float DeltaTime)
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	auto x = Cast<ACharacter>(OtherActor);
+	/*auto x = Cast<ACharacter>(OtherActor);
 	
 	if (x) 
 	{
@@ -61,7 +61,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 			auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
 			print(y->GetPlayerName(), -1);
 		}
-	}
+	}*/
 }
 
 

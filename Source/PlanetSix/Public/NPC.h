@@ -34,8 +34,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		UAnimationAsset* AnimIdle;
 
-	UPROPERTY(EditAnywhere)
-		AQuestActor* SpecifiedQuestOFNPC;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+		FQuestData NPCQuest;
 
 protected:
 	// Called when the game starts or when spawned
