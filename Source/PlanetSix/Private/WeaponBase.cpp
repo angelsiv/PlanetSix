@@ -4,6 +4,7 @@
 #include "WeaponBase.h"
 #include "PlanetSixCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Engine.h"
 
 // Sets default values
@@ -31,7 +32,7 @@ void AWeaponBase::BeginPlay()
 	}
 }
 
-void AWeaponBase::Fire()
+void AWeaponBase::Fire_Implementation()
 {
 	//logic of firing : can't fire if jammed
 	if (bIsWeaponJammed == false && AmmoInMagazine > 0)
