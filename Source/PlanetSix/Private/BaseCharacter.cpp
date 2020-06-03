@@ -28,6 +28,10 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (IsDead())
+	{
+		Death();
+	}
 }
 
 void ABaseCharacter::ReceiveDamage(float Damage)

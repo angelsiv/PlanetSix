@@ -89,7 +89,7 @@ protected:
 	//---------------------------------------------------------------------------
 
 	/** Fires the gun when activated */
-	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Shoot Mechanics")
+	UFUNCTION(BlueprintCallable, Client, Reliable, Category = "Shoot Mechanics")
 		void Fire();
 	void Fire_Implementation();
 
