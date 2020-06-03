@@ -40,7 +40,7 @@ void AWeaponBase::Fire()
 		FVector StartFiringLocation;
 		FVector EndFiringLocation;
 		StartFiringLocation = MuzzleLocation->GetComponentLocation();
-		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 1000;
+		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(OwnerPlayer);
 		QueryParams.AddIgnoredActor(this);
@@ -63,7 +63,7 @@ void AWeaponBase::Fire()
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
 			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
-			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
+			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
 		AmmoInMagazine--;
 		Recoil();
