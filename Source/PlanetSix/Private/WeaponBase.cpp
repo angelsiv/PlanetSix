@@ -40,17 +40,20 @@ void AWeaponBase::Fire_Implementation()
 		APlayerCameraManager* CameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		FVector StartFiringLocation;
 		FVector EndFiringLocation;
-		StartFiringLocation = MuzzleLocation->GetComponentLocation();
-		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
+		StartFiringLocation = CameraManager->GetCameraLocation();
+		EndFiringLocation = StartFiringLocation + CameraManager->GetCameraRotation().Vector() * 10000;
 		FCollisionQueryParams QueryParams;
-		FCollisionObjectQueryParams ObjectQueryParams;
+		//FCollisionObjectQueryParams ObjectQueryParams;
 		//ObjectQueryParams.AllObjects;
 		QueryParams = QueryParams.DefaultQueryParam;
 		QueryParams.AddIgnoredActor(OwnerPlayer);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
 		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
+		GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Destructible, QueryParams);
+		StartFiringLocation = MuzzleLocation->GetComponentLocation();
+		EndFiringLocation = Hit.Location;
+		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Destructible, QueryParams))
 		//if (GetWorld()->LineTraceSingleByObjectType(Hit, StartFiringLocation, EndFiringLocation, ObjectQueryParams.AllObjects, QueryParams))
 		{
 			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
