@@ -32,6 +32,9 @@ void APlanetSixPlayerState::CopyProperties(APlayerState* PlayerState)
 		if (MyPlayerState)
 			MyPlayerState->PlayerInfo = PlayerInfo;
 	}
+
+
+
 }
 
 void APlanetSixPlayerState::OverrideWith(APlayerState* PlayerState)

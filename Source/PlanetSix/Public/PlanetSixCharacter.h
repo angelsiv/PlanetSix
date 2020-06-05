@@ -15,7 +15,6 @@
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
-class UQuestBoardWidget;
 class UNPCQuestWidget;
 class UQuestWidget;
 class AQuestActor;
@@ -72,15 +71,6 @@ public:
 
 	//Reference to NPC Actor
 	ANPC* NPCReference;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestBoard")
-		TSubclassOf<UUserWidget> QuestBoardWidgetRef;
-
-	//Reference to QuestBoardWidget
-	UPROPERTY(BlueprintReadWrite, Category = "QuestBoard")
-		UQuestBoardWidget* QuestBoardWidget;
-
 #pragma endregion
 
 	/** Player's inventory. */
@@ -109,8 +99,6 @@ public:
 		UStaticMesh* ItemMesh;
 
 protected:
-
-
 #pragma region(Character Move & Input Actions)
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);

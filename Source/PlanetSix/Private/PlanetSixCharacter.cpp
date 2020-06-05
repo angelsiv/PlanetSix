@@ -13,7 +13,6 @@
 #include "QuestWidget.h"
 #include "Net/UnrealNetwork.h"
 #include "NPCQuestWidget.h"
-#include "QuestBoardWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
@@ -86,8 +85,6 @@ APlanetSixCharacter::APlanetSixCharacter()
 	}*/
 
 }
-
-
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
@@ -447,16 +444,12 @@ void APlanetSixCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	QuestBoardWidget = Cast<UQuestBoardWidget>(CreateWidget(Cast<APlayerController>(Controller), QuestBoardWidgetRef, FName(TEXT("QuestBoard"))));
-
-
-
 	if (WeaponComponent != nullptr)
 	{
 		WeaponComponent->PrimaryAmmo.SetCurrentValue(200.f);
 	}
 	else
-	{	
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
 	}
 }
