@@ -141,7 +141,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level", ReplicatedUsing = OnRep_Experience)
 		FAttributesData Experience;
 	/** CurrentHealth attribute for the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health", ReplicatedUsing = OnRep_CurrentHealth)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health", Replicated, ReplicatedUsing = OnRep_CurrentHealth)
 		FAttributesData Health;
 	/** CurrentEnergy attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Energy", ReplicatedUsing = OnRep_CurrentEnergy)

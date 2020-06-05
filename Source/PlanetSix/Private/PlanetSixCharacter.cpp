@@ -13,6 +13,7 @@
 #include "QuestWidget.h"
 #include "Net/UnrealNetwork.h"
 #include "NPCQuestWidget.h"
+#include "QuestBoardWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "MapTravel.h"
@@ -79,12 +80,14 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 
 	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
-	if (QuestActorDataObject.Succeeded()) 
+	if (QuestActorDataObject.Succeeded())
 	{
-		
+
 	}*/
 
 }
+
+
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
@@ -95,17 +98,17 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		NPCReference->textrender->SetVisibility(true);
 
-		if (NPCReference->SpecifiedQuestOFNPC)
-		{
-		/*	WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
-			WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
+		//if (NPCReference->NPCQuest)
+		//{
+		//	/*	WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
+		//		WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
 
-			for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
-			{
-				WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
-			}
-			*/
-		}
+		//		for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
+		//		{
+		//			WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
+		//		}
+		//		*/
+		//}
 	}
 
 	Portal = Cast<AMapTravel>(OtherActor);
@@ -227,29 +230,26 @@ void APlanetSixCharacter::Interact()
 	//check if the player is the perimiter of the NPC 
 	if (NPCReference)
 	{
-		//If player controller is not null 
-		if (PC)
-		{
-			//check if Dialogue widget exists 
-			if (NPCQuestWidgetClass)
+
+
+		/*	if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
 			{
-
-				if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
-				{
-					print("Quest is Already activated", 5);
-				}
-
-				else
-				{
-					WidgetQuestNPC->AddToViewport();
-					PC->SetInputMode(FInputModeUIOnly());
-					PC->bShowMouseCursor = true;
-					PC->bEnableClickEvents = true;
-					PC->bEnableMouseOverEvents = true;
-
-				}
+				print("Quest is Already activated", 5);
 			}
-		}
+
+			else
+			{*/
+		WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+		WidgetQuestNPC->AddToViewport();
+
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->bShowMouseCursor = true;
+		PC->bEnableClickEvents = true;
+		PC->bEnableMouseOverEvents = true;
+
+		/*}*/
+
+
 	}
 	else
 	{
@@ -322,7 +322,7 @@ void APlanetSixCharacter::QuestLog()
 
 		WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
 		WidgetQuestLog->AddToViewport();
-		PC->SetInputMode(FInputModeUIOnly());
+		PC->SetInputMode(FInputModeGameAndUI());
 		PC->bShowMouseCursor = true;
 		PC->bEnableClickEvents = true;
 		PC->bEnableMouseOverEvents = true;
@@ -447,12 +447,16 @@ void APlanetSixCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	QuestBoardWidget = Cast<UQuestBoardWidget>(CreateWidget(Cast<APlayerController>(Controller), QuestBoardWidgetRef, FName(TEXT("QuestBoard"))));
+
+
+
 	if (WeaponComponent != nullptr)
 	{
 		WeaponComponent->PrimaryAmmo.SetCurrentValue(200.f);
 	}
 	else
-	{
+	{	
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
 	}
 }

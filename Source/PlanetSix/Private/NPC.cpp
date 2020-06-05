@@ -36,6 +36,20 @@ void ANPC::BeginPlay()
 
 	//Play an animtion on begin play for the NPC 
 	skeleton->PlayAnimation(AnimIdle, true);
+
+	TArray<AActor*> childs;
+	GetAttachedActors(childs);
+
+	for(AActor* a : childs) { 
+		auto Quest = Cast<AQuestActor>(a);
+
+		if (Quest) {
+		
+			NPCQuest = Quest->QuestData;
+		}
+		
+	
+	}
 }
 
 // Called every frame
@@ -52,7 +66,7 @@ void ANPC::Tick(float DeltaTime)
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	auto x = Cast<ACharacter>(OtherActor);
+	/*auto x = Cast<ACharacter>(OtherActor);
 	
 	if (x) 
 	{
@@ -61,7 +75,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 			auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
 			print(y->GetPlayerName(), -1);
 		}
-	}
+	}*/
 }
 
 
