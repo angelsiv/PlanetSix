@@ -9,11 +9,11 @@
 
 UInventoryComponent::UInventoryComponent()
 {
-	items = TArray<FItemBaseData>();
-	items.Init(FItemBaseData(), 10);
-	QuestItems = TArray<FItemBaseData>();
-	GEngine->AddOnScreenDebugMessage(1, 10, FColor::Emerald, TEXT("fewqef "));
-	inventorySize = 10;
+    items = TArray<FItemBaseData>();
+    items.Init(FItemBaseData(), 10);
+    QuestItems = TArray<FItemBaseData>();
+    //GEngine->AddOnScreenDebugMessage(1, 10, FColor::Emerald, TEXT("fewqef "));
+    inventorySize = 10;
 }
 
 
@@ -21,39 +21,39 @@ UInventoryComponent::UInventoryComponent()
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent(int32 invSize)
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+    // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+    // off to improve performance if you don't need them.
+    PrimaryComponentTick.bCanEverTick = true;
 
-	inventorySize = invSize;
+    inventorySize = invSize;
 
-	//items.Init(nullptr, inventorySize);
+    //items.Init(nullptr, inventorySize);
 
 
-	// ...
+    // ...
 }
 
 
 TArray<FItemBaseData> UInventoryComponent::GetItems()
 {
-	return items;
+    return items;
 }
 TArray<FItemBaseData> UInventoryComponent::GetQuestItems()
 {
-	return QuestItems;
+    return QuestItems;
 }
 
 FString UInventoryComponent::Test()
 {
-	return FString::FromInt(items.Num());
+    return FString::FromInt(items.Num());
 }
 
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	// ...
+    // ...
 
 }
 
@@ -61,14 +61,14 @@ void UInventoryComponent::BeginPlay()
 // Called every frame
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+    // ...
 }
 
 int UInventoryComponent::GetCount()
 {
-	return count;
+    return count;
 }
 
 
@@ -81,42 +81,46 @@ int UInventoryComponent::GetCount()
 //
 bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
 {
-	TArray<FItemBaseData>* TargetInv = &items;
-	if (IsQuest)
-	{
-		TargetInv = &QuestItems;
-	}
+    TArray<FItemBaseData> TargetInv = items;
+    if (IsQuest)
+    {
+        TargetInv = QuestItems;
+    }
 
 
-	//look for the first available spot.
-	for (int i = 0; i < TargetInv->Num(); i++)
-	{
+    //look for the first available spot.
+    for (int i = 0; i < TargetInv.Num(); i++)
+    {
 
 
-		//if there is someting
-		if (!TargetInv->operator[](i).getId() == 0)
-		{
-			//it item already in inventory
-			//return items[i].Stack(item);
+        //if there is someting
+        if (!TargetInv[i].getId() == 0)
+        {
+            //it item already in inventory
+            //return items[i].Stack(item);
 
-			if (TargetInv->operator[](i).Stack(item))
-			{
-				return true;
-			}
+            if (TargetInv[i].Stack(item))
+            {
+                return true;
+            }
 
-		}
-		//if empty
-		else
-		{
-			//place the item
-			TargetInv->operator[](i) = item;
-			count++;
-			return true;
-		}
-	}
+        }
+        //if empty
+        else
+        {
+            //place the item
+            TargetInv[i] = item;
+            count++;
+            return true;
+        }
+    }
+    if (IsQuest)
+    {
+        QuestItems.Add(item);
+    }
 
-	//if there is no spot left
-	return false;
+    //if there is no spot left
+    return false;
 }
 
 // Description:
@@ -129,15 +133,28 @@ bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
 //
 bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
 {
-	if (numberOfQuestItems > 0)
-	{
-		FItemBaseData QuestItem = FItemBaseData(&item);
-		add(QuestItem, true);
 
-	}
-	FItemBaseData NormalItem = FItemBaseData(&item);
+    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(numberOfQuestItems));
 
-	return add(NormalItem);
+    if (numberOfQuestItems > item.quantity)
+    {
+        numberOfQuestItems = item.quantity;
+    }
+
+    if (numberOfQuestItems > 0)
+    {
+        FItemBaseData QuestItem = FItemBaseData(&item);
+        QuestItem.quantity = numberOfQuestItems;
+        add(QuestItem, true);
+
+    }
+    if (item.quantity - numberOfQuestItems > 0)
+    {
+        FItemBaseData NormalItem = FItemBaseData(&item);
+        NormalItem.quantity = item.quantity - numberOfQuestItems;
+        return add(NormalItem);
+    }
+    return false;
 }
 
 // Description:
@@ -151,31 +168,31 @@ bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
 
 FItemBaseData UInventoryComponent::swap(FItemBaseData item, int index)
 {
-	//if the index is out of bound
-	if (index < 0 || index > items.Num())
-	{
-		//give back the item you try to put in
-		return item;
-	}
-	else
-	{
-		//it item is the same
-		if (FItemBaseData::compare(item, items[index],ECompareField::id) == 0)
-		{
-			items[index].Stack(item);
-			return FItemBaseData();
+    //if the index is out of bound
+    if (index < 0 || index > items.Num())
+    {
+        //give back the item you try to put in
+        return item;
+    }
+    else
+    {
+        //it item is the same
+        if (FItemBaseData::compare(item, items[index], ECompareField::id) == 0)
+        {
+            items[index].Stack(item);
+            return FItemBaseData();
 
-			
-		}
-		else
-		{
-			//place the item in the spot
-			auto temp = items[index];
-			items[index] = item;
-			//return what was there 
-			return temp;
-		}
-	}
+
+        }
+        else
+        {
+            //place the item in the spot
+            auto temp = items[index];
+            items[index] = item;
+            //return what was there 
+            return temp;
+        }
+    }
 }
 
 
@@ -189,7 +206,7 @@ FItemBaseData UInventoryComponent::swap(FItemBaseData item, int index)
 
 FItemBaseData UInventoryComponent::takeItem(int index)
 {
-	return swap(FItemBaseData(), index);
+    return swap(FItemBaseData(), index);
 }
 
 
@@ -233,28 +250,28 @@ FItemBaseData UInventoryComponent::takeItem(int index)
 
 void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 {
-	int largest = i; // Initialize largest as root 
-	int l = 2 * i + 1; // left = 2*i + 1 
-	int r = 2 * i + 2; // right = 2*i + 2 
+    int largest = i; // Initialize largest as root 
+    int l = 2 * i + 1; // left = 2*i + 1 
+    int r = 2 * i + 2; // right = 2*i + 2 
 
-	// If left child is larger than root 
-	//if (l < n && compare(items[i], items[largest], mode)>0)
-		//largest = l;
+    // If left child is larger than root 
+    //if (l < n && compare(items[i], items[largest], mode)>0)
+        //largest = l;
 
-	// If right child is larger than largest so far 
-	//if (r < n && compare(items[r], items[largest], mode)>0)
-		//largest = r;
+    // If right child is larger than largest so far 
+    //if (r < n && compare(items[r], items[largest], mode)>0)
+        //largest = r;
 
-	// If largest is not root 
-	if (largest != i)
-	{
-		auto temp = items[largest];
-		items[largest] = items[i];
-		items[i] = temp;
+    // If largest is not root 
+    if (largest != i)
+    {
+        auto temp = items[largest];
+        items[largest] = items[i];
+        items[i] = temp;
 
-		// Recursively heapify the affected sub-tree 
-		heapify(n, largest, mode);
-	}
+        // Recursively heapify the affected sub-tree 
+        heapify(n, largest, mode);
+    }
 }
 
 
@@ -271,126 +288,126 @@ void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 
 FItemBaseData FItemBaseData::GetCopy(FItemBaseData original)
 {
-	return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity,original.icon);
+    return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity, original.icon);
 }
 
 
 int FItemBaseData::compare(FItemBaseData  i1, FItemBaseData  i2, ECompareField type)
 {
 
-	int result = 0;
-	switch (type)
-	{
-	case ECompareField::name:
-		if (i1.displayName > i2.displayName)
-		{
-			result = 1;
-		}
-		else if (i1.displayName < i2.displayName)
-		{
-			result = -1;
-		}
-		break;
-	case ECompareField::price:
-		if (i1.value > i2.value)
-		{
-			result = 1;
-		}
-		else if (i1.value < i2.value)
-		{
-			result = -1;
-		}
-		break;
-	case ECompareField::weight:
-		if (i1.weight > i2.weight)
-		{
-			result = 1;
-		}
-		else if (i1.weight < i2.weight)
-		{
-			result = -1;
-		}
-		break;
-	case ECompareField::id:
-		if (i1.id > i2.id)
-		{
-			result = 1;
-		}
-		else if (i1.id < i2.id)
-		{
-			result = -1;
-		}
-		break;
-	case ECompareField::quantity:
-		if (i1.quantity > i2.quantity)
-		{
-			result = 1;
-		}
-		else if (i1.quantity < i2.quantity)
-		{
-			result = -1;
-		}
-		break;
-	default:
-		break;
-	}
-	
-	return result;
+    int result = 0;
+    switch (type)
+    {
+    case ECompareField::name:
+        if (i1.displayName > i2.displayName)
+        {
+            result = 1;
+        }
+        else if (i1.displayName < i2.displayName)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::price:
+        if (i1.value > i2.value)
+        {
+            result = 1;
+        }
+        else if (i1.value < i2.value)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::weight:
+        if (i1.weight > i2.weight)
+        {
+            result = 1;
+        }
+        else if (i1.weight < i2.weight)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::id:
+        if (i1.id > i2.id)
+        {
+            result = 1;
+        }
+        else if (i1.id < i2.id)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::quantity:
+        if (i1.quantity > i2.quantity)
+        {
+            result = 1;
+        }
+        else if (i1.quantity < i2.quantity)
+        {
+            result = -1;
+        }
+        break;
+    default:
+        break;
+    }
+
+    return result;
 }
 
 
 int FItemBaseData::getId()
 {
-	return id;
+    return id;
 }
 
 FString FItemBaseData::getDisplayName()
 {
-	return displayName;
+    return displayName;
 }
 
 float FItemBaseData::getWeight()
 {
-	return weight;
+    return weight;
 }
 
 float FItemBaseData::getValue()
 {
-	return value;
+    return value;
 }
 
 int FItemBaseData::getQuantity()
 {
-	return quantity;
+    return quantity;
 }
 
 float FItemBaseData::getTotalWeight()
 {
-	return weight * quantity;
+    return weight * quantity;
 }
 
 float FItemBaseData::getTotalValue()
 {
-	return value * quantity;
+    return value * quantity;
 }
 
 UTexture2D* FItemBaseData::getIcon()
 {
-	return icon;
+    return icon;
 }
 
 
 bool FItemBaseData::Stack(FItemBaseData other)
 {
-	if (id == other.id)
-	{
-		quantity += other.quantity;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if (id == other.id)
+    {
+        quantity += other.quantity;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 #pragma endregion
 
