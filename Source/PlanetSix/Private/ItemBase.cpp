@@ -67,7 +67,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor * OtherActor)
 
 	if (Player)
 	{
-		auto fs = OnPickUp.Execute(itemData.getId(),itemData.getQuantity());
+		//auto fs = OnPickUp.Execute(itemData.getId(),itemData.getQuantity());
 
 		if (Player->InventoryComponent->add(ToItemInv())&DestroyOnPickup)
 		{

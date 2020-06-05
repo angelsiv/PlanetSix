@@ -15,6 +15,8 @@ UClassComponent::UClassComponent()
 
 	ClassEnumName = EClassName::Uni_Comrade;
 	ClassTextName = TEXT("Comrade");
+
+	SetIsReplicated(true);
 }
 
 // Called when the game starts

@@ -73,8 +73,12 @@ public:
 	//Reference to NPC Actor
 	ANPC* NPCReference;
 
-	//Reference to QuestBoardWidget
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestBoard")
+		TSubclassOf<UUserWidget> QuestBoardWidgetRef;
+
+	//Reference to QuestBoardWidget
+	UPROPERTY(BlueprintReadWrite, Category = "QuestBoard")
 		UQuestBoardWidget* QuestBoardWidget;
 
 #pragma endregion
