@@ -86,6 +86,8 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 }
 
+
+
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 
