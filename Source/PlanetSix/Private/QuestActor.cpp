@@ -34,7 +34,7 @@ void AQuestActor::BeginPlay()
 	Super::BeginPlay();
 
 
-   auto x =  UDataTableFunctionLibrary::GetDataTableRowFromName(QuestDatatable, QuestID, QuestData);
+  // auto x =  UDataTableFunctionLibrary::GetDataTableRowFromName(QuestDatatable, QuestID, QuestData);
    //Print(x.questData,5)
 	
 
