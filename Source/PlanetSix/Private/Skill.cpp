@@ -39,7 +39,7 @@ void ASkill::Tick(float DeltaTime)
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
 @PARAMS DamageReceiver is the person who will receive damage.*/
-void ASkill::DoDamage(ABaseCharacter* DamageReceiver)
+void ASkill::DoDamage(APlanetSixCharacter* DamageReceiver)
 {
 	float AbilityDamage = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability damage depending on their type

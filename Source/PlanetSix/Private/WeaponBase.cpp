@@ -4,7 +4,6 @@
 #include "WeaponBase.h"
 #include "PlanetSixCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Net/UnrealNetwork.h"
 #include "Engine.h"
 
 // Sets default values
@@ -32,7 +31,7 @@ void AWeaponBase::BeginPlay()
 	}
 }
 
-void AWeaponBase::Fire_Implementation()
+void AWeaponBase::Fire()
 {
 	//logic of firing : can't fire if jammed
 	if (bIsWeaponJammed == false && AmmoInMagazine > 0)
@@ -40,21 +39,14 @@ void AWeaponBase::Fire_Implementation()
 		APlayerCameraManager* CameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		FVector StartFiringLocation;
 		FVector EndFiringLocation;
-		StartFiringLocation = CameraManager->GetCameraLocation();
-		EndFiringLocation = StartFiringLocation + CameraManager->GetCameraRotation().Vector() * 10000;
+		StartFiringLocation = MuzzleLocation->GetComponentLocation();
+		EndFiringLocation = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
 		FCollisionQueryParams QueryParams;
-		//FCollisionObjectQueryParams ObjectQueryParams;
-		//ObjectQueryParams.AllObjects;
-		QueryParams = QueryParams.DefaultQueryParam;
 		QueryParams.AddIgnoredActor(OwnerPlayer);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
 		FHitResult Hit;
-		GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Destructible, QueryParams);
-		StartFiringLocation = MuzzleLocation->GetComponentLocation();
-		EndFiringLocation = Hit.Location;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Destructible, QueryParams))
-		//if (GetWorld()->LineTraceSingleByObjectType(Hit, StartFiringLocation, EndFiringLocation, ObjectQueryParams.AllObjects, QueryParams))
+		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
 		{
 			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
 			if (ActorHit != nullptr)
@@ -63,11 +55,15 @@ void AWeaponBase::Fire_Implementation()
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"), OwnerPlayer->WeaponDamage()));
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f"), ActorHit->Attributes->Health.GetCurrentValue()));
 				ActorHit->ReceiveDamage(OwnerPlayer->WeaponDamage());
+				if (ActorHit->IsDead())
+				{
+					ActorHit->Death();
+				}
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
-			//OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
+			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
 			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
-			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::Red, false, 1.0f, 0, 1.0f);
+			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
 		AmmoInMagazine--;
 		Recoil();

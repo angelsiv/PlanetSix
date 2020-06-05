@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Skill.generated.h"
 
-class ABaseCharacter;
+class APlanetSixCharacter;
 
 /** Types of damage for skills.
 @ Raw is blunt damage
@@ -70,7 +70,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		float CharacterAbilityDamage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		ABaseCharacter* OwnerCharacter;
+		APlanetSixCharacter* OwnerCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float EnergyCost;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -102,5 +102,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable)
-		void DoDamage(ABaseCharacter* DamageReceiver);
+		void DoDamage(APlanetSixCharacter* DamageReceiver);
 };

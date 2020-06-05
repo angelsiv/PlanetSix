@@ -25,7 +25,6 @@ UAttributesComponent::UAttributesComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
-	SetIsReplicated(true);
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
