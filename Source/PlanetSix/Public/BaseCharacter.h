@@ -23,6 +23,9 @@ public:
 		int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+		float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
 		TArray<FQuestData> QuestsRegistered;
 };
 
