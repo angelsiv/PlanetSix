@@ -36,20 +36,6 @@ void ANPC::BeginPlay()
 
 	//Play an animtion on begin play for the NPC 
 	skeleton->PlayAnimation(AnimIdle, true);
-
-	TArray<AActor*> childs;
-	GetAttachedActors(childs);
-
-	for(AActor* a : childs) { 
-		auto Quest = Cast<AQuestActor>(a);
-
-		if (Quest) {
-		
-			NPCQuest = Quest->QuestData;
-		}
-		
-	
-	}
 }
 
 // Called every frame
