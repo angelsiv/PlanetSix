@@ -2,6 +2,7 @@
 
 
 #include "QuestActor.h"
+#include "Kismet/DataTableFunctionLibrary.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 // Sets default values
@@ -31,6 +32,11 @@ void AQuestActor::OrganiseQuestInEditor()
 void AQuestActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+   auto x =  UDataTableFunctionLibrary::GetDataTableRowFromName(QuestDatatable, QuestID, QuestData);
+   //Print(x.questData,5)
+	
 
 }
 

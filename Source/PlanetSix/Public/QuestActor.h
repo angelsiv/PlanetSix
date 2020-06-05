@@ -46,17 +46,18 @@ struct FObjectiveData
 };
 
 
+
 USTRUCT(BlueprintType)
 struct FQuestData :public FTableRowBase
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	    int QuestID;//=questdatatable.questID 
+	    int QuestID;//=questdatatable.questID
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FText QuestName;
+		FName QuestTitleName;
 
 	//Quest description
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -91,15 +92,15 @@ public:
 	bool IsQuestActive=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	FName NameOfQuest;
+	FName QuestID;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-	class UDataTable* QuestDatable;
-
+	class UDataTable* QuestDatatable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FQuestData QuestData;
+
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)
@@ -113,5 +114,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+
 
 };

@@ -91,7 +91,6 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-
 	NPCReference = Cast<ANPC>(OtherActor);
 
 	if (NPCReference)
@@ -239,16 +238,18 @@ void APlanetSixCharacter::Interact()
 
 			else
 			{*/
-		WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
-		WidgetQuestNPC->AddToViewport();
+		if (WidgetQuestNPC) {
 
-		PC->SetInputMode(FInputModeGameAndUI());
-		PC->bShowMouseCursor = true;
-		PC->bEnableClickEvents = true;
-		PC->bEnableMouseOverEvents = true;
+			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+			WidgetQuestNPC->AddToViewport();
 
-		/*}*/
+			PC->SetInputMode(FInputModeGameAndUI());
+			PC->bShowMouseCursor = true;
+			PC->bEnableClickEvents = true;
+			PC->bEnableMouseOverEvents = true;
 
+			/*}*/
+		}
 
 	}
 	else
