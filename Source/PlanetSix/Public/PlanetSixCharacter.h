@@ -56,6 +56,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		UNPCQuestWidget* WidgetQuestNPC;
 
+
+
 	/*Quest Widget UI*/
 	//this is to create the quest LOG 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
@@ -70,8 +72,10 @@ public:
    //Quest Accepted By Player
 	FQuestData QuestAccepted;
 
+
 	//Reference to NPC Actor
 	ANPC* NPCReference;
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestBoard")

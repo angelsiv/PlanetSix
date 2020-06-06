@@ -79,11 +79,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 
 
-	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
-	if (QuestActorDataObject.Succeeded())
-	{
-
-	}*/
+	
 
 }
 
@@ -229,8 +225,6 @@ void APlanetSixCharacter::Interact()
 	//check if the player is the perimiter of the NPC 
 	if (NPCReference)
 	{
-
-
 		/*	if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
 			{
 				print("Quest is Already activated", 5);
@@ -238,9 +232,12 @@ void APlanetSixCharacter::Interact()
 
 			else
 			{*/
+
 		if (WidgetQuestNPC) {
 
+
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+
 			WidgetQuestNPC->AddToViewport();
 
 			PC->SetInputMode(FInputModeGameAndUI());

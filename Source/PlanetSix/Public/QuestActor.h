@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
+#include"Engine.h"
 #include "UObject/ConstructorHelpers.h"
 #include "QuestActor.generated.h"
 
@@ -57,7 +58,7 @@ struct FQuestData :public FTableRowBase
 
 	//this is the name of the quest 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FName QuestTitleName;
+		FText QuestTitleName;
 
 	//Quest description
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
@@ -94,13 +95,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FName QuestID;
 
-
+	//The Component of the data table to be able to be read in Unreal
+	FQuestData* QuestDataPointer;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	class UDataTable* QuestDatatable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FQuestData QuestData;
 
+	FText QuestNameText;
+	FText QuestDescriptionText;
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)

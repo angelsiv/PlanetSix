@@ -33,6 +33,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FQuestData QuestData;
 
+	class AQuestActor* QuestReference;
 
 public:
 
