@@ -90,7 +90,8 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName.ToString());
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription.ToString());
 	
-
+		WidgetQuestNPC->TextName->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName;
+		WidgetQuestNPC->TextDescription->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription;
 		
 	}
 
