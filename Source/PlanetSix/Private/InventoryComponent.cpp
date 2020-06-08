@@ -101,6 +101,7 @@ bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
 
             if (TargetInv[i].Stack(item))
             {
+                items = TargetInv;
                 return true;
             }
 
@@ -111,6 +112,7 @@ bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
             //place the item
             TargetInv[i] = item;
             count++;
+            items = TargetInv;
             return true;
         }
     }
@@ -134,13 +136,14 @@ bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
 bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
 {
 
-    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(numberOfQuestItems));
+    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, TEXT("gretgdsrfs"));
 
     if (numberOfQuestItems > item.quantity)
     {
         numberOfQuestItems = item.quantity;
     }
 
+        GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(numberOfQuestItems));
     if (numberOfQuestItems > 0)
     {
         FItemBaseData QuestItem = FItemBaseData(&item);
@@ -148,11 +151,14 @@ bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
         add(QuestItem, true);
 
     }
+
+        GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(item.quantity-numberOfQuestItems));
     if (item.quantity - numberOfQuestItems > 0)
     {
         FItemBaseData NormalItem = FItemBaseData(&item);
         NormalItem.quantity = item.quantity - numberOfQuestItems;
         return add(NormalItem);
+
     }
     return false;
 }
