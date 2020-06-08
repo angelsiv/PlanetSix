@@ -36,6 +36,28 @@ void ANPC::BeginPlay()
 
 	//Play an animtion on begin play for the NPC 
 	skeleton->PlayAnimation(AnimIdle, true);
+
+	//Call The child actors attached to the NPC 
+	TArray<AActor*> childs;
+	GetAttachedActors(childs);
+	for (AActor* a : childs) 
+	{
+		auto quest = Cast<AQuestActor>(a);
+
+		if (quest) 
+		{
+			NPCQuestActor->QuestID = quest->QuestID;
+			if (NPCQuestActor->QuestDataPointer) 
+			{
+				NPCQuestActor->QuestDataPointer->QuestDescription = quest->QuestDataPointer->QuestDescription;
+			    NPCQuestActor->QuestDataPointer->QuestTitleName = quest->QuestDataPointer->QuestTitleName;
+
+			}
+			
+		}
+
+	}
+
 }
 
 // Called every frame
@@ -62,6 +84,7 @@ void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with th
 			print(y->GetPlayerName(), -1);
 		}
 	}*/
+
 }
 
 
