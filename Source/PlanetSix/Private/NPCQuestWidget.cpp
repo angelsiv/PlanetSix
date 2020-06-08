@@ -3,7 +3,6 @@
 
 #include "NPCQuestWidget.h"
 
-
 UNPCQuestWidget::UNPCQuestWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
 
 
@@ -13,11 +12,13 @@ void UNPCQuestWidget::NativeConstruct() {
 
 	Super::NativeConstruct();
 
-	
 	Accept->OnClicked.AddDynamic(this, &UNPCQuestWidget::AcceptQuest);
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 
-	
+
+	/*TextName->Text = QuestReference->QuestNameText;
+	TextDescription->Text = QuestReference->QuestDescriptionText;*/
+
 
 }
 

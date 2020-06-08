@@ -75,20 +75,10 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
-
-
-
-	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
-	if (QuestActorDataObject.Succeeded())
-	{
-
-	}*/
-
 }
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-
 	NPCReference = Cast<ANPC>(OtherActor);
 
 	if (NPCReference)
@@ -227,8 +217,6 @@ void APlanetSixCharacter::Interact()
 	//check if the player is the perimiter of the NPC 
 	if (NPCReference)
 	{
-
-
 		/*	if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
 			{
 				print("Quest is Already activated", 5);
@@ -236,16 +224,21 @@ void APlanetSixCharacter::Interact()
 
 			else
 			{*/
-		WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
-		WidgetQuestNPC->AddToViewport();
 
-		PC->SetInputMode(FInputModeGameAndUI());
-		PC->bShowMouseCursor = true;
-		PC->bEnableClickEvents = true;
-		PC->bEnableMouseOverEvents = true;
+		if (WidgetQuestNPC) {
 
-		/*}*/
 
+			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+
+			WidgetQuestNPC->AddToViewport();
+
+			PC->SetInputMode(FInputModeGameAndUI());
+			PC->bShowMouseCursor = true;
+			PC->bEnableClickEvents = true;
+			PC->bEnableMouseOverEvents = true;
+
+			/*}*/
+		}
 
 	}
 	else

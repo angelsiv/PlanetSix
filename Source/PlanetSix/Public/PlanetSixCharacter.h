@@ -12,6 +12,7 @@
 #include "WeaponComponent.h"
 #include "ClassComponent.h"
 #include "BaseCharacter.h"
+#include "QuestBoardWidget.h"
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -28,8 +29,8 @@ class APlanetSixCharacter : public ABaseCharacter
 	GENERATED_BODY()
 
 		virtual void BeginPlay() override;
-		/** Camera boom positioning the camera behind the character */
-		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	/** Camera boom positioning the camera behind the character */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
 
 	/** Follow camera */
@@ -71,6 +72,14 @@ public:
 
 	//Reference to NPC Actor
 	ANPC* NPCReference;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestBoard")
+		TSubclassOf<UUserWidget> QuestBoardWidgetRef;
+
+	//Reference to QuestBoardWidget
+	UPROPERTY(BlueprintReadWrite, Category = "QuestBoard")
+		UQuestBoardWidget* QuestBoardWidget;
+
 #pragma endregion
 
 	/** Player's inventory. */
