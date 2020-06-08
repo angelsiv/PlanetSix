@@ -16,10 +16,7 @@ void UNPCQuestWidget::NativeConstruct() {
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 
 
-	/*TextName->Text = QuestReference->QuestNameText;
-	TextDescription->Text = QuestReference->QuestDescriptionText;*/
-
-
+	
 }
 
 void UNPCQuestWidget::AcceptQuest()
@@ -39,5 +36,12 @@ void UNPCQuestWidget::RejectQuest()
 {
 	
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questrejected"));
+
+}
+
+void UNPCQuestWidget::Tick(FGeometry MyGeometry, float InDeltaTime)
+{
+
+	
 
 }

@@ -23,11 +23,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UButton* Reject;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite/*, meta = (BindWidget)*/) UTextBlock* TextDescription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite/*, meta = (BindWidget)*/) UTextBlock* TextName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite/*, meta = (BindWidget)*/) UTextBlock* TextObjectives;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextObjectives;
 
 	//Reference of NPC 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -47,5 +47,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void RejectQuest();
-	
+
+
+	void Tick(FGeometry MyGeometry, float InDeltaTime);
+
+
 };
