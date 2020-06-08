@@ -75,6 +75,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
 }
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -84,18 +85,13 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (NPCReference)
 	{
 		NPCReference->textrender->SetVisibility(true);
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestID.ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName.ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription.ToString());
+	
 
-		//if (NPCReference->NPCQuest)
-		//{
-		//	/*	WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
-		//		WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
-
-		//		for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
-		//		{
-		//			WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
-		//		}
-		//		*/
-		//}
+		
 	}
 
 	Portal = Cast<AMapTravel>(OtherActor);

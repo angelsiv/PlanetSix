@@ -32,26 +32,18 @@ void AQuestActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	static const FString ContextString(TEXT("QuestDataTableCpp"));
 	QuestDataPointer = QuestDatatable->FindRow<FQuestData>(QuestID, ContextString, true);
 
 	if (QuestDataPointer)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, TEXT("DATA TABLE BEING READ "));
-
 		//Set the variables of the quests TEXT Title and Text Description 
 		QuestDescriptionText = QuestDataPointer->QuestDescription;
 		QuestNameText = QuestDataPointer->QuestTitleName;
 	
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow,QuestDescriptionText.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, QuestNameText.ToString());
-
 	}
 
-  // auto x =  UDataTableFunctionLibrary::GetDataTableRowFromName(QuestDatatable, QuestID, QuestData);
-   //Print(x.questData,5)
-	
 }
 
 

@@ -17,7 +17,7 @@ enum EObjectiveType
 	Kill = 1 UMETA(DisplayName = "Kill"),
 	Gathering = 2 UMETA(DisplayName = "Gather"),
 	TalkToNpc = 4 UMETA(DisplayName = "Talktonpc"),
-	Location = 8 UMETA(DisplayName = "Location")//change to delegates 
+	Location = 8 UMETA(DisplayName = "Location") //change to delegates 
 };
 
 USTRUCT(BlueprintType)
@@ -106,6 +106,7 @@ public:
 
 	FText QuestNameText;
 	FText QuestDescriptionText;
+
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)

@@ -39,6 +39,8 @@ public:
 		FQuestData NPCQuest;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AQuestActor* NPCQuestActor;
 
 protected:
 	// Called when the game starts or when spawned
