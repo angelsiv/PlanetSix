@@ -34,7 +34,7 @@ void AWeaponBase::BeginPlay()
 void AWeaponBase::Fire()
 {
 	//logic of firing : can't fire if jammed
-	if (bIsWeaponJammed == false && AmmoInMagazine > 0)
+	if (bIsWeaponJammed == false)
 	{
 		APlayerCameraManager* CameraManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		FVector StartFiringLocation;
@@ -48,6 +48,7 @@ void AWeaponBase::Fire()
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Visibility, QueryParams))
 		{
+			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::Red, false, 1.0f, 0, 1.0f);
 			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
 			if (ActorHit != nullptr)
 			{
@@ -60,10 +61,8 @@ void AWeaponBase::Fire()
 					ActorHit->Death();
 				}
 			}
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot fired"));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Shot fired at x %f, y %f, z %f"), Hit.Location.X, Hit.Location.Y, Hit.Location.Z));
 			OwnerPlayer->CameraCrosshair = OwnerPlayer->GetFollowCamera()->GetForwardVector();
-			DrawDebugLine(GetWorld(), StartFiringLocation, Hit.Location, FColor::White, false, 1.0f, 0, 1.0f);
-			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
 		}
 		AmmoInMagazine--;
 		Recoil();

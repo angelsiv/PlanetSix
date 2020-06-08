@@ -75,11 +75,6 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
-
-
-
-	
-
 }
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
