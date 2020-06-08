@@ -66,7 +66,7 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	//Initialize Inventory
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
-	InventoryComponent->inventorySize = 12;
+	//InventoryComponent->inventorySize = 10;
 
 	//Initialize weapon component
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon Component"));
