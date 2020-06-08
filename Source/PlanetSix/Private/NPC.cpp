@@ -46,13 +46,15 @@ void ANPC::BeginPlay()
 
 		if (quest) 
 		{
-			NPCQuestActor->QuestID = quest->QuestID;
+			NPCQuest = quest->QuestData;
+
+			/*NPCQuestActor->QuestID = quest->QuestID;
 			if (NPCQuestActor->QuestDataPointer) 
 			{
 				NPCQuestActor->QuestDataPointer->QuestDescription = quest->QuestDataPointer->QuestDescription;
 			    NPCQuestActor->QuestDataPointer->QuestTitleName = quest->QuestDataPointer->QuestTitleName;
 
-			}
+			}*/
 			
 		}
 

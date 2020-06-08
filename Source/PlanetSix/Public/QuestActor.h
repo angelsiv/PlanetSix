@@ -101,11 +101,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	class UDataTable* QuestDatatable;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
-		FQuestData QuestData;
+	FQuestData QuestData;
 
-	FText QuestNameText;
-	FText QuestDescriptionText;
+	//FText QuestNameText;
+	//FText QuestDescriptionText;
 
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 

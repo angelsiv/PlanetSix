@@ -227,7 +227,7 @@ void APlanetSixCharacter::Interact()
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
 
 			WidgetQuestNPC->AddToViewport();
-
+	//		WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
 			PC->SetInputMode(FInputModeGameAndUI());
 			PC->bShowMouseCursor = true;
 			PC->bEnableClickEvents = true;
