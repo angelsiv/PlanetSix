@@ -46,8 +46,6 @@ struct FObjectiveData
 
 };
 
-
-
 USTRUCT(BlueprintType)
 struct FQuestData :public FTableRowBase
 {

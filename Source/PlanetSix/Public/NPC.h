@@ -36,6 +36,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FName QuestID;
+	UPROPERTY(EditAnywhere)
+		UAnimationAsset* AnimInteract;
+
+	bool bOnInteraction;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 		FQuestData NPCQuest;

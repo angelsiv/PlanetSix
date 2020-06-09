@@ -19,6 +19,9 @@ void UNPCQuestWidget::NativeConstruct() {
 	
 	
 
+	/*TextName->Text = QuestData.QuestTitleName;
+	TextDescription->Text = QuestData.QuestDescription;*/
+
 	
 }
 
@@ -30,9 +33,9 @@ void UNPCQuestWidget::AcceptQuest()
 	{
 		NPCRef->SpecifiedQuestOFNPC->IsQuestActive = true;
 	}*/
-	
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questaccepted"));
 
+
+	
 }
 
 void UNPCQuestWidget::RejectQuest()

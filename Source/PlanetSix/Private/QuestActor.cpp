@@ -31,6 +31,8 @@ void AQuestActor::OrganiseQuestInEditor()
 void AQuestActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	IsQuestActive = false;
 	static const FString ContextString(TEXT("QuestDataTableCpp"));
 	QuestDataPointer = QuestDatatable->FindRow<FQuestData>(QuestID, ContextString, true);
 
