@@ -15,6 +15,7 @@
 #include "NPCQuestWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "inventoryWidget.h"
 #include "MapTravel.h"
 #include "Engine.h"
 
@@ -66,7 +67,8 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	//Initialize Inventory
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
-	InventoryComponent->inventorySize = 12;
+	InventoryComponent->owner = this;
+	//InventoryWidget = CreateDefaultSubobject<UinventoryWidget>(TEXT("Inventory UI"));
 
 	//Initialize weapon component
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon Component"));
@@ -75,6 +77,13 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
+
+	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
+	if (QuestActorDataObject.Succeeded())
+	{
+
+	}*/
 
 }
 
@@ -220,6 +229,12 @@ void APlanetSixCharacter::MoveRight(float Value)
 void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+}
+
+void APlanetSixCharacter::ItemPickup()
+{
+	int numOfQuestItem = InventoryComponent->GetQuestSize();
+	InventoryWidget->addItemToViewport(numOfQuestItem);
 }
 
 void APlanetSixCharacter::Interact()
