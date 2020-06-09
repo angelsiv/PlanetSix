@@ -86,11 +86,29 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		NPCReference->textrender->SetVisibility(true);
 		
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestID.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription.ToString());
-	
+		if (NPCReference->NPCQuestActor == nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow,TEXT("Hello How can I  help Today ?"));
+		}
+		WidgetQuestNPC->TextName->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName;
+		WidgetQuestNPC->TextDescription->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription;
+		
 
+		for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
+		{
+			
+
+			if (i == 0) 
+			{
+				WidgetQuestNPC->TextObjectives1->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
+			}
+
+			if (i == 1) 
+			{
+				WidgetQuestNPC->TextObjectives2->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
+			}
+			
+		}
 		
 	}
 
@@ -225,10 +243,10 @@ void APlanetSixCharacter::Interact()
 
 
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+			NPCReference->bOnInteraction = true;
 
 			WidgetQuestNPC->AddToViewport();
-
-			PC->SetInputMode(FInputModeGameAndUI());
+			PC->SetInputMode(FInputModeUIOnly());
 			PC->bShowMouseCursor = true;
 			PC->bEnableClickEvents = true;
 			PC->bEnableMouseOverEvents = true;

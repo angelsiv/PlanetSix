@@ -34,6 +34,10 @@ public:
 	UPROPERTY(EditAnywhere)
 		UAnimationAsset* AnimIdle;
 
+	UPROPERTY(EditAnywhere)
+		UAnimationAsset* AnimInteract;
+
+	bool bOnInteraction;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 		FQuestData NPCQuest;
