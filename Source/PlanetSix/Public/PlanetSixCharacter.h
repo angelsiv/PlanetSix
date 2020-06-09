@@ -51,7 +51,7 @@ public:
 #pragma region(Quests Logic)
 	//this is to create the widget of the NPCQuest  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NPCQuestUI")
-		TSubclassOf<UUserWidget>NPCQuestWidgetClass;
+		TSubclassOf<UUserWidget> NPCQuestWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite)
 		UNPCQuestWidget* WidgetQuestNPC;
