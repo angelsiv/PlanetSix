@@ -15,8 +15,8 @@ void UNPCQuestWidget::NativeConstruct() {
 	Accept->OnClicked.AddDynamic(this, &UNPCQuestWidget::AcceptQuest);
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 
-	TextName->Text = QuestData.QuestTitleName;
-	TextDescription->Text = QuestData.QuestDescription;
+	/*TextName->Text = QuestData.QuestTitleName;
+	TextDescription->Text = QuestData.QuestDescription;*/
 
 	
 }
@@ -29,9 +29,9 @@ void UNPCQuestWidget::AcceptQuest()
 	{
 		NPCRef->SpecifiedQuestOFNPC->IsQuestActive = true;
 	}*/
-	
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questaccepted"));
 
+
+	
 }
 
 void UNPCQuestWidget::RejectQuest()
