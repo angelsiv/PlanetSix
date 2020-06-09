@@ -15,6 +15,7 @@
 #include "NPCQuestWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "inventoryWidget.h"
 #include "MapTravel.h"
 #include "Engine.h"
 
@@ -66,7 +67,8 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	//Initialize Inventory
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
-	InventoryComponent->inventorySize = 12;
+	InventoryComponent->owner = this;
+	//InventoryWidget = CreateDefaultSubobject<UinventoryWidget>(TEXT("Inventory UI"));
 
 	//Initialize weapon component
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon Component"));
@@ -75,6 +77,13 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 	/*AT THE MOMENT THIS IS IN BLUEPRINT (IT SHOULD BE IN BEGIN PLAY  ) */
 	//WidgetQuestNPC = CreateWidget<UNPCQuestWidget>(GetWorld(), NPCQuestWidgetClass);
+
+
+	/*static ConstructorHelpers::FObjectFinder<UDataTable> QuestActorDataObject(TEXT("DataTable'/Game/ThirdPersonCPP/Database/QuestDataTable.QuestDataTable'"));
+	if (QuestActorDataObject.Succeeded())
+	{
+
+	}*/
 
 }
 
@@ -86,15 +95,9 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		NPCReference->textrender->SetVisibility(true);
 		
-		if (NPCReference->NPCQuestActor == nullptr)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow,TEXT("Hello How can I  help Today ?"));
-		}
-		WidgetQuestNPC->TextName->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName;
-		WidgetQuestNPC->TextDescription->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription;
-		
-
-		for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
+	
+	
+	/*	for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
 		{
 			
 
@@ -108,7 +111,7 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 				WidgetQuestNPC->TextObjectives2->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
 			}
 			
-		}
+		}*/
 		
 	}
 
@@ -222,6 +225,12 @@ void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>&
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
+void APlanetSixCharacter::ItemPickup()
+{
+	int numOfQuestItem = InventoryComponent->GetQuestSize();
+	InventoryWidget->addItemToViewport(numOfQuestItem);
+}
+
 void APlanetSixCharacter::Interact()
 {
 	/* Interaction with NPC */
@@ -241,8 +250,13 @@ void APlanetSixCharacter::Interact()
 
 		if (WidgetQuestNPC) {
 
+			//No work for some reason, Engine crashes with no pop-out -Alonso
+			/*if (GetCharacterMovement()) {
+				GetCharacterMovement()->StopMovementImmediately();
 
+			}*/
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+			print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
 			NPCReference->bOnInteraction = true;
 
 			WidgetQuestNPC->AddToViewport();

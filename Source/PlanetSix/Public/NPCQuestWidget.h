@@ -19,23 +19,28 @@ class PLANETSIX_API UNPCQuestWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))  UButton* Accept;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))  
+		UButton* Accept;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UButton* Reject;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
+		UButton* Reject;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextDescription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
+		UTextBlock* TextDescription;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
+		UTextBlock* TextName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextObjectives1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
+		UTextBlock* TextObjectives1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UTextBlock* TextObjectives2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
+		UTextBlock* TextObjectives2;
 
 	//Reference of NPC 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FQuestData QuestData;
 
-	class AQuestActor* QuestReference;
 
 public:
 
@@ -49,9 +54,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void RejectQuest();
+	
 
-
-	void Tick(FGeometry MyGeometry, float InDeltaTime);
-
+	UFUNCTION()
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	
 
 };
