@@ -34,8 +34,37 @@ void ANPC::BeginPlay()
 	//Set the visibility of the text Press F to Interact to true 
 	textrender->SetVisibility(false);
 
-	//Play an animtion on begin play for the NPC 
-	skeleton->PlayAnimation(AnimIdle, true);
+	if (AnimIdle) 
+	{
+		//Play an animtion on begin play for the NPC 
+		skeleton->PlayAnimation(AnimIdle, true);
+	}
+	
+
+	bOnInteraction = false;
+	//Call The child actors attached to the NPC 
+	TArray<AActor*> childs;
+	GetAttachedActors(childs);
+	for (AActor* a : childs) 
+	{
+		auto quest = Cast<AQuestActor>(a);
+
+		if (quest) 
+		{
+			NPCQuest = quest->QuestData;
+
+			/*NPCQuestActor->QuestID = quest->QuestID;
+			if (NPCQuestActor->QuestDataPointer) 
+			{
+				NPCQuestActor->QuestDataPointer->QuestDescription = quest->QuestDataPointer->QuestDescription;
+			    NPCQuestActor->QuestDataPointer->QuestTitleName = quest->QuestDataPointer->QuestTitleName;
+
+			}*/
+			
+		}
+
+	}
+
 }
 
 // Called every frame
@@ -47,25 +76,41 @@ void ANPC::Tick(float DeltaTime)
 	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	textrender->SetWorldRotation(camera->GetCameraRotation());
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
-
+	if (AnimIdle) 
+	{
+		if (bOnInteraction)
+		{
+			skeleton->PlayAnimation(AnimInteract, false);
+		}
+		else if (!bOnInteraction)
+		{
+			skeleton->PlayAnimation(AnimIdle, true);
+		}
+	
+	}
+	
 }
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	auto x = Cast<ACharacter>(OtherActor);
-	
-	if (x) 
-	{
-		if (x->GetPlayerState() == UGameplayStatics::GetPlayerControllerFromID(GetWorld(),0)->PlayerState) 
-		{
-			auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
-			print(y->GetPlayerName(), -1);
-		}
-	}
+	//auto x = Cast<ACharacter>(OtherActor);
+	//
+	//if (x) 
+	//{
+
+	//	/*if (x->GetPlayerState() == UGameplayStatics::GetPlayerControllerFromID(GetWorld(),0)->PlayerState) 
+	//	{
+	//		auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
+	//		print(y->GetPlayerName(), -1);
+	//	}*/
+	//}
+
 }
 
 
 void ANPC::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	
+	bOnInteraction = false;
+
 }

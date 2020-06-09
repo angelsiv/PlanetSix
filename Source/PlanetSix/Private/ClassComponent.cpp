@@ -12,11 +12,8 @@ UClassComponent::UClassComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-
-	ClassEnumName = EClassName::Uni_Comrade;
-	ClassTextName = TEXT("Comrade");
-
-	SetIsReplicated(true);
+	ClassEnumName = EClassName::Gunner;
+	ClassTextName = TEXT("Gunner");
 }
 
 // Called when the game starts
@@ -28,6 +25,7 @@ void UClassComponent::BeginPlay()
 
 	//depending on the class, let's add a description to it.
 	ClassDescription = TempDescription;
+
 }
 
 // Called every frame
