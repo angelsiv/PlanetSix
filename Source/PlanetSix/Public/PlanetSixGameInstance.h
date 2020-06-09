@@ -40,6 +40,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentQuest(FQuestData Quest);
 	
+	
+	UFUNCTION(BlueprintCallable)
+	void MoveToNextObjective();
+	
 	UFUNCTION(BlueprintCallable)
 	void AddQuest(FQuestData quest);
 
