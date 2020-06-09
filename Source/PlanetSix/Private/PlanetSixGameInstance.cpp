@@ -24,6 +24,22 @@ FQuestData UPlanetSixGameInstance::GetCurrentQuest()
 	return PlayerInfo.QuestAccepted;
 }
 
+void UPlanetSixGameInstance::MoveToNextObjective()
+{
+	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
+	if (PlayerInfo.QuestAccepted.AtObjectiveNumber >= PlayerInfo.QuestAccepted.objectives.Num()) {
+		PlayerInfo.QuestAccepted.IsQuestCompleted = true;
+		for (FQuestData q : PlayerInfo.QuestsRegistered) 
+		{
+			if (q.QuestID == PlayerInfo.QuestAccepted.QuestID) {
+				q.IsQuestCompleted = true;
+				PlayerInfo.QuestAccepted = FQuestData::Empty();
+					break;
+			}
+		}
+	}
+}
+
 void UPlanetSixGameInstance::SetCurrentQuest(FQuestData Quest)
 {
 	PlayerInfo.QuestAccepted = Quest;
