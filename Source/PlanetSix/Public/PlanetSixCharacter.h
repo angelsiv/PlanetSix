@@ -21,6 +21,7 @@ class AQuestActor;
 class APlayerController;
 class ASkill;
 class AMapTravel;
+class UinventoryWidget;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ABaseCharacter
@@ -77,6 +78,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
 		UInventoryComponent* InventoryComponent;
 
+	/** inventory widget */
+	UPROPERTY(BlueprintReadWrite, Category = "Inventory")
+		UinventoryWidget* InventoryWidget;
+
 	/** Player's weapons. */
 	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
 		UWeaponComponent* WeaponComponent;
@@ -91,12 +96,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
 		TSubclassOf<UUserWidget> InGameMenu;
-
-	UPROPERTY(EditAnywhere, Category = "Item")
-		TSubclassOf<AItemBase> ItemBP;
-
-	UPROPERTY(EditAnywhere, Category = "Item")
-		UStaticMesh* ItemMesh;
 
 protected:
 #pragma region(Character Move & Input Actions)
@@ -202,5 +201,7 @@ public:
 
 	/** Property replication */
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void ItemPickup();
 
 };

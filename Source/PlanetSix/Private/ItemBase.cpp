@@ -69,7 +69,6 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
     {
         int NumberOfQuestItems = 2;
 
-
         //publish
         if (OnPickUp.IsBound())
         {

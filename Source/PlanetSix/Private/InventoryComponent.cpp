@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InventoryComponent.h"
+#include "PlanetSixCharacter.h"
 #include "ItemBase.h"
 #include "Engine.h"
 
@@ -71,6 +72,11 @@ int UInventoryComponent::GetCount()
     return count;
 }
 
+int UInventoryComponent::GetQuestSize()
+{
+    return QuestItems.Num();
+}
+
 
 // Description:
 //   add an item to the inventory.
@@ -79,29 +85,21 @@ int UInventoryComponent::GetCount()
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
+bool UInventoryComponent::addNormal(FItemBaseData item)
 {
-    TArray<FItemBaseData> TargetInv = items;
-    if (IsQuest)
-    {
-        TargetInv = QuestItems;
-    }
-
-
     //look for the first available spot.
-    for (int i = 0; i < TargetInv.Num(); i++)
+    for (int i = 0; i < items.Num(); i++)
     {
 
 
         //if there is someting
-        if (!TargetInv[i].getId() == 0)
+        if (!items[i].getId() == 0)
         {
             //it item already in inventory
             //return items[i].Stack(item);
 
-            if (TargetInv[i].Stack(item))
+            if (items[i].Stack(item))
             {
-                items = TargetInv;
                 return true;
             }
 
@@ -110,16 +108,47 @@ bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
         else
         {
             //place the item
-            TargetInv[i] = item;
+            items[i] = item;
             count++;
-            items = TargetInv;
             return true;
         }
     }
-    if (IsQuest)
+
+
+    //if there is no spot left
+    return false;
+}
+
+bool UInventoryComponent::addQuest(FItemBaseData item)
+{
+    //look for the first available spot.
+    for (int i = 0; i < QuestItems.Num(); i++)
     {
-        QuestItems.Add(item);
+
+
+        //if there is someting
+        if (!QuestItems[i].getId() == 0)
+        {
+            //it item already in inventory
+            //return items[i].Stack(item);
+
+            if (QuestItems[i].Stack(item))
+            {
+                return true;
+            }
+
+        }
+        //if empty
+        else
+        {
+            //place the item
+            QuestItems[i] = item;
+            return true;
+        }
     }
+
+    QuestItems.Add(item);
+
 
     //if there is no spot left
     return false;
@@ -135,29 +164,28 @@ bool UInventoryComponent::add(FItemBaseData item, bool IsQuest)
 //
 bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
 {
-
-    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, TEXT("gretgdsrfs"));
-
     if (numberOfQuestItems > item.quantity)
     {
         numberOfQuestItems = item.quantity;
     }
 
-        GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(numberOfQuestItems));
+    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(numberOfQuestItems));
     if (numberOfQuestItems > 0)
     {
         FItemBaseData QuestItem = FItemBaseData(&item);
         QuestItem.quantity = numberOfQuestItems;
-        add(QuestItem, true);
-
+        if (!addQuest(QuestItem))
+        {
+            owner->ItemPickup();
+        }
     }
 
-        GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(item.quantity-numberOfQuestItems));
+    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(item.quantity - numberOfQuestItems));
     if (item.quantity - numberOfQuestItems > 0)
     {
         FItemBaseData NormalItem = FItemBaseData(&item);
         NormalItem.quantity = item.quantity - numberOfQuestItems;
-        return add(NormalItem);
+        return addNormal(NormalItem);
 
     }
     return false;
