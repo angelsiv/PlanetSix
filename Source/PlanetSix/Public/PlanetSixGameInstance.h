@@ -35,6 +35,12 @@ public:
 	FPlayerInfo GetPlayerInfo();
 	
 	UFUNCTION(BlueprintCallable)
+	FQuestData GetCurrentQuest();
+
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentQuest(FQuestData Quest);
+	
+	UFUNCTION(BlueprintCallable)
 	void AddQuest(FQuestData quest);
 
 	UFUNCTION(BlueprintCallable)

@@ -19,6 +19,18 @@ FPlayerInfo UPlanetSixGameInstance::GetPlayerInfo()
 	return PlayerInfo;
 }
 
+FQuestData UPlanetSixGameInstance::GetCurrentQuest()
+{
+	return PlayerInfo.QuestAccepted;
+}
+
+void UPlanetSixGameInstance::SetCurrentQuest(FQuestData Quest)
+{
+	PlayerInfo.QuestAccepted = Quest;
+	ReloadNetwork();
+
+}
+
 void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 {
 	if (!PlayerInfo.QuestsRegistered.Contains(Quest)) {
