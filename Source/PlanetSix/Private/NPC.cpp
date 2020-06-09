@@ -38,25 +38,23 @@ void ANPC::BeginPlay()
 	skeleton->PlayAnimation(AnimIdle, true);
 
 	//Call The child actors attached to the NPC 
-	TArray<AActor*> childs;
-	GetAttachedActors(childs);
-	for (AActor* a : childs) 
+	static const FString ContextString(TEXT("QuestDataTableCpp"));
+	QuestDataPointer = QuestDatatable->FindRow<FQuestData>(QuestID, ContextString, true);
+
+	if (QuestDataPointer)
 	{
-		auto quest = Cast<AQuestActor>(a);
+		NPCQuest.IsStoryQuest = QuestDataPointer->IsStoryQuest;
+		NPCQuest.objectives = QuestDataPointer->objectives;
+		NPCQuest.QuestDescription = QuestDataPointer->QuestDescription;
+		NPCQuest.QuestID = QuestDataPointer->QuestID;
+		NPCQuest.QuestTitleName = QuestDataPointer->QuestTitleName;
 
-		if (quest) 
-		{
-			NPCQuest = quest->QuestData;
+		print("Validating " + NPCQuest.QuestTitleName.ToString(), 9);
 
-			/*NPCQuestActor->QuestID = quest->QuestID;
-			if (NPCQuestActor->QuestDataPointer) 
-			{
-				NPCQuestActor->QuestDataPointer->QuestDescription = quest->QuestDataPointer->QuestDescription;
-			    NPCQuestActor->QuestDataPointer->QuestTitleName = quest->QuestDataPointer->QuestTitleName;
-
-			}*/
-			
-		}
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, TEXT("DATA TABLE BEING READ "));
+		//Set the variables of the quests TEXT Title and Text Description 
+	/*	QuestDescriptionText = QuestDataPointer->QuestDescription;
+		QuestNameText = QuestDataPointer->QuestTitleName;*/
 
 	}
 

@@ -3,6 +3,8 @@
 
 #include "NPCQuestWidget.h"
 
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::Orange,text)
+
 UNPCQuestWidget::UNPCQuestWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
 
 
@@ -14,9 +16,8 @@ void UNPCQuestWidget::NativeConstruct() {
 
 	Accept->OnClicked.AddDynamic(this, &UNPCQuestWidget::AcceptQuest);
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
-
-	TextName->Text = QuestData.QuestTitleName;
-	TextDescription->Text = QuestData.QuestDescription;
+	
+	
 
 	
 }
@@ -41,9 +42,14 @@ void UNPCQuestWidget::RejectQuest()
 
 }
 
-void UNPCQuestWidget::Tick(FGeometry MyGeometry, float InDeltaTime)
-{
 
+void UNPCQuestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	TextName->SetText(QuestData.QuestTitleName);
+	TextDescription->SetText( QuestData.QuestDescription);
+	print("Printing " + QuestData.QuestTitleName.ToString(), 9);
 	
 
 }
