@@ -2,6 +2,7 @@
 
 
 #include "Skill.h"
+#include "Engine/Texture2D.h"
 #include "PlanetSixCharacter.h"
 
 // Sets default values

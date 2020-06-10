@@ -7,6 +7,7 @@
 #include "Skill.generated.h"
 
 class APlanetSixCharacter;
+class UTexture2D;
 
 /** Types of damage for skills.
 @ Raw is blunt damage
@@ -83,6 +84,8 @@ protected:
 		ESkillType SkillType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ESkillStatus SkillStatus;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UTexture2D* SkillIcon;
 
 	/** factor for damage scaling on raw abilities */
 	const float DamageFactor_Raw = 5.f;
