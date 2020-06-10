@@ -113,7 +113,7 @@ public:
 		static void SetMaxValue(UPARAM(ref) FAttributesData& AttributesData, const float Value) { AttributesData.SetMaxValue(Value); }
 };
 
-UCLASS(ClassGroup = (Custom), meta = (Blueprintable))
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API UAttributesComponent : public UActorComponent
 {
 	GENERATED_BODY()
