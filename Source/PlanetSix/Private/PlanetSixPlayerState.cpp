@@ -75,7 +75,7 @@ void APlanetSixPlayerState::BeginPlay() {
 						GameInstance->MoveToNextObjective();
 						print("Finished Objective number " + FString::FromInt(objectiveNumber + 1),-1);
 				//Success
-
+						GameInstance->ReloadNetwork();
 
 					}
 

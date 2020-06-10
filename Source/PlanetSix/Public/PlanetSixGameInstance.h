@@ -45,6 +45,9 @@ public:
 	void MoveToNextObjective();
 	
 	UFUNCTION(BlueprintCallable)
+	void ReduceCurrentTargetNumber(int ID);
+	
+	UFUNCTION(BlueprintCallable)
 	void AddQuest(FQuestData quest);
 
 	UFUNCTION(BlueprintCallable)

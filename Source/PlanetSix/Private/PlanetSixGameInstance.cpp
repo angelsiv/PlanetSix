@@ -24,6 +24,12 @@ FQuestData UPlanetSixGameInstance::GetCurrentQuest()
 	return PlayerInfo.QuestAccepted;
 }
 
+void UPlanetSixGameInstance::ReduceCurrentTargetNumber(int ID)
+{
+	 PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[ID]--;
+	 print("Targets reduced by one",-1);
+}
+
 void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
@@ -40,9 +46,12 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 	}
 }
 
+
+
 void UPlanetSixGameInstance::SetCurrentQuest(FQuestData Quest)
 {
 	PlayerInfo.QuestAccepted = Quest;
+	print("Setting Quest" + PlayerInfo.QuestAccepted.QuestTitleName.ToString(), -1);
 	ReloadNetwork();
 
 }
