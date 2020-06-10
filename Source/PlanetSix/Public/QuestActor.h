@@ -64,12 +64,24 @@ struct FQuestData :public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsStoryQuest;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		int AtObjectiveNumber = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		bool IsQuestCompleted = false;
 
 	//array of objective so that each quest can have a multiple objectives
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
 	bool operator==(const FQuestData& Q) const;
+
+	static FQuestData Empty() {
+		FQuestData q;
+		q.QuestID = -1;
+		return q;
+	}
 
 };
 

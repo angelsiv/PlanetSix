@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
 		TArray<FQuestData> QuestsRegistered;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+		FQuestData QuestAccepted;
 };
 
 USTRUCT(BlueprintType)

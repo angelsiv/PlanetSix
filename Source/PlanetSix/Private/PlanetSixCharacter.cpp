@@ -93,17 +93,11 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (NPCReference)
 	{
-		NPCReference->textrender->SetVisibility(true);
+		NPCReference->textrenderInteraction->SetVisibility(true);
 		
-		if (NPCReference->NPCQuestActor == nullptr)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow,TEXT("Hello How can I  help Today ?"));
-		}
-		WidgetQuestNPC->TextName->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestTitleName;
-		WidgetQuestNPC->TextDescription->Text = NPCReference->NPCQuestActor->QuestDataPointer->QuestDescription;
-		
-
-		for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
+	
+	
+	/*	for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
 		{
 			
 
@@ -117,7 +111,7 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 				WidgetQuestNPC->TextObjectives2->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
 			}
 			
-		}
+		}*/
 		
 	}
 
@@ -134,7 +128,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (NPCReference)
 	{
-		NPCReference->textrender->SetVisibility(false);
+		NPCReference->textrenderInteraction->SetVisibility(false);
 		NPCReference = nullptr;
 	}
 
@@ -254,17 +248,27 @@ void APlanetSixCharacter::Interact()
 			else
 			{*/
 
-		if (WidgetQuestNPC) {
+		if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
+			NPCReference->bOnInteraction = true;
+			//No work for some reason, Engine crashes with no pop-out -Alonso
+			/*if (GetCharacterMovement()) {
+				GetCharacterMovement()->StopMovementImmediately();
+
+			}*/
 
 
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
-			NPCReference->bOnInteraction = true;
-
-			WidgetQuestNPC->AddToViewport();
-			PC->SetInputMode(FInputModeUIOnly());
-			PC->bShowMouseCursor = true;
-			PC->bEnableClickEvents = true;
-			PC->bEnableMouseOverEvents = true;
+			print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
+			
+			if (!WidgetQuestNPC->IsVisible()) 
+			{
+				WidgetQuestNPC->AddToViewport();
+				PC->SetInputMode(FInputModeUIOnly());
+				PC->bShowMouseCursor = true;
+				PC->bEnableClickEvents = true;
+				PC->bEnableMouseOverEvents = true;
+			}
+		
 
 			/*}*/
 		}
