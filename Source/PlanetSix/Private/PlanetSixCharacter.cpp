@@ -251,11 +251,7 @@ void APlanetSixCharacter::Interact()
 		if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
 			NPCReference->bOnInteraction = true;
 			//No work for some reason, Engine crashes with no pop-out -Alonso
-			/*if (GetCharacterMovement()) {
-				GetCharacterMovement()->StopMovementImmediately();
-
-			}*/
-
+			GetCharacterMovement()->StopActiveMovement();
 
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
 			print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
