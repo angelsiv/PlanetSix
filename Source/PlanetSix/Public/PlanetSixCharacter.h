@@ -221,5 +221,5 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void ItemPickup();
-
+	virtual void Death() override;
 };
