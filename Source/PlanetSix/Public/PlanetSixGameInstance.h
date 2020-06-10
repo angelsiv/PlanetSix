@@ -14,10 +14,7 @@ UCLASS()
 class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-public:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FString LevelToGo;
 
 
 private:
@@ -43,6 +40,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveToNextObjective();
+	
+	UFUNCTION(BlueprintCallable)
+	void ReduceCurrentTargetNumber(int ID);
 	
 	UFUNCTION(BlueprintCallable)
 	void AddQuest(FQuestData quest);

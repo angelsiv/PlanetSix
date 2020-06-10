@@ -62,6 +62,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestUIWidget")
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestCompleted")
+		TSubclassOf<UUserWidget> QuestCompletedClass;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestCompleted")
+		UUserWidget* QuestCompletedWidget;
+
 	//this is for the WidgetQuestLog
 	UQuestWidget* WidgetQuestLog;
 
