@@ -249,21 +249,26 @@ void APlanetSixCharacter::Interact()
 			{*/
 
 		if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
-
+			NPCReference->bOnInteraction = true;
 			//No work for some reason, Engine crashes with no pop-out -Alonso
 			/*if (GetCharacterMovement()) {
 				GetCharacterMovement()->StopMovementImmediately();
 
 			}*/
+
+
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
 			print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
-			NPCReference->bOnInteraction = true;
-
-			WidgetQuestNPC->AddToViewport();
-			PC->SetInputMode(FInputModeUIOnly());
-			PC->bShowMouseCursor = true;
-			PC->bEnableClickEvents = true;
-			PC->bEnableMouseOverEvents = true;
+			
+			if (!WidgetQuestNPC->IsVisible()) 
+			{
+				WidgetQuestNPC->AddToViewport();
+				PC->SetInputMode(FInputModeUIOnly());
+				PC->bShowMouseCursor = true;
+				PC->bEnableClickEvents = true;
+				PC->bEnableMouseOverEvents = true;
+			}
+		
 
 			/*}*/
 		}
