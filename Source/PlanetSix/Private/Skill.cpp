@@ -27,6 +27,8 @@ void ASkill::BeginPlay()
 	{
 		Duration += ActivationTime;
 	}
+
+	SetReplicates(true);
 }
 
 // Called every frame
