@@ -73,7 +73,7 @@ void AWeaponBase::Fire_Implementation()
 							{
 								if (CurrentQuest.objectives[objectiveNumber].Targets.Contains(0))
 								{
-									if (Cast<APlanetSixCharacter>(Hit.GetActor())) 
+									if (Cast<ABaseCharacter>(Hit.GetActor())) 
 									{
 										GameInstance->ReduceCurrentTargetNumber(0);
 										CurrentQuest = GameInstance->GetCurrentQuest();
