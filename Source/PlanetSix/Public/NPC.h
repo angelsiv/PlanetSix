@@ -26,7 +26,10 @@ public:
 		UBoxComponent* boxcomponent;
 
 	UPROPERTY(EditAnywhere)
-		UTextRenderComponent* textrender;
+		UTextRenderComponent* textrenderInteraction;
+
+	UPROPERTY(EditAnywhere)
+		UTextRenderComponent* textrenderQuest;
 
 	UPROPERTY(EditAnywhere)
 		USkeletalMeshComponent* skeleton;

@@ -93,7 +93,7 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (NPCReference)
 	{
-		NPCReference->textrender->SetVisibility(true);
+		NPCReference->textrenderInteraction->SetVisibility(true);
 		
 	
 	
@@ -128,7 +128,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (NPCReference)
 	{
-		NPCReference->textrender->SetVisibility(false);
+		NPCReference->textrenderInteraction->SetVisibility(false);
 		NPCReference = nullptr;
 	}
 
@@ -248,7 +248,7 @@ void APlanetSixCharacter::Interact()
 			else
 			{*/
 
-		if (WidgetQuestNPC) {
+		if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
 
 			//No work for some reason, Engine crashes with no pop-out -Alonso
 			/*if (GetCharacterMovement()) {
