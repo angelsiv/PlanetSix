@@ -77,7 +77,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
 
         auto it = ToItemInv();
 
-        if (Player->InventoryComponent->add(& it, NumberOfQuestItems) && DestroyOnPickup)
+        if (Player->InventoryComponent->add(it, NumberOfQuestItems) && DestroyOnPickup)
         {
             this->Destroy();
         }

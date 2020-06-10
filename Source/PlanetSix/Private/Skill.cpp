@@ -27,6 +27,8 @@ void ASkill::BeginPlay()
 	{
 		Duration += ActivationTime;
 	}
+
+	SetReplicates(true);
 }
 
 // Called every frame
@@ -40,7 +42,7 @@ void ASkill::Tick(float DeltaTime)
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
 @PARAMS DamageReceiver is the person who will receive damage.*/
-void ASkill::DoDamage(APlanetSixCharacter* DamageReceiver)
+void ASkill::DoDamage(ABaseCharacter* DamageReceiver)
 {
 	float AbilityDamage = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability damage depending on their type
