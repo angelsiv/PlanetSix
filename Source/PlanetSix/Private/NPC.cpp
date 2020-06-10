@@ -17,8 +17,11 @@ ANPC::ANPC()
 	RootComponent = boxcomponent;
 	
 	//Declare TextRender
-	textrender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDER"));
-	textrender->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
+	textrenderInteraction = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDERInteraction"));
+	textrenderInteraction->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	textrenderQuest = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDERQuest"));
+	textrenderQuest->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	// Declaring Skeleton of Npc
 	skeleton = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletonMesh"));
@@ -30,38 +33,37 @@ ANPC::ANPC()
 void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	//Set the visibility of the text Press F to Interact to true 
-	textrender->SetVisibility(false);
-
+	textrenderInteraction->SetVisibility(false);
+	bOnInteraction = false;
+	
 	if (AnimIdle) 
 	{
 		//Play an animtion on begin play for the NPC 
 		skeleton->PlayAnimation(AnimIdle, true);
 	}
-	
 
-	bOnInteraction = false;
-	//Call The child actors attached to the NPC 
-	TArray<AActor*> childs;
-	GetAttachedActors(childs);
-	for (AActor* a : childs) 
+	if (QuestID.IsNone()) 
 	{
-		auto quest = Cast<AQuestActor>(a);
+		print("No Quest Assigned for the NPC  ", 9);
+		textrenderQuest->SetVisibility(false);
 
-		if (quest) 
-		{
-			NPCQuest = quest->QuestData;
+	}
+	
+	//Call The child actors attached to the NPC 
+	static const FString ContextString(TEXT("QuestDataTableCpp"));
+	QuestDataPointer = QuestDatatable->FindRow<FQuestData>(QuestID, ContextString, true);
 
-			/*NPCQuestActor->QuestID = quest->QuestID;
-			if (NPCQuestActor->QuestDataPointer) 
-			{
-				NPCQuestActor->QuestDataPointer->QuestDescription = quest->QuestDataPointer->QuestDescription;
-			    NPCQuestActor->QuestDataPointer->QuestTitleName = quest->QuestDataPointer->QuestTitleName;
+	if (QuestDataPointer)
+	{
+		NPCQuest.IsStoryQuest = QuestDataPointer->IsStoryQuest;
+		NPCQuest.objectives = QuestDataPointer->objectives;
+		NPCQuest.QuestDescription = QuestDataPointer->QuestDescription;
+		NPCQuest.QuestID = QuestDataPointer->QuestID;
+		NPCQuest.QuestTitleName = QuestDataPointer->QuestTitleName;
 
-			}*/
-			
-		}
+		print("Validating " + NPCQuest.QuestTitleName.ToString(), 9);
 
 	}
 

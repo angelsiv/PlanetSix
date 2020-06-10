@@ -44,13 +44,15 @@ void AQuestActor::BeginPlay()
 		QuestData.QuestID = QuestDataPointer->QuestID;
 		QuestData.QuestTitleName = QuestDataPointer->QuestTitleName;
 		
-		
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, TEXT("DATA TABLE BEING READ "));
+		print("Validating " + QuestData.QuestTitleName.ToString(), 9);
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, TEXT("DATA TABLE BEING READ "));
 		//Set the variables of the quests TEXT Title and Text Description 
 	/*	QuestDescriptionText = QuestDataPointer->QuestDescription;
 		QuestNameText = QuestDataPointer->QuestTitleName;*/
 	
 	}
+
 
 }
 

@@ -49,6 +49,7 @@ float ABaseCharacter::WeaponDamage()
 
 bool ABaseCharacter::IsDead()
 {
+
 	return Attributes->Health.GetCurrentValue() <= 0;
 }
 
