@@ -14,10 +14,7 @@ UCLASS()
 class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-public:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FString LevelToGo;
 
 
 private:

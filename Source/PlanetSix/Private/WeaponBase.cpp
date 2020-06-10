@@ -64,39 +64,38 @@ void AWeaponBase::Fire()
 				if (ActorHit->IsDead())
 				{
 
-					
+
 					//To check if Quest has a Killing condition
 					UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
 					int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
 					FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
 					if (CurrentQuest.objectives.Num() > 0) {
-						
-						if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
-						{
-							
-							if (CurrentQuest.objectives[objectiveNumber].Targets.Contains(0))
+						if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
+							if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
 							{
-								
-								if (Cast<APlanetSixCharacter>(Hit.GetActor())) {
-									GameInstance->ReduceCurrentTargetNumber(0);
-									CurrentQuest = GameInstance->GetCurrentQuest();
-									print("This many targets left: " + FString::FromInt(CurrentQuest.objectives[objectiveNumber].Targets[0]), -1);
 
-									if (CurrentQuest.objectives[objectiveNumber].Targets[0] <= 0) {
-									
-					
-									//Generic Target completed when done once // Will have to edit when more IDs are added for the enemy
-									CurrentQuest.objectives[objectiveNumber].IsCompleted = true;
-									GameInstance->MoveToNextObjective();
-									print("Finished Objective number " + FString::FromInt(objectiveNumber + 1), -1);
-									//Success
-									GameInstance->ReloadNetwork();
+								if (CurrentQuest.objectives[objectiveNumber].Targets.Contains(0))
+								{
+
+									if (Cast<APlanetSixCharacter>(Hit.GetActor())) {
+										GameInstance->ReduceCurrentTargetNumber(0);
+										CurrentQuest = GameInstance->GetCurrentQuest();
+										print("This many targets left: " + FString::FromInt(CurrentQuest.objectives[objectiveNumber].Targets[0]), -1);
+
+										if (CurrentQuest.objectives[objectiveNumber].Targets[0] <= 0) {
+
+
+											//Generic Target completed when done once // Will have to edit when more IDs are added for the enemy
+											CurrentQuest.objectives[objectiveNumber].IsCompleted = true;
+											GameInstance->MoveToNextObjective();
+											print("Finished Objective number " + FString::FromInt(objectiveNumber + 1), -1);
+											//Success
+										}
+
 									}
-
 								}
+
 							}
-
-
 						}
 					}
 
@@ -108,7 +107,7 @@ void AWeaponBase::Fire()
 
 					ActorHit->Death();
 				}
-				
+
 			}
 		}
 		AmmoInMagazine--;
