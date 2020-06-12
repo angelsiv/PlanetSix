@@ -89,24 +89,30 @@ APlanetSixCharacter::APlanetSixCharacter()
 
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-
 	NPCReference = Cast<ANPC>(OtherActor);
 
 	if (NPCReference)
 	{
-		NPCReference->textrender->SetVisibility(true);
+		NPCReference->textrenderInteraction->SetVisibility(true);
+		
+	
+	
+	/*	for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
+		{
+			
 
-		//if (NPCReference->NPCQuest)
-		//{
-		//	/*	WidgetQuestNPC->TextName->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestName;
-		//		WidgetQuestNPC->TextDescription->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.QuestDescription;
+			if (i == 0) 
+			{
+				WidgetQuestNPC->TextObjectives1->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
+			}
 
-		//		for (int32 i = 0; i < NPCReference->SpecifiedQuestOFNPC->QuestData.objectives.Num(); i++)
-		//		{
-		//			WidgetQuestNPC->TextObjectives->Text = NPCReference->SpecifiedQuestOFNPC->QuestData.objectives[i].ObjectiveDescription;
-		//		}
-		//		*/
-		//}
+			if (i == 1) 
+			{
+				WidgetQuestNPC->TextObjectives2->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
+			}
+			
+		}*/
+		
 	}
 
 	Portal = Cast<AMapTravel>(OtherActor);
@@ -122,7 +128,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
 
 	if (NPCReference)
 	{
-		NPCReference->textrender->SetVisibility(false);
+		NPCReference->textrenderInteraction->SetVisibility(false);
 		NPCReference = nullptr;
 	}
 
@@ -234,8 +240,6 @@ void APlanetSixCharacter::Interact()
 	//check if the player is the perimiter of the NPC 
 	if (NPCReference)
 	{
-
-
 		/*	if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
 			{
 				print("Quest is Already activated", 5);
@@ -243,16 +247,27 @@ void APlanetSixCharacter::Interact()
 
 			else
 			{*/
-		WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
-		WidgetQuestNPC->AddToViewport();
 
-		PC->SetInputMode(FInputModeGameAndUI());
-		PC->bShowMouseCursor = true;
-		PC->bEnableClickEvents = true;
-		PC->bEnableMouseOverEvents = true;
+		if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
+			NPCReference->bOnInteraction = true;
+			//No work for some reason, Engine crashes with no pop-out -Alonso
+			GetCharacterMovement()->StopActiveMovement();
 
-		/*}*/
+			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
+			print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
+			
+			if (!WidgetQuestNPC->IsVisible()) 
+			{
+				WidgetQuestNPC->AddToViewport();
+				PC->SetInputMode(FInputModeUIOnly());
+				PC->bShowMouseCursor = true;
+				PC->bEnableClickEvents = true;
+				PC->bEnableMouseOverEvents = true;
+			}
+		
 
+			/*}*/
+		}
 
 	}
 	else
@@ -459,4 +474,11 @@ void APlanetSixCharacter::BeginPlay()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
 	}
+}
+
+void APlanetSixCharacter::Death()
+{
+	SetActorTransform(RespawnPoint);
+	Attributes->Health.SetCurrentValue(Attributes->Health.GetMaxValue());
+	Attributes->Shield.SetCurrentValue(Attributes->Shield.GetMaxValue());
 }
