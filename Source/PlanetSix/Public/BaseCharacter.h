@@ -60,6 +60,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UClassComponent* Class;
 
+	FTransform RespawnPoint;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -79,6 +81,6 @@ public:
 		bool IsDead();
 	/** Method that is called upon death  */
 	UFUNCTION(BlueprintCallable)
-		void Death();
+		virtual void Death();
 };
 

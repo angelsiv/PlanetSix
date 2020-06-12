@@ -26,6 +26,7 @@ void UClassComponent::BeginPlay()
 	//depending on the class, let's add a description to it.
 	ClassDescription = TempDescription;
 
+	SetIsReplicated(true);
 }
 
 // Called every frame

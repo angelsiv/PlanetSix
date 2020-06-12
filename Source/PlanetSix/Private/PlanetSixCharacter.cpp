@@ -251,11 +251,7 @@ void APlanetSixCharacter::Interact()
 		if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
 			NPCReference->bOnInteraction = true;
 			//No work for some reason, Engine crashes with no pop-out -Alonso
-			/*if (GetCharacterMovement()) {
-				GetCharacterMovement()->StopMovementImmediately();
-
-			}*/
-
+			GetCharacterMovement()->StopActiveMovement();
 
 			WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
 			print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
@@ -478,4 +474,11 @@ void APlanetSixCharacter::BeginPlay()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
 	}
+}
+
+void APlanetSixCharacter::Death()
+{
+	SetActorTransform(RespawnPoint);
+	Attributes->Health.SetCurrentValue(Attributes->Health.GetMaxValue());
+	Attributes->Shield.SetCurrentValue(Attributes->Shield.GetMaxValue());
 }

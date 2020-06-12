@@ -34,7 +34,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
 		UTextBlock* TextObjectives1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) /*, meta = (BindWidget)*/
 		UTextBlock* TextObjectives2;
 
 	//Reference of NPC 

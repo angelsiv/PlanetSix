@@ -21,6 +21,7 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	RespawnPoint = GetActorTransform();
 }
 
 // Called every frame
@@ -28,6 +29,10 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (IsDead())
+	{
+		Death();
+	}
 }
 
 void ABaseCharacter::ReceiveDamage(float Damage)
@@ -55,6 +60,6 @@ bool ABaseCharacter::IsDead()
 
 void ABaseCharacter::Death()
 {
-	Destroy();
+
 }
 
