@@ -475,3 +475,10 @@ void APlanetSixCharacter::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OH NO, no weapon component equipped BIG BUG"));
 	}
 }
+
+void APlanetSixCharacter::Death()
+{
+	SetActorTransform(RespawnPoint);
+	Attributes->Health.SetCurrentValue(Attributes->Health.GetMaxValue());
+	Attributes->Shield.SetCurrentValue(Attributes->Shield.GetMaxValue());
+}
