@@ -35,7 +35,7 @@ void AWeaponBase::BeginPlay()
 	}
 }
 
-void AWeaponBase::Fire()
+void AWeaponBase::Fire_Implementation()
 {
 	//logic of firing : can't fire if jammed
 	if (bIsWeaponJammed == false)
@@ -63,8 +63,6 @@ void AWeaponBase::Fire()
 				ActorHit->ReceiveDamage(OwnerPlayer->WeaponDamage());
 				if (ActorHit->IsDead())
 				{
-
-
 					//To check if Quest has a Killing condition
 					UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
 					int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
@@ -73,17 +71,16 @@ void AWeaponBase::Fire()
 						if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
 							if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
 							{
-
 								if (CurrentQuest.objectives[objectiveNumber].Targets.Contains(0))
 								{
-
-									if (Cast<APlanetSixCharacter>(Hit.GetActor())) {
+									if (Cast<ABaseCharacter>(Hit.GetActor())) 
+									{
 										GameInstance->ReduceCurrentTargetNumber(0);
 										CurrentQuest = GameInstance->GetCurrentQuest();
 										print("This many targets left: " + FString::FromInt(CurrentQuest.objectives[objectiveNumber].Targets[0]), -1);
 
-										if (CurrentQuest.objectives[objectiveNumber].Targets[0] <= 0) {
-
+										if (CurrentQuest.objectives[objectiveNumber].Targets[0] <= 0) 
+										{
 
 											//Generic Target completed when done once // Will have to edit when more IDs are added for the enemy
 											CurrentQuest.objectives[objectiveNumber].IsCompleted = true;
@@ -91,23 +88,12 @@ void AWeaponBase::Fire()
 											print("Finished Objective number " + FString::FromInt(objectiveNumber + 1), -1);
 											//Success
 										}
-
 									}
 								}
-
 							}
 						}
 					}
-
-
-
-
-
-
-
-					ActorHit->Death();
 				}
-
 			}
 		}
 		AmmoInMagazine--;

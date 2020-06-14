@@ -63,6 +63,14 @@ public:
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CurrentQuest")
+		TSubclassOf<UUserWidget> CurrentQuestWidget;
+
+
+	UPROPERTY(BlueprintReadWrite)
+		UUserWidget* CurrentQuest;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestCompleted")
 		TSubclassOf<UUserWidget> QuestCompletedClass;
@@ -89,6 +97,8 @@ public:
 	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "QuestBoard")
 		UQuestBoardWidget* QuestBoardWidget;
+
+
 
 #pragma endregion
 
@@ -221,5 +231,5 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void ItemPickup();
-
+	virtual void Death() override;
 };
