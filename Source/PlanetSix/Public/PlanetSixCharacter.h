@@ -63,6 +63,14 @@ public:
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CurrentQuest")
+		TSubclassOf<UUserWidget> CurrentQuestWidget;
+
+
+	UPROPERTY(BlueprintReadWrite)
+		UUserWidget* CurrentQuest;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "QuestCompleted")
 		TSubclassOf<UUserWidget> QuestCompletedClass;
@@ -90,6 +98,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "QuestBoard")
 		UQuestBoardWidget* QuestBoardWidget;
 
+
+
 #pragma endregion
 
 	/** Player's inventory. */
@@ -109,8 +119,8 @@ public:
 		FVector CameraCrosshair;
 
 	/** Player's HUD. */
-	UPROPERTY(EditDefaultsOnly, Category = "UI")
-		UUserWidget* MainHUD;
+	UPROPERTY(EditAnywhere, Category = "UI")
+		TSubclassOf<UUserWidget> MainHUD;
 
 	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
 		TSubclassOf<UUserWidget> InGameMenu;
