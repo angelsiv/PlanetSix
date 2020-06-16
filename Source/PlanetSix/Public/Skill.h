@@ -104,6 +104,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable, Category = "Damage Mechanics")
 		void DoDamage(ABaseCharacter* DamageReceiver);
+	void DoDamage_Implementation(ABaseCharacter* DamageReceiver);
 };
