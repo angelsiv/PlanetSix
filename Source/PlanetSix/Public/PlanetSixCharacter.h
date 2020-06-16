@@ -119,8 +119,8 @@ public:
 		FVector CameraCrosshair;
 
 	/** Player's HUD. */
-	UPROPERTY(EditDefaultsOnly, Category = "UI")
-		UUserWidget* MainHUD;
+	UPROPERTY(EditAnywhere, Category = "UI")
+		TSubclassOf<UUserWidget> MainHUD;
 
 	UPROPERTY(EditDefaultsOnly, Category = "IGMenu")
 		TSubclassOf<UUserWidget> InGameMenu;
