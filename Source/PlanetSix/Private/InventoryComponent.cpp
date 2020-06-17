@@ -188,7 +188,7 @@ bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
         return addNormal(NormalItem);
 
     }
-    return false;
+    return true;
 }
 
 // Description:

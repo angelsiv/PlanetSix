@@ -66,7 +66,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
 
     if (Player)
     {
-        int NumberOfQuestItems = Player->GetNumberNeededForQuest(itemData.id, itemData.quantity);
+        int NumberOfQuestItems = 0;
 
         UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
         int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
@@ -77,7 +77,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
 
                 if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Gathering)
                 {
-                    GameInstance->ReduceCurrentTargetNumber(itemData.getId());
+                    NumberOfQuestItems = GameInstance->ReduceItemNumber(itemData.id, itemData.quantity);
                    
                 }
             }

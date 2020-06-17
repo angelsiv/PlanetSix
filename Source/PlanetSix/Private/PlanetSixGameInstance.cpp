@@ -47,6 +47,41 @@ void UPlanetSixGameInstance::ReduceCurrentTargetNumber(int ID)
 	}
 }
 
+int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
+{
+	//UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+	int objectiveNumber = PlayerInfo.QuestAccepted.AtObjectiveNumber;
+
+	if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Objectivetype == EObjectiveType::Gathering)
+	{
+		if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets.Contains(ID))
+		{
+
+			if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] > Quantity)
+			{
+				PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] -= Quantity;
+				return Quantity;
+			}
+			else
+			{
+				int quant = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
+				PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] = 0;
+
+
+				//ObjectiveCompleted
+				PlayerInfo.QuestAccepted.objectives[objectiveNumber].IsCompleted = true;
+				MoveToNextObjective();
+				print("Finished Objective number " + FString::FromInt(objectiveNumber + 1), -1);
+				//Success
+
+				return quant;
+			}
+		}
+
+	}
+	return 0;
+}
+
 void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
