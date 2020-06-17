@@ -90,7 +90,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
         {
             this->Destroy();
         }
-
+        GameInstance->ReloadNetwork();
         
     }
 }
