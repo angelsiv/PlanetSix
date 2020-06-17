@@ -65,6 +65,12 @@ public:
 	/** Method that lowers the health of the character it is called upon */
 	UFUNCTION(BlueprintCallable)
 		void ReceiveDamage(float Damage);
+	/** Method that heals the character it is called upon */
+	UFUNCTION(BlueprintCallable)
+		void HealthRegen(float Regen);
+	/** Method that heals the character it is called upon */
+	UFUNCTION(BlueprintCallable)
+		void ShieldRegen(float Regen);
 	/** Method that returns weapon damage  */
 	UFUNCTION(BlueprintCallable)
 		float WeaponDamage();

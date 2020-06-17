@@ -227,6 +227,8 @@ public:
 	/** Property replication */
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	int GetNumberNeededForQuest(int itemId, int quantity);
+
 	void ItemPickup();
 	virtual void Death() override;
 };

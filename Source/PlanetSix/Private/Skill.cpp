@@ -71,3 +71,66 @@ void ASkill::DoDamage_Implementation(ABaseCharacter* DamageReceiver)
 		break;
 	}
 }
+
+/** Heals the receiver depending on the caster's abilitydamage.
+@PARAMS HealReceiver is the person who will receive heals.*/
+void ASkill::DoHealthRegen_Implementation(ABaseCharacter* HealReceiver)
+{
+	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
+	//ability heal depending on abilities proficiency
+	AbilityDamage_Raw = AbilityHeal / DamageFactor_Raw;
+	AbilityDamage_AoE = AbilityHeal / DamageFactor_AoE;
+	AbilityDamage_DoT = AbilityHeal / DamageFactor_DoT;
+
+	//random chances for critical here
+
+	//inflict damage depending on the skill's damage type
+	switch (SkillDamageType)
+	{
+	case ESkillDamageType::None:
+		break;
+	case ESkillDamageType::Raw:
+		HealReceiver->HealthRegen(AbilityDamage_Raw);
+		break;
+	case ESkillDamageType::AoE:
+		HealReceiver->HealthRegen(AbilityDamage_AoE);
+		break;
+	case ESkillDamageType::DoT:
+		HealReceiver->HealthRegen(AbilityDamage_DoT);
+		break;
+	default:
+		break;
+	}
+}
+
+
+/** Heals the receiver<s shields depending on the caster's abilitydamage.
+@PARAMS HealReceiver is the person who will receive shield heals.*/
+void ASkill::DoShieldRegen_Implementation(ABaseCharacter* HealReceiver)
+{
+	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
+	//ability heal depending on abilities proficiency
+	AbilityDamage_Raw = AbilityHeal / DamageFactor_Raw;
+	AbilityDamage_AoE = AbilityHeal / DamageFactor_AoE;
+	AbilityDamage_DoT = AbilityHeal / DamageFactor_DoT;
+
+	//random chances for critical here
+
+	//inflict damage depending on the skill's damage type
+	switch (SkillDamageType)
+	{
+	case ESkillDamageType::None:
+		break;
+	case ESkillDamageType::Raw:
+		HealReceiver->ShieldRegen(AbilityDamage_Raw);
+		break;
+	case ESkillDamageType::AoE:
+		HealReceiver->ShieldRegen(AbilityDamage_AoE);
+		break;
+	case ESkillDamageType::DoT:
+		HealReceiver->ShieldRegen(AbilityDamage_DoT);
+		break;
+	default:
+		break;
+	}
+}
