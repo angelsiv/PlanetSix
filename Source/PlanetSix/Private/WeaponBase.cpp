@@ -88,7 +88,6 @@ void AWeaponBase::Fire_Implementation()
 
 
 								}
-							
 							}
 						}
 					}
