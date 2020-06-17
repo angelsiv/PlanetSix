@@ -16,7 +16,7 @@
  /**
   *
   */
-
+class UEnemyAnimInstance;
 
 
 UCLASS()
@@ -33,6 +33,10 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Senses)
         UAISenseConfig_Sight* SightConfig;
+        
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = State)
+        bool isAiming;
+
 
 
 protected:
@@ -43,6 +47,8 @@ protected:
     //Reference of all players in scene
     APlanetSixCharacter* PlayerInSight;
 
+    UEnemyAnimInstance* AnimInstance;
+
 public:
     
     virtual void OnPossess(APawn* InPawn) override;
@@ -50,7 +56,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
     UFUNCTION(BlueprintCallable, Category = Sight)
-    void SenseStuff(const TArray<AActor*> &actors);
+    void SenseStuff(const TArray<AActor*> &actors); 
+    
+    UFUNCTION(BlueprintCallable, Category = Shoot)
+    void Shoot(); 
+    
+    
 
 
 };
