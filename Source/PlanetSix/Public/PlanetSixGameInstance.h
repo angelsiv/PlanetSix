@@ -47,6 +47,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void ReduceCurrentTargetNumber(int ID);
+
 	
 	UFUNCTION(BlueprintCallable)
 	void AddQuest(FQuestData quest);
