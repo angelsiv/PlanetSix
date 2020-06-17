@@ -71,6 +71,9 @@ struct FQuestData :public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsQuestCompleted = false;
 
+
+	UPROPERTY(BlueprintReadWrite, Category = "Quest")
+		bool IsQuestActive = false;
 	//array of objective so that each quest can have a multiple objectives
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;

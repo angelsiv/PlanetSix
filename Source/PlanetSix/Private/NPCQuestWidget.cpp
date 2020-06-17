@@ -18,31 +18,19 @@ void UNPCQuestWidget::NativeConstruct() {
 	Reject->OnClicked.AddDynamic(this, &UNPCQuestWidget::RejectQuest);
 	
 	
-
-	/*TextName->Text = QuestData.QuestTitleName;
-	TextDescription->Text = QuestData.QuestDescription;*/
-
-	
 }
 
 void UNPCQuestWidget::AcceptQuest()
 {
-
 	RemoveFromParent();
-/*	if (NPCRef) 
-	{
-		NPCRef->SpecifiedQuestOFNPC->IsQuestActive = true;
-	}*/
+	QuestData.IsQuestActive = true;
 
-
-	
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"),QuestData.IsQuestActive ? TEXT("true") : TEXT("false")));
 }
 
 void UNPCQuestWidget::RejectQuest()
 {
 	
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("questrejected"));
-
 }
 
 

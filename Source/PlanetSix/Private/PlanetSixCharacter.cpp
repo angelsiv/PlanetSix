@@ -96,24 +96,6 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
     {
         NPCReference->textrenderInteraction->SetVisibility(true);
 
-
-
-        /*	for (int32 i = 0; i < NPCReference->NPCQuestActor->QuestDataPointer->objectives.Num(); i++)
-            {
-
-
-                if (i == 0)
-                {
-                    WidgetQuestNPC->TextObjectives1->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
-                }
-
-                if (i == 1)
-                {
-                    WidgetQuestNPC->TextObjectives2->Text = NPCReference->NPCQuestActor->QuestDataPointer->objectives[i].ObjectiveDescription;
-                }
-
-            }*/
-
     }
 
     Portal = Cast<AMapTravel>(OtherActor);
@@ -268,14 +250,7 @@ void APlanetSixCharacter::Interact()
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
-        /*	if (NPCReference->SpecifiedQuestOFNPC->IsQuestActive)
-            {
-                print("Quest is Already activated", 5);
-            }
-
-            else
-            {*/
-
+        
         if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
             NPCReference->bOnInteraction = true;
             //No work for some reason, Engine crashes with no pop-out -Alonso
@@ -291,10 +266,10 @@ void APlanetSixCharacter::Interact()
                 PC->bShowMouseCursor = true;
                 PC->bEnableClickEvents = true;
                 PC->bEnableMouseOverEvents = true;
+                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), NPCReference->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
             }
-
-
-            /*}*/
+           
+          
         }
 
     }
