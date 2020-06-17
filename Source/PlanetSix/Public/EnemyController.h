@@ -39,6 +39,9 @@ protected:
 
     //Reference of all players in scene
     TArray<APlanetSixCharacter*> Players;
+    
+    //Reference of all players in scene
+    APlanetSixCharacter* PlayerInSight;
 
 public:
     

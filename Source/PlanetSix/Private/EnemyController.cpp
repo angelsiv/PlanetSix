@@ -43,7 +43,7 @@ void AEnemyController::BeginPlay()
 		Players.Add(Cast<APlanetSixCharacter>(a));
 	}
 	if (Players.Num() < 0) {
-		print("Caught " + FString::FromInt(Players.Num()) + " players in scene",-1);
+		print("Caught " + FString::FromInt(Players.Num()) + " players in scene", -1);
 	}
 }
 
@@ -51,23 +51,28 @@ void AEnemyController::BeginPlay()
 
 void AEnemyController::Tick(float DeltaTime)
 {
+	if (PlayerInSight) {
+		float distance = FVector::Distance(PlayerInSight->GetActorLocation(), GetPawn()->GetActorLocation());
+		print("Distance " + FString::SanitizeFloat(distance), 3);
+	}
 	Super::Tick(DeltaTime);
 }
 
 void AEnemyController::SenseStuff(const TArray<AActor*>& actors)
 {
-	if (Players.Num() < 0) {
-		return;
-	}
-	for (AActor* actor : actors) {
-		if (Players.Contains(actor)) {
-			MoveToActor(actor,20,true,true,false,0,true);
+	if (!PlayerInSight) {
+		if (Players.Num() < 0) {
+			return;
 		}
+		for (AActor* actor : actors) {
+			if (Players.Contains(actor)) {
+				MoveToActor(actor, 500);
+				PlayerInSight = Cast<APlanetSixCharacter>(actor);
+				print("Moving to " + PlayerInSight->GetFName().ToString(), -1);
 
+			}
+
+		}
 	}
 
-
-
-
-	print("Caught something", -1);
 }
