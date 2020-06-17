@@ -113,14 +113,10 @@ public:
 
 	FQuestData QuestData;
 
-	//FText QuestNameText;
-	//FText QuestDescriptionText;
-
 
 	//Function to organize the quests in the  editor it attaches the location to the parent 
 	UFUNCTION(CallInEditor, BlueprintCallable)
 		void OrganiseQuestInEditor();
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -129,7 +125,5 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-
 
 };

@@ -6,8 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
-
-
 class UTexture2D;
 class AItemBase;
 class APlanetSixCharacter;

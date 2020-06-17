@@ -3,6 +3,7 @@
 
 #include "ItemBase.h"
 #include "PlanetSixCharacter.h"
+#include "PlanetSixGameInstance.h"
 #include "InventoryComponent.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -64,24 +65,34 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
     GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Purple, TEXT("colide"));
     auto Player = Cast<APlanetSixCharacter>(OtherActor);
 
-
-
     if (Player)
     {
-        int NumberOfQuestItems = 2;
+        int NumberOfQuestItems = 0;
 
-        //publish
-        if (OnPickUp.IsBound())
-        {
-            NumberOfQuestItems = OnPickUp.Execute(itemData.getId(), itemData.getQuantity());
+        UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+        int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
+        FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
+        if (CurrentQuest.objectives.Num() > 0) {
+           
+            if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
+
+                if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Gathering)
+                {
+                    NumberOfQuestItems = GameInstance->ReduceItemNumber(itemData.id, itemData.quantity);
+                   
+                }
+            }
         }
 
         auto it = ToItemInv();
+
 
         if (Player->InventoryComponent->add(it, NumberOfQuestItems) && DestroyOnPickup)
         {
             this->Destroy();
         }
+
+        
     }
 }
 
