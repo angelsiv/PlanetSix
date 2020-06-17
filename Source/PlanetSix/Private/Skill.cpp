@@ -3,6 +3,7 @@
 
 #include "Skill.h"
 #include "Engine/Texture2D.h"
+#include "Engine/DataTable.h"
 #include "PlanetSixCharacter.h"
 
 // Sets default values
