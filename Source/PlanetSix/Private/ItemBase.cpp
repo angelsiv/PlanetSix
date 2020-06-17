@@ -67,13 +67,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
 
     if (Player)
     {
-        int NumberOfQuestItems = 2;
-
-        //publish
-        if (OnPickUp.IsBound())
-        {
-            NumberOfQuestItems = OnPickUp.Execute(itemData.getId(), itemData.getQuantity());
-        }
+        int NumberOfQuestItems = Player->GetNumberNeededForQuest(itemData.id, itemData.quantity);
 
         auto it = ToItemInv();
 

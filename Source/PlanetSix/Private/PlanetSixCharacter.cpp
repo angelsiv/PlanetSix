@@ -15,6 +15,7 @@
 #include "NPCQuestWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "PlanetSixGameInstance.h"
 #include "inventoryWidget.h"
 #include "MapTravel.h"
 #include "Engine.h"
@@ -223,6 +224,29 @@ void APlanetSixCharacter::MoveRight(float Value)
 void APlanetSixCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+}
+
+int APlanetSixCharacter::GetNumberNeededForQuest(int itemId, int quantity)
+{
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+	int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
+
+	if (GameInstance->GetCurrentQuest().objectives[objectiveNumber].Objectivetype == EObjectiveType::Gathering)
+	{
+		if (QuestAccepted.objectives[objectiveNumber].Targets[itemId] > quantity)
+		{
+			QuestAccepted.objectives[objectiveNumber].Targets[itemId] -= quantity;
+			return quantity;
+		}
+		else
+		{
+			int quant = QuestAccepted.objectives[objectiveNumber].Targets[itemId];
+			QuestAccepted.objectives[objectiveNumber].Targets[itemId] = 0;
+			return quant;
+		}
+
+	}
+	return 0;
 }
 
 void APlanetSixCharacter::ItemPickup()
