@@ -7,6 +7,7 @@
 #include "Skill.generated.h"
 
 class APlanetSixCharacter;
+struct FTableRowBase;
 class UTexture2D;
 
 /** Types of damage for skills.
@@ -48,6 +49,27 @@ enum class ESkillStatus : uint8
 	Unlocked = 2 UMETA(DisplayName = "Unlocked"),
 	Equipped = 4 UMETA(DisplayName = "Equipped")
 	//dd = 8 UMETA(DisplayName = "Non Skill")
+};
+
+USTRUCT(BlueprintType)
+struct FSkillData : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		int32 SkillId;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		FText SkillName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		FText SkillDescription;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		int32 EnergyCost;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		UTexture2D* SkillIcon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		TSubclassOf<ASkill> SkillClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+		ESkillStatus SkillStatus;
 };
 
 UCLASS()
