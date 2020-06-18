@@ -2,6 +2,7 @@
 
 
 #include "PlanetSixEnemy.h"
+#include "WeaponComponent.h"
 #include "PlanetSixCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"

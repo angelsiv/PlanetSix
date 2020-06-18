@@ -12,6 +12,7 @@
 #include "PlanetSixEnemy.generated.h"
 
 class APlanetSixCharacter;
+class UWeaponComponent;
 
 UCLASS()
 class PLANETSIX_API APlanetSixEnemy : public ABaseCharacter
@@ -36,6 +37,7 @@ protected:
 
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UFloatingPawnMovement* MovComp;
+
 
 
 protected:
