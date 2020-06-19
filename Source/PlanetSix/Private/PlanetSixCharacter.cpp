@@ -250,9 +250,9 @@ void APlanetSixCharacter::Interact()
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
-        
         if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
             NPCReference->bOnInteraction = true;
+            NPCReference->textrenderQuest->SetVisibility(false);
             //No work for some reason, Engine crashes with no pop-out -Alonso
             GetCharacterMovement()->StopActiveMovement();
 
