@@ -80,17 +80,21 @@ void ANPC::Tick(float DeltaTime)
 	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
 	if (AnimIdle) 
 	{
-		if (bOnInteraction)
+		if (AnimInteract) 
 		{
-			skeleton->PlayAnimation(AnimInteract, false);
+			if (bOnInteraction)
+			{
+				skeleton->PlayAnimation(AnimInteract, true);
+			}
 		}
-		else if (!bOnInteraction)
+		
+		if (!bOnInteraction)
 		{
 			skeleton->PlayAnimation(AnimIdle, true);
 		}
-	
+
 	}
-	
+
 }
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
