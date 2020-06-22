@@ -246,27 +246,37 @@ void APlanetSixCharacter::Interact()
     /* Interaction with NPC */
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
-
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
         if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
+
             NPCReference->bOnInteraction = true;
             NPCReference->textrenderQuest->SetVisibility(false);
+
             //No work for some reason, Engine crashes with no pop-out -Alonso
             GetCharacterMovement()->StopActiveMovement();
 
-            WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
-            print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
+            WidgetQuestNPC->QuestDataNPC = NPCReference;
 
-            if (!WidgetQuestNPC->IsVisible())
+            print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
+
+            if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestActive == false)
             {
                 WidgetQuestNPC->AddToViewport();
                 PC->SetInputMode(FInputModeUIOnly());
                 PC->bShowMouseCursor = true;
                 PC->bEnableClickEvents = true;
                 PC->bEnableMouseOverEvents = true;
-                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), NPCReference->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
+
+                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool in quest data widget : %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
+            }
+
+            else if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestActive)
+            {
+                print("Accessing the questdata in widget quest NPC", -1);
+                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
+            
             }
            
           
@@ -283,7 +293,6 @@ void APlanetSixCharacter::Interact()
     {
         Portal->TravelTo();
     }
-
 
 }
 

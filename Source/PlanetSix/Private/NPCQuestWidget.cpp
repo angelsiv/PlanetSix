@@ -22,10 +22,8 @@ void UNPCQuestWidget::NativeConstruct() {
 
 void UNPCQuestWidget::AcceptQuest()
 {
-	RemoveFromParent();
-	QuestData.IsQuestActive = true;
-
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"),QuestData.IsQuestActive ? TEXT("true") : TEXT("false")));
+	QuestDataNPC->NPCQuest.IsQuestActive= true;
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool of quest data in widgetNPC is: %s"), QuestDataNPC->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
 }
 
 void UNPCQuestWidget::RejectQuest()
@@ -38,17 +36,17 @@ void UNPCQuestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
-	TextName->SetText(QuestData.QuestTitleName);
-	TextDescription->SetText( QuestData.QuestDescription);
+	TextName->SetText(QuestDataNPC->NPCQuest.QuestTitleName);
+	TextDescription->SetText(QuestDataNPC->NPCQuest.QuestDescription);
 
 	//most consuming Thing i have ever used but it works -Youcef
-	for (int32 i = 0; i < QuestData.objectives.Num(); i++)
+	for (int32 i = 0; i < QuestDataNPC->NPCQuest.objectives.Num(); i++)
 	{
-		TextObjectives1->SetText(QuestData.objectives[i].ObjectiveDescription);
+		TextObjectives1->SetText(QuestDataNPC->NPCQuest.objectives[i].ObjectiveDescription);
 		/*TextObjectives2->SetText(QuestData.objectives[i].ObjectiveDescription);*/
 	}
 	
-	print("Printing " + QuestData.QuestTitleName.ToString(), 9);
+	print("Printing " + QuestDataNPC->NPCQuest.QuestTitleName.ToString(), 9);
 	
 
 }
