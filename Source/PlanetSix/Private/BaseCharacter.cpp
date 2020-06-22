@@ -33,6 +33,18 @@ void ABaseCharacter::Tick(float DeltaTime)
 	{
 		Death();
 	}
+	//HealthRegenTime -= DeltaTime;
+	/*if (HealthRegenTime <= 0)
+	{
+		HealthRegen(RecoveryValue);
+		HealthRegenTime = 2.f;
+	}*/
+	ShieldRegenTime -= DeltaTime;
+	if (ShieldRegenTime <= 0)
+	{
+		ShieldRegen(RecoveryValue);
+		ShieldRegenTime = 2.f;
+	}
 }
 
 void ABaseCharacter::ReceiveDamage(float Damage)
@@ -45,6 +57,8 @@ void ABaseCharacter::ReceiveDamage(float Damage)
 	{
 		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
 	}
+	//HealthRegenTime = RecoveryTime;
+	ShieldRegenTime = RecoveryTime;
 }
 
 void ABaseCharacter::HealthRegen(float Regen)
