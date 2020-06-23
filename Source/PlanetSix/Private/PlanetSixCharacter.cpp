@@ -243,21 +243,23 @@ void APlanetSixCharacter::ItemPickup()
 
 void APlanetSixCharacter::Interact()
 {
-    /* Interaction with NPC */
+   
+
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
+
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
         if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
-
             NPCReference->bOnInteraction = true;
+
             NPCReference->textrenderQuest->SetVisibility(false);
+
+            WidgetQuestNPC->QuestDataNPC = NPCReference;
 
             //No work for some reason, Engine crashes with no pop-out -Alonso
             GetCharacterMovement()->StopActiveMovement();
-
-            WidgetQuestNPC->QuestDataNPC = NPCReference;
 
             print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
 
@@ -282,7 +284,7 @@ void APlanetSixCharacter::Interact()
     }
     else
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
+        //GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
     }
 
     /* Interaction with Travel Portal */

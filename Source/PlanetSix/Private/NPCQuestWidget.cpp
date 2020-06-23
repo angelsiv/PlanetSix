@@ -23,7 +23,7 @@ void UNPCQuestWidget::NativeConstruct() {
 void UNPCQuestWidget::AcceptQuest()
 {
 	QuestDataNPC->NPCQuest.IsQuestRegistered= true;
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool of quest data in widgetNPC is: %s"), QuestDataNPC->NPCQuest.IsQuestRegistered ? TEXT("true") : TEXT("false")));
+	
 }
 
 void UNPCQuestWidget::RejectQuest()
