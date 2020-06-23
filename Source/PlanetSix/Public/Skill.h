@@ -100,6 +100,9 @@ protected:
 		float CurrentCooldown = 5.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float CooldownMax;
+	/** if is in cooldown returns true, can not cast the skill */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bIsInCooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Duration;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -29,6 +29,7 @@ void ASkill::BeginPlay()
 		Duration += ActivationTime;
 	}
 
+
 	SetReplicates(true);
 }
 
