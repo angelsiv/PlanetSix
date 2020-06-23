@@ -39,6 +39,7 @@ void ASkill::Tick(float DeltaTime)
 
 	Duration -= DeltaTime;
 	ActivationTime -= DeltaTime;
+	CurrentCooldown -= DeltaTime;
 }
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
