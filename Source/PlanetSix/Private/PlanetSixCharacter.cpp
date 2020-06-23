@@ -243,7 +243,8 @@ void APlanetSixCharacter::ItemPickup()
 
 void APlanetSixCharacter::Interact()
 {
-    /* Interaction with NPC */
+   
+
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
 
@@ -252,30 +253,38 @@ void APlanetSixCharacter::Interact()
     {
         if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
             NPCReference->bOnInteraction = true;
+
             NPCReference->textrenderQuest->SetVisibility(false);
+
+            WidgetQuestNPC->QuestDataNPC = NPCReference;
+
             //No work for some reason, Engine crashes with no pop-out -Alonso
             GetCharacterMovement()->StopActiveMovement();
 
-            WidgetQuestNPC->QuestData = NPCReference->NPCQuest;
-            print("Registering " + WidgetQuestNPC->QuestData.QuestTitleName.ToString(), -1);
+            print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
 
-            if (!WidgetQuestNPC->IsVisible())
+            if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
             {
                 WidgetQuestNPC->AddToViewport();
                 PC->SetInputMode(FInputModeUIOnly());
                 PC->bShowMouseCursor = true;
                 PC->bEnableClickEvents = true;
                 PC->bEnableMouseOverEvents = true;
-                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), NPCReference->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
-            }
-           
-          
-        }
 
+               // GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool in quest data widget : %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestRegistered ? TEXT("true") : TEXT("false")));
+            }
+
+            else if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered)
+            {
+               /* print("Accessing the questdata in widget quest NPC", -1);
+                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestRegistered ? TEXT("true") : TEXT("false")));
+            */
+            }
+        }
     }
     else
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
+        //GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
     }
 
     /* Interaction with Travel Portal */
@@ -283,7 +292,6 @@ void APlanetSixCharacter::Interact()
     {
         Portal->TravelTo();
     }
-
 
 }
 

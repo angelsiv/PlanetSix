@@ -82,6 +82,12 @@ int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
 	return 0;
 }
 
+bool UPlanetSixGameInstance::GetQuestRegistered(FQuestData Quest)
+{
+	return PlayerInfo.QuestsRegistered.Contains(Quest);
+}
+
+
 void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;

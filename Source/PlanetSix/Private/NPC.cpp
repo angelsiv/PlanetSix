@@ -3,6 +3,7 @@
 #include "NPC.h"
 #include"Engine.h"
 #include "PlanetSixPlayerState.h"
+#include "PlanetSixGameInstance.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::Orange,text)
 
@@ -51,7 +52,6 @@ void ANPC::BeginPlay()
 
 	}
 	
-	//Call The child actors attached to the NPC 
 	static const FString ContextString(TEXT("QuestDataTableCpp"));
 	QuestDataPointer = QuestDatatable->FindRow<FQuestData>(QuestID, ContextString, true);
 
@@ -62,8 +62,16 @@ void ANPC::BeginPlay()
 		NPCQuest.QuestDescription = QuestDataPointer->QuestDescription;
 		NPCQuest.QuestID = QuestDataPointer->QuestID;
 		NPCQuest.QuestTitleName = QuestDataPointer->QuestTitleName;
-
 		print("Validating " + NPCQuest.QuestTitleName.ToString(), 9);
+
+	}
+
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+	if (GameInstance->GetQuestRegistered(NPCQuest))
+	{
+		print("Quest IN NPC Already registered  ", 9);
+		textrenderQuest->SetVisibility(false);
+		NPCQuest.IsQuestRegistered = true;
 
 	}
 
@@ -74,10 +82,6 @@ void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//Add rotation to the text NOT YET PERFECT	
-	/*auto camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-	textrender->SetWorldRotation(camera->GetCameraRotation());
-	textrender->AddLocalRotation(FRotator(0, 180, 0));*/
 	if (AnimIdle) 
 	{
 		if (AnimInteract) 
@@ -99,17 +103,6 @@ void ANPC::Tick(float DeltaTime)
 
 void ANPC::NotifyActorBeginOverlap(AActor* OtherActor) //on ActorOverlap with the third person character 
 {
-	//auto x = Cast<ACharacter>(OtherActor);
-	//
-	//if (x) 
-	//{
-
-	//	/*if (x->GetPlayerState() == UGameplayStatics::GetPlayerControllerFromID(GetWorld(),0)->PlayerState) 
-	//	{
-	//		auto y = Cast<APlanetSixPlayerState>(x->GetPlayerState());
-	//		print(y->GetPlayerName(), -1);
-	//	}*/
-	//}
 
 }
 
