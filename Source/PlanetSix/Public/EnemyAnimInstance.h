@@ -18,5 +18,8 @@ class PLANETSIX_API UEnemyAnimInstance : public UAnimInstance
 public:
      
     UPROPERTY(BlueprintReadWrite)
-        bool bIsShooting;
+        bool bIsShooting; 
+    
+    UPROPERTY(BlueprintReadWrite)
+        FRotator RotationToAim;
 };
