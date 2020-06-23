@@ -73,7 +73,7 @@ struct FQuestData :public FTableRowBase
 
 
 	UPROPERTY(BlueprintReadWrite, Category = "Quest")
-		bool IsQuestActive = false;
+		bool IsQuestRegistered = false;
 	//array of objective so that each quest can have a multiple objectives
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
@@ -103,7 +103,7 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
-	bool IsQuestActive=false;
+	bool IsQuestRegistered=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FName QuestID;

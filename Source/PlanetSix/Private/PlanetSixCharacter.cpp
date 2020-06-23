@@ -261,7 +261,7 @@ void APlanetSixCharacter::Interact()
 
             print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
 
-            if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestActive == false)
+            if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
             {
                 WidgetQuestNPC->AddToViewport();
                 PC->SetInputMode(FInputModeUIOnly());
@@ -269,19 +269,16 @@ void APlanetSixCharacter::Interact()
                 PC->bEnableClickEvents = true;
                 PC->bEnableMouseOverEvents = true;
 
-                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool in quest data widget : %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
+               // GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool in quest data widget : %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestRegistered ? TEXT("true") : TEXT("false")));
             }
 
-            else if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestActive)
+            else if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered)
             {
-                print("Accessing the questdata in widget quest NPC", -1);
-                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestActive ? TEXT("true") : TEXT("false")));
-            
+               /* print("Accessing the questdata in widget quest NPC", -1);
+                GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), WidgetQuestNPC->QuestDataNPC->NPCQuest.IsQuestRegistered ? TEXT("true") : TEXT("false")));
+            */
             }
-           
-          
         }
-
     }
     else
     {
