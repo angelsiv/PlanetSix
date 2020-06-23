@@ -49,6 +49,8 @@ protected:
 
     UEnemyAnimInstance* AnimInstance;
 
+    USkeletalMeshComponent* PawnMesh;
+
 public:
     
     virtual void OnPossess(APawn* InPawn) override;
