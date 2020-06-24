@@ -345,29 +345,20 @@ void APlanetSixCharacter::Inventory()
 void APlanetSixCharacter::QuestLog()
 {
     auto PC = Cast<APlayerController>(GetController());
-    Incrementor++;
-
-    if (Incrementor % 2 == 1)
+   
+    if (QuestWidgetLog) 
     {
-
-        WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
-        WidgetQuestLog->AddToViewport();
-        PC->SetInputMode(FInputModeUIOnly());
-        PC->bShowMouseCursor = true;
-        PC->bEnableClickEvents = true;
-        PC->bEnableMouseOverEvents = true;
-
+        if (!WidgetQuestLog->IsVisible())
+        {
+            WidgetQuestLog->AddToViewport();
+            PC->SetInputMode(FInputModeUIOnly());
+            PC->bShowMouseCursor = true;
+            PC->bEnableClickEvents = true;
+            PC->bEnableMouseOverEvents = true;
+        }
     }
-    else if (Incrementor % 2 == 0)
-    {
-        WidgetQuestLog->RemoveFromParent();
-        PC->SetInputMode(FInputModeGameOnly());
-        PC->bShowMouseCursor = false;
-        PC->bEnableClickEvents = false;
-        PC->bEnableMouseOverEvents = false;
-        CameraBoom->bUsePawnControlRotation = true;
-
-    }
+   
+      
 }
 
 /** Open the skills menu */
