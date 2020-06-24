@@ -14,7 +14,7 @@
 class APlanetSixCharacter;
 class UWeaponComponent;
 class USkeletalMeshComponent;
-class UAnimationAsset;
+class UAnimMontage;
 
 UCLASS()
 class PLANETSIX_API APlanetSixEnemy : public ABaseCharacter
@@ -31,7 +31,7 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
-		UAnimationAsset* ShootAnimation;
+		UAnimMontage* ShootAnimation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		FVector ShootingBegin;
