@@ -344,7 +344,7 @@ void APlanetSixCharacter::Inventory()
 /** Open the quest log */
 void APlanetSixCharacter::QuestLog()
 {
-    auto PC = Cast<APlayerController>(GetController());
+    /*auto PC = Cast<APlayerController>(GetController());
    
     if (QuestWidgetLog) 
     {
@@ -356,7 +356,7 @@ void APlanetSixCharacter::QuestLog()
             PC->bEnableClickEvents = true;
             PC->bEnableMouseOverEvents = true;
         }
-    }
+    }*/
    
       
 }
