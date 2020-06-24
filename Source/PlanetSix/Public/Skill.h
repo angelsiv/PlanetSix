@@ -63,7 +63,7 @@ struct FSkillData : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
 		FText SkillDescription;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
-		int32 EnergyCost;
+		float Cooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
 		UTexture2D* SkillIcon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
@@ -81,8 +81,10 @@ public:
 	// Sets default values for this actor's properties
 	ASkill();
 
-	UFUNCTION(BlueprintGetter = "EnergyCost")
-		float GetEnergyCost() { return EnergyCost; }
+	UFUNCTION(BlueprintGetter = "Cooldown")
+		float GetCurrentCooldown() { return CurrentCooldown; }
+	UFUNCTION(BlueprintGetter = "Cooldown")
+		float GetCooldownMax() { return CooldownMax; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -95,7 +97,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		APlanetSixCharacter* OwnerCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float EnergyCost;
+		float CurrentCooldown = 5.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float CooldownMax;
+	/** if is in cooldown returns true, can not cast the skill */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bIsInCooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Duration;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
