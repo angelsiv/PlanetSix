@@ -39,9 +39,12 @@ void AEnemyController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	
 	AnimInstance = Cast<UEnemyAnimInstance>(Cast<APlanetSixEnemy>(InPawn)->GetMesh()->GetAnimInstance());
+	PawnMesh = Cast<APlanetSixEnemy>(InPawn)->GetMesh();
 	
 	
 }
+
+FRotator StartRotationHip;
 
 void AEnemyController::BeginPlay()
 {
@@ -55,6 +58,9 @@ void AEnemyController::BeginPlay()
 	if (Players.Num() < 0) {
 		print("Caught " + FString::FromInt(Players.Num()) + " players in scene", -1);
 	}
+
+	StartRotationHip = PawnMesh->GetSocketRotation("spine_01");
+
 }
 
 float CountdownToShoot = 0;
@@ -70,8 +76,30 @@ void AEnemyController::Tick(float DeltaTime)
 
 		if (!IsFollowingAPath()) {
 			AnimInstance->bIsShooting = true;
-			//print("Is gonna shoot", -1);
+			
 
+			//Turning Enemy at player
+			FVector Begin = GetPawn()->GetActorLocation();
+			FVector End = PlayerInSight->GetActorLocation();
+
+			FRotator RotationToLook = UKismetMathLibrary::FindLookAtRotation(Begin, End);
+			FRotator BoneRotation = PawnMesh->GetSocketRotation("spine_01");
+			RotationToLook.Pitch = BoneRotation.Pitch;
+			RotationToLook.Roll = BoneRotation.Roll;
+			RotationToLook.Yaw += 20;
+			print("Bone is spinning: " + BoneRotation.ToString(), 2);
+			//RotationToLook -= BoneRotation;
+			FRotator LerpedRotation = FMath::Lerp(BoneRotation, RotationToLook, 0.2);
+			float Yaw = StartRotationHip.Yaw;
+			LerpedRotation.Yaw = FMath::Clamp(LerpedRotation.Yaw, Yaw-40.0f, Yaw+40.0f);
+			print("Bone has to go: " + LerpedRotation.ToString(), 3);
+
+			AnimInstance->RotationToAim = LerpedRotation;
+			//Finish turning 
+
+
+			//print("Is gonna shoot", -1);
+			
 			if (CountdownToShoot < 3) {
 				CountdownToShoot += DeltaTime;
 
@@ -109,7 +137,7 @@ void AEnemyController::SenseStuff(const TArray<AActor*>& actors)
 	}
 	else {
 	
-		if (AnimInstance->bIsShooting) {
+	/*	if (AnimInstance->bIsShooting) {
 			
 			FVector Begin = GetPawn()->GetActorLocation();
 			FVector End = PlayerInSight->GetActorLocation();
@@ -119,7 +147,7 @@ void AEnemyController::SenseStuff(const TArray<AActor*>& actors)
 			GetPawn()->SetActorRotation(LerpedRotation);
 
 		
-		}
+		}*/
 		
 	}
 
@@ -139,7 +167,7 @@ void AEnemyController::Shoot()
 
 	
 		DrawDebugLine(GetWorld(), Begin, End, FColor::Orange,false,3);
-		print("Shoot at " + End.ToString() + " from " + Begin.ToString() , -1);
+		//print("Shoot at " + End.ToString() + " from " + Begin.ToString() , -1);
 
 		auto Enemy = Cast<APlanetSixEnemy>(GetPawn());
 

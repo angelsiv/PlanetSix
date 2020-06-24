@@ -93,6 +93,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
         }
         GameInstance->ReloadNetwork();
         
+        GameInstance->ReloadNetwork();
     }
 }
 
