@@ -352,7 +352,7 @@ void APlanetSixCharacter::QuestLog()
 
         WidgetQuestLog = CreateWidget<UQuestWidget>(GetWorld(), QuestWidgetLog);
         WidgetQuestLog->AddToViewport();
-        PC->SetInputMode(FInputModeGameAndUI());
+        PC->SetInputMode(FInputModeUIOnly());
         PC->bShowMouseCursor = true;
         PC->bEnableClickEvents = true;
         PC->bEnableMouseOverEvents = true;
