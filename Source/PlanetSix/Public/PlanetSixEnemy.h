@@ -13,6 +13,8 @@
 
 class APlanetSixCharacter;
 class UWeaponComponent;
+class USkeletalMeshComponent;
+class UAnimationAsset;
 
 UCLASS()
 class PLANETSIX_API APlanetSixEnemy : public ABaseCharacter
@@ -24,16 +26,24 @@ public:
 	APlanetSixEnemy(const FObjectInitializer& ObjectInitializer);
 
 	//Enemy Stats
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Info)
-	int32 ID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		int32 ID;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		UAnimationAsset* ShootAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		FVector ShootingBegin;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		FVector ShootingEnd;
 
 protected:
 
-	/*UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		UStaticMeshComponent* Mesh;
 
 	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* Collider;*/
+		UBoxComponent* Collider;
 
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UFloatingPawnMovement* MovComp;
@@ -44,7 +54,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
