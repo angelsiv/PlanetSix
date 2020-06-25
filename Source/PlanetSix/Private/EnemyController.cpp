@@ -87,12 +87,12 @@ void AEnemyController::Tick(float DeltaTime)
 			RotationToLook.Pitch = BoneRotation.Pitch;
 			RotationToLook.Roll = BoneRotation.Roll;
 			RotationToLook.Yaw += 20;
-			print("Bone is spinning: " + BoneRotation.ToString(), 2);
+			
 			//RotationToLook -= BoneRotation;
 			FRotator LerpedRotation = FMath::Lerp(BoneRotation, RotationToLook, 0.2);
 			float Yaw = StartRotationHip.Yaw;
 			LerpedRotation.Yaw = FMath::Clamp(LerpedRotation.Yaw, Yaw-40.0f, Yaw+40.0f);
-			print("Bone has to go: " + LerpedRotation.ToString(), 3);
+		
 
 			AnimInstance->RotationToAim = LerpedRotation;
 			//Finish turning 
@@ -107,7 +107,7 @@ void AEnemyController::Tick(float DeltaTime)
 			else {
 				CountdownToShoot = 0;
 				Shoot();
-				//print("Shoot", -1);
+				print("Shoot", -1);
 			}
 		}
 
@@ -157,22 +157,33 @@ void AEnemyController::Shoot()
 {
 
 	if (PlayerInSight) {
-	
-		FVector Begin = GetPawn()->GetActorLocation();
-		Begin.Z += 40;
-		FVector End = PlayerInSight->GetActorLocation();
+		auto EnemyBase = Cast<APlanetSixEnemy>(GetPawn());
+		//PawnMesh->PlayAnimation(EnemyBase->ShootAnimation,false);
+		FVector Begin = EnemyBase->ShootingBegin;
+		FVector End = EnemyBase->ShootingEnd - Begin;
+		End *= 100;
+		print("Shoot from " + Begin.ToString(), 4);
+		print("Shoot To " + End.ToString(), 5);
 
 		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(GetPawn());
 		QueryParams.bTraceComplex = true;
 
-	
-		DrawDebugLine(GetWorld(), Begin, End, FColor::Orange,false,3);
-		//print("Shoot at " + End.ToString() + " from " + Begin.ToString() , -1);
-
-		auto Enemy = Cast<APlanetSixEnemy>(GetPawn());
+		FHitResult Hit;
+		if (GetWorld()->LineTraceSingleByChannel(Hit, Begin, End, ECC_Pawn, QueryParams))
+		{
 
 
-		PlayerInSight->ReceiveDamage(Enemy->WeaponDamage());
+			auto ActorHit = Cast<APlanetSixCharacter>(Hit.GetActor());
+			if (ActorHit)
+			{
+				print("Hit Player", -1);
+				ActorHit->ReceiveDamage(EnemyBase->WeaponDamage());
+			}
 			
+
+		}
+		DrawDebugLine(GetWorld(), Begin, End, FColor::Blue, false, 1.0f, 0, 1.0f);
+
 	}
 }
