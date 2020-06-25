@@ -32,6 +32,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		UAnimMontage* ShootAnimation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		USoundWave* ShootingSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		FVector ShootingBegin;
