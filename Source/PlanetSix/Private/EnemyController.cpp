@@ -158,7 +158,7 @@ void AEnemyController::Shoot()
 
 	if (PlayerInSight) {
 		auto EnemyBase = Cast<APlanetSixEnemy>(GetPawn());
-		//PawnMesh->PlayAnimation(EnemyBase->ShootAnimation,false);
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), EnemyBase->ShootingSound, EnemyBase->GetActorLocation());
 		FVector Begin = EnemyBase->ShootingBegin;
 		FVector End = EnemyBase->ShootingEnd - Begin;
 		End *= 100;
