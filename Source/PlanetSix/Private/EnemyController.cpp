@@ -90,22 +90,22 @@ void AEnemyController::Tick(float DeltaTime)
 			FRotator EnemyRotation = GetPawn()->GetActorRotation();
 			FRotator RotationToLook = UKismetMathLibrary::FindLookAtRotation(Begin, End);
 			
-			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) > 90) {
-				
-				/*
-				FRotator LerpedRotation = FMath::Lerp(EnemyRotation,RotationToLook,0.1);
-				GetPawn()->SetActorRotation(LerpedRotation);
 				RotationToLook.Pitch = 0;
 				RotationToLook.Roll = 0;
+			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) > 90) {
+				
+				
+				FRotator LerpedRotation = FMath::Lerp(EnemyRotation,RotationToLook,0.1);
+				GetPawn()->SetActorRotation(LerpedRotation);
+				RotationToLook.Yaw -= GetPawn()->GetActorRotation().Yaw;
 				RotationToLook.Yaw = -RotationToLook.Yaw;
-				AnimInstance->RotationToAim = RotationToLook;*/
+				AnimInstance->RotationToAim = RotationToLook;
 			}
-			else {
+			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) <= 90) {
 
 
 				//FRotator BoneRotation = PawnMesh->GetSocketRotation("spine_02");
-				RotationToLook.Pitch = 0;
-				RotationToLook.Roll = 0;
+				
 				RotationToLook.Yaw -= GetPawn()->GetActorRotation().Yaw;
 				AnimInstance->RotationToAim = RotationToLook;
 			}
@@ -179,7 +179,7 @@ void AEnemyController::Shoot()
 
 	if (PlayerInSight) {
 		auto EnemyBase = Cast<APlanetSixEnemy>(GetPawn());
-		//UGameplayStatics::PlaySoundAtLocation(GetWorld(), EnemyBase->ShootingSound, EnemyBase->GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), EnemyBase->ShootingSound, EnemyBase->GetActorLocation());
 		AnimInstance->Montage_Play(EnemyBase->ShootAnimation);
 		FVector Begin = EnemyBase->ShootingBegin;
 		FVector End = EnemyBase->ShootingEnd - Begin;
