@@ -92,14 +92,15 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
 	if (PlayerInfo.QuestAccepted.AtObjectiveNumber >= PlayerInfo.QuestAccepted.objectives.Num()) {
+
 		PlayerInfo.QuestAccepted.IsQuestCompleted = true;
 		//auto gameinstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
 		//int objectiveNumber = gameinstance->GetCurrentQuest().AtObjectiveNumber;
 		//Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->InventoryComponent->RemoveQuestItem(PlayerInfo.QuestAccepted.objectives[]);
 		Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->QuestCompletedWidget->AddToViewport();
 	
-		Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->InventoryComponent->add(PlayerInfo.QuestAccepted.QuestItemReward,0);
-
+	//	Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(, 0))->InventoryComponent->add(PlayerInfo.QuestAccepted.QuestItemReward,0);
+		Cast<APlanetSixCharacter>(GetPrimaryPlayerController()->GetPawn())->InventoryComponent->add(PlayerInfo.QuestAccepted.QuestItemReward, 0);
 		for (FQuestData q : PlayerInfo.QuestsRegistered) 
 		{
 			if (q.QuestID == PlayerInfo.QuestAccepted.QuestID) {
