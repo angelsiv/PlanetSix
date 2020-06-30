@@ -243,7 +243,7 @@ void APlanetSixCharacter::ItemPickup()
 
 void APlanetSixCharacter::Interact()
 {
-   
+ 
 
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
