@@ -36,12 +36,22 @@ void AWeaponBase::BeginPlay()
 	}
 }
 
-void AWeaponBase::Fire_Implementation()
+APlayerCameraManager* AWeaponBase::GetLocalCameraManager()
+{
+	return UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+}
+
+void AWeaponBase::DoWeaponDamage_Implementation(ABaseCharacter* ActorHit, ABaseCharacter* DamageDealer)
+{
+	ActorHit->ReceiveDamage(DamageDealer->WeaponDamage());
+}
+
+void AWeaponBase::Fire()
 {
 	//logic of firing : can't fire if jammed
 	if (bIsWeaponJammed == false)
 	{
-		APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+		APlayerCameraManager* CameraManager = GetLocalCameraManager();
 		FVector BeginCrosshair = CameraManager->GetCameraLocation();
 		FVector EndCrosshair = CameraManager->GetCameraLocation() + CameraManager->GetCameraRotation().Vector() * 10000;
 		FCollisionQueryParams QueryParams;
@@ -60,8 +70,8 @@ void AWeaponBase::Fire_Implementation()
 			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
 			if (ActorHit != nullptr)
 			{
+				DoWeaponDamage_Implementation(ActorHit, OwnerPlayer);
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f DAMAGE INFLICTED : %f"), ActorHit->Attributes->Health.GetCurrentValue(), OwnerPlayer->WeaponDamage()));
-				ActorHit->ReceiveDamage(OwnerPlayer->WeaponDamage());
 				if (ActorHit->IsDead())
 				{
 					//To check if Quest has a Killing condition
@@ -71,11 +81,11 @@ void AWeaponBase::Fire_Implementation()
 					if (CurrentQuest.objectives.Num() > 0) {
 						//If at location
 						if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
-							
+
 							//If needs to kill
 							if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
 							{
-								
+
 								if (Cast<APlanetSixCharacter>(Hit.GetActor()))
 								{
 									GameInstance->ReduceCurrentTargetNumber(0);
@@ -85,8 +95,6 @@ void AWeaponBase::Fire_Implementation()
 								{
 									//If Enemy
 									GameInstance->ReduceCurrentTargetNumber(Cast<APlanetSixEnemy>(Hit.GetActor())->GetID());
-
-
 								}
 							}
 						}
