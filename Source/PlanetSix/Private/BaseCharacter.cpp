@@ -39,6 +39,10 @@ void ABaseCharacter::Tick(float DeltaTime)
 		HealthRegen(RecoveryValue);
 		HealthRegenTime = 2.f;
 	}*/
+}
+
+void ABaseCharacter::ReloadShields_Implementation(float DeltaTime)
+{
 	ShieldRegenTime -= DeltaTime;
 	if (ShieldRegenTime <= 0)
 	{

@@ -67,7 +67,7 @@ void AWeaponBase::Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& Damage
 			FVector EndFiringLocation = Hit.Location;
 			GetWorld()->LineTraceSingleByChannel(Hit, StartFiringLocation, EndFiringLocation, ECC_Pawn, QueryParams);
 			DrawDebugLine(GetWorld(), StartFiringLocation, EndFiringLocation, FColor::Red, false, 1.0f, 0, 1.0f);
-			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
+			auto ActorHit = Cast<APlanetSixEnemy>(Hit.GetActor());
 			if (ActorHit != nullptr)
 			{
 				ActorToHit = ActorHit;
@@ -76,6 +76,7 @@ void AWeaponBase::Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& Damage
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f DAMAGE INFLICTED : %f"), ActorHit->Attributes->Health.GetCurrentValue(), OwnerPlayer->WeaponDamage()));
 				if (ActorHit->IsDead())
 				{
+					OwnerPlayer->Attributes->Experience.SetCurrentValue(OwnerPlayer->Attributes->Experience.GetCurrentValue() + ActorHit->Experience);
 					//To check if Quest has a Killing condition
 					UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
 					int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;

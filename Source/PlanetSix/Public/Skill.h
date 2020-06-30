@@ -7,6 +7,7 @@
 #include "Skill.generated.h"
 
 class APlanetSixCharacter;
+class APlanetSixEnemy;
 struct FTableRowBase;
 class UTexture2D;
 
@@ -136,16 +137,16 @@ public:
 	
 	/** Function that is called by the skill, replicated, deals damage */
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Damage Mechanics")
-		void DoDamage(ABaseCharacter* DamageReceiver);
-	void DoDamage_Implementation(ABaseCharacter* DamageReceiver);
+		void DoDamage(APlanetSixEnemy* DamageReceiver);
+	void DoDamage_Implementation(APlanetSixEnemy* DamageReceiver);
 
 	/** Function that is called by the skill, replicated, heals health */
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Damage Mechanics")
-		void DoHealthRegen(ABaseCharacter* HealReceiver);
-	void DoHealthRegen_Implementation(ABaseCharacter* HealReceiver);
+		void DoHealthRegen(APlanetSixCharacter* HealReceiver);
+	void DoHealthRegen_Implementation(APlanetSixCharacter* HealReceiver);
 
 	/** Function that is called by the skill, replicated, heals shields */
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Damage Mechanics")
-		void DoShieldRegen(ABaseCharacter* HealReceiver);
-	void DoShieldRegen_Implementation(ABaseCharacter* HealReceiver);
+		void DoShieldRegen(APlanetSixCharacter* HealReceiver);
+	void DoShieldRegen_Implementation(APlanetSixCharacter* HealReceiver);
 };
