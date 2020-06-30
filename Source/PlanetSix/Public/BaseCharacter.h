@@ -27,6 +27,10 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
 		FQuestData QuestAccepted;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+		TMap<int,int> InventoryItemsID;
+
 };
 
 

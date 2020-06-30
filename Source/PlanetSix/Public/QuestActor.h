@@ -82,6 +82,9 @@ struct FQuestData :public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
+		float ExperienceGainedFromQuest;
+
 	bool operator==(const FQuestData& Q) const;
 
 	static FQuestData Empty() {
