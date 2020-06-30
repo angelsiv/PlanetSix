@@ -90,14 +90,14 @@ protected:
 	//---------------------------------------------------------------------------
 
 	/** Fires the gun when activated */
-	UFUNCTION(BlueprintCallable, NetMulticast, Reliable, Category = "Shoot Mechanics")
-		void Fire();
-	void Fire_Implementation();
+	UFUNCTION(BlueprintCallable, Category = "Shoot Mechanics")
+		void Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& DamageGiver);
+	//void Fire_Implementation();
 
 	/** Deals damage on server */
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Shoot Mechanics")
-		void DoWeaponDamage(ABaseCharacter* ActorHit, ABaseCharacter* DamageDealer);
-	void DoWeaponDamage_Implementation(ABaseCharacter* ActorHit, ABaseCharacter* DamageDealer);
+		void DoWeaponDamage(ABaseCharacter* ActorHit, APlanetSixCharacter* DamageDealer);
+	void DoWeaponDamage_Implementation(ABaseCharacter* ActorHit, APlanetSixCharacter* DamageDealer);
 
 	/** Reloads the gun when activated */
 	UFUNCTION(BlueprintCallable, Category = "Shoot Mechanics")
