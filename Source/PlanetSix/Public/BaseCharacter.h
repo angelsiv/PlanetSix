@@ -79,8 +79,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	/** Method that lowers the health of the character it is called upon */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Server, Reliable)
 		void ReceiveDamage(float Damage);
+	void ReceiveDamage_Implementation(float Damage);
 	/** Method that heals the character it is called upon */
 	UFUNCTION(BlueprintCallable)
 		void HealthRegen(float Regen);

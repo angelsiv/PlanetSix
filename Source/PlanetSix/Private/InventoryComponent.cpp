@@ -154,6 +154,27 @@ bool UInventoryComponent::addQuest(FItemBaseData item)
     return false;
 }
 
+void UInventoryComponent::RemoveQuestItem(int id, int quantity)
+{
+    for (size_t i = 0; i < QuestItems.Num(); i++)
+    {
+        if (QuestItems[i].id == id)
+        {
+            if (quantity < 1)
+            {
+                auto itemId = FItemBaseData();
+                itemId.id = id;
+                QuestItems.RemoveSingle(itemId);
+            }
+            else
+            {
+                QuestItems[i].quantity -= quantity;
+            }
+        }
+    }
+
+}
+
 // Description:
 //   add an item to the inventory.
 // Parameters:

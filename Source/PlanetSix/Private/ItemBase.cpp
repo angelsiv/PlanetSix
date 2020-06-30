@@ -83,11 +83,9 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
                 }
             }
         }
+        //NumberOfQuestItems = Player->GetNumberNeededForQuest(itemData.id, itemData.quantity);
 
-        auto it = ToItemInv();
-
-
-        if (Player->InventoryComponent->add(it, NumberOfQuestItems) && DestroyOnPickup)
+        if (Player->InventoryComponent->add(ToItemInv(), NumberOfQuestItems) && DestroyOnPickup)
         {
             this->Destroy();
         }
