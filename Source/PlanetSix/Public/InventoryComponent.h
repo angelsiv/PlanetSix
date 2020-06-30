@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Engine/DataTable.h"
 #include "InventoryComponent.generated.h"
 
 class UTexture2D;
@@ -11,7 +12,7 @@ class AItemBase;
 class APlanetSixCharacter;
 
 USTRUCT(BlueprintType)
-struct PLANETSIX_API FItemBaseData //: public UObject
+struct PLANETSIX_API FItemBaseData : public FTableRowBase  //: public UObject
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -30,6 +31,7 @@ public:
 		displayName(),
 		weight(0),
 		value(0),
+		icon(nullptr),
 		quantity(0)
 	{};
 	FItemBaseData(FItemBaseData* original)
@@ -40,6 +42,8 @@ public:
 		quantity(original->quantity),
 		icon(original->icon)
 	{};
+
+
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
