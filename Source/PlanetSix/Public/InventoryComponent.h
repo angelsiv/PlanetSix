@@ -77,8 +77,16 @@ public:
 
 	FItemBaseData GetCopy(FItemBaseData original);
 
+	bool operator==(const FItemBaseData& I) const;
 
+	
 };
+
+///Quest Data FORCEINLINES
+FORCEINLINE bool FItemBaseData::operator==(const FItemBaseData& I) const
+{
+	return id == I.id;
+}
 
 	
 UENUM(BlueprintType)
@@ -115,6 +123,8 @@ public:
 	bool add(FItemBaseData item, int  numberOfQuestItems);
 	bool addNormal(FItemBaseData item);
 	bool addQuest(FItemBaseData item);
+
+	void RemoveQuestItem(int id, int quantity=0);
 
 	UFUNCTION(BlueprintCallable)
 		FItemBaseData swap(FItemBaseData item, int index);
