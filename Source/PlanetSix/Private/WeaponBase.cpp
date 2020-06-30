@@ -38,6 +38,10 @@ void AWeaponBase::BeginPlay()
 
 APlayerCameraManager* AWeaponBase::GetLocalCameraManager()
 {
+	if (!HasAuthority())
+	{
+		return UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+	}
 	return UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 }
 
@@ -46,7 +50,7 @@ void AWeaponBase::DoWeaponDamage_Implementation(ABaseCharacter* ActorHit, ABaseC
 	ActorHit->ReceiveDamage(DamageDealer->WeaponDamage());
 }
 
-void AWeaponBase::Fire()
+void AWeaponBase::Fire_Implementation()
 {
 	//logic of firing : can't fire if jammed
 	if (bIsWeaponJammed == false)
@@ -70,7 +74,7 @@ void AWeaponBase::Fire()
 			auto ActorHit = Cast<ABaseCharacter>(Hit.GetActor());
 			if (ActorHit != nullptr)
 			{
-				DoWeaponDamage_Implementation(ActorHit, OwnerPlayer);
+				DoWeaponDamage(ActorHit, OwnerPlayer);
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f DAMAGE INFLICTED : %f"), ActorHit->Attributes->Health.GetCurrentValue(), OwnerPlayer->WeaponDamage()));
 				if (ActorHit->IsDead())
 				{

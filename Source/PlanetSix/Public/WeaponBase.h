@@ -90,9 +90,9 @@ protected:
 	//---------------------------------------------------------------------------
 
 	/** Fires the gun when activated */
-	UFUNCTION(BlueprintCallable, Category = "Shoot Mechanics")
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable, Category = "Shoot Mechanics")
 		void Fire();
-	//void Fire_Implementation();
+	void Fire_Implementation();
 
 	/** Deals damage on server */
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Shoot Mechanics")
