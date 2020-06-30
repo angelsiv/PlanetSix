@@ -47,7 +47,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 	}
 }
 
-void ABaseCharacter::ReceiveDamage(float Damage)
+void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
 {
 	if (Attributes->Shield.GetCurrentValue() > 0)
 	{

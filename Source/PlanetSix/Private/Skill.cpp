@@ -4,6 +4,7 @@
 #include "Skill.h"
 #include "Engine/Texture2D.h"
 #include "Engine/DataTable.h"
+#include "DrawDebugHelpers.h"
 #include "PlanetSixCharacter.h"
 
 // Sets default values
@@ -33,6 +34,26 @@ void ASkill::BeginPlay()
 	SetReplicates(true);
 }
 
+FString GetEnumSkillText(ENetRole Role)
+{
+	switch (Role)
+	{
+	case ROLE_None:
+		return "None";
+	case ROLE_SimulatedProxy:
+		return "SimulatedProxy";
+	case ROLE_AutonomousProxy:
+		return "AutonomousProxy";
+	case ROLE_Authority:
+		return "Authority";
+	case ROLE_MAX:
+		return "ERROR";
+	default:
+		break;
+	}
+	return "ERROR";
+}
+
 // Called every frame
 void ASkill::Tick(float DeltaTime)
 {
@@ -41,6 +62,8 @@ void ASkill::Tick(float DeltaTime)
 	Duration -= DeltaTime;
 	ActivationTime -= DeltaTime;
 	CurrentCooldown -= DeltaTime;
+
+	DrawDebugString(GetWorld(), FVector(0, 0, 50), GetEnumSkillText(GetLocalRole()), this, FColor::White, DeltaTime);
 }
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
