@@ -62,7 +62,12 @@ void ANPC::BeginPlay()
 		NPCQuest.QuestDescription = QuestDataPointer->QuestDescription;
 		NPCQuest.QuestID = QuestDataPointer->QuestID;
 		NPCQuest.QuestTitleName = QuestDataPointer->QuestTitleName;
+
 		print("Validating " + NPCQuest.QuestTitleName.ToString(), 9);
+
+		NPCQuest.QuestItemReward = QuestDataPointer->QuestItemReward;
+
+		print("Quest Rewards Are " + NPCQuest.QuestItemReward.displayName, 9);
 
 	}
 
