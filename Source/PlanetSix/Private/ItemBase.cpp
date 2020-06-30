@@ -71,19 +71,19 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
 
         UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
         int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
-        //FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
-        //if (CurrentQuest.objectives.Num() > 0) {
-        //   
-        //    if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
+        FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
+        if (CurrentQuest.objectives.Num() > 0) {
+           
+            if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
 
-        //        if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Gathering)
-        //        {
-        //            NumberOfQuestItems = GameInstance->ReduceItemNumber(itemData.id, itemData.quantity);
-        //           
-        //        }
-        //    }
-        //}
-        NumberOfQuestItems = Player->GetNumberNeededForQuest(itemData.id, itemData.quantity);
+                if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Gathering)
+                {
+                    NumberOfQuestItems = GameInstance->ReduceItemNumber(itemData.id, itemData.quantity);
+                   
+                }
+            }
+        }
+        //NumberOfQuestItems = Player->GetNumberNeededForQuest(itemData.id, itemData.quantity);
 
         if (Player->InventoryComponent->add(ToItemInv(), NumberOfQuestItems) && DestroyOnPickup)
         {
