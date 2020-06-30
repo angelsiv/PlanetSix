@@ -15,8 +15,6 @@ class PLANETSIX_API UPlanetSixGameInstance : public UGameInstance
 {
     GENERATED_BODY()
 
-
-
 private:
 
 
@@ -57,7 +55,10 @@ public:
     
     UFUNCTION(BlueprintCallable)
         void AddQuest(FQuestData quest);
-    //
+    
+
+    UFUNCTION(BlueprintCallable)
+        void AddItemsToinventoryplayer(TArray<FItemBaseData> Items);
 
 
 
