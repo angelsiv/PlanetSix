@@ -3,6 +3,7 @@
 
 #include "Skill.h"
 #include "Engine/Texture2D.h"
+#include "Engine/DataTable.h"
 #include "PlanetSixCharacter.h"
 
 // Sets default values
@@ -28,6 +29,7 @@ void ASkill::BeginPlay()
 		Duration += ActivationTime;
 	}
 
+
 	SetReplicates(true);
 }
 
@@ -38,6 +40,7 @@ void ASkill::Tick(float DeltaTime)
 
 	Duration -= DeltaTime;
 	ActivationTime -= DeltaTime;
+	CurrentCooldown -= DeltaTime;
 }
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
@@ -65,6 +68,69 @@ void ASkill::DoDamage_Implementation(ABaseCharacter* DamageReceiver)
 		break;
 	case ESkillDamageType::DoT:
 		DamageReceiver->ReceiveDamage(AbilityDamage_DoT);
+		break;
+	default:
+		break;
+	}
+}
+
+/** Heals the receiver depending on the caster's abilitydamage.
+@PARAMS HealReceiver is the person who will receive heals.*/
+void ASkill::DoHealthRegen_Implementation(ABaseCharacter* HealReceiver)
+{
+	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
+	//ability heal depending on abilities proficiency
+	AbilityDamage_Raw = AbilityHeal / DamageFactor_Raw;
+	AbilityDamage_AoE = AbilityHeal / DamageFactor_AoE;
+	AbilityDamage_DoT = AbilityHeal / DamageFactor_DoT;
+
+	//random chances for critical here
+
+	//inflict damage depending on the skill's damage type
+	switch (SkillDamageType)
+	{
+	case ESkillDamageType::None:
+		break;
+	case ESkillDamageType::Raw:
+		HealReceiver->HealthRegen(AbilityDamage_Raw);
+		break;
+	case ESkillDamageType::AoE:
+		HealReceiver->HealthRegen(AbilityDamage_AoE);
+		break;
+	case ESkillDamageType::DoT:
+		HealReceiver->HealthRegen(AbilityDamage_DoT);
+		break;
+	default:
+		break;
+	}
+}
+
+
+/** Heals the receiver<s shields depending on the caster's abilitydamage.
+@PARAMS HealReceiver is the person who will receive shield heals.*/
+void ASkill::DoShieldRegen_Implementation(ABaseCharacter* HealReceiver)
+{
+	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
+	//ability heal depending on abilities proficiency
+	AbilityDamage_Raw = AbilityHeal / DamageFactor_Raw;
+	AbilityDamage_AoE = AbilityHeal / DamageFactor_AoE;
+	AbilityDamage_DoT = AbilityHeal / DamageFactor_DoT;
+
+	//random chances for critical here
+
+	//inflict damage depending on the skill's damage type
+	switch (SkillDamageType)
+	{
+	case ESkillDamageType::None:
+		break;
+	case ESkillDamageType::Raw:
+		HealReceiver->ShieldRegen(AbilityDamage_Raw);
+		break;
+	case ESkillDamageType::AoE:
+		HealReceiver->ShieldRegen(AbilityDamage_AoE);
+		break;
+	case ESkillDamageType::DoT:
+		HealReceiver->ShieldRegen(AbilityDamage_DoT);
 		break;
 	default:
 		break;

@@ -41,16 +41,20 @@ public:
     UFUNCTION(BlueprintCallable)
         void SetCurrentQuest(FQuestData Quest);
 
+  
+    UFUNCTION(BlueprintCallable)
+        bool GetQuestRegistered(FQuestData Quest);
 
     UFUNCTION(BlueprintCallable)
         void MoveToNextObjective();
 
     UFUNCTION(BlueprintCallable)
         void ReduceCurrentTargetNumber(int ID);
+
     UFUNCTION(BlueprintCallable)
         int ReduceItemNumber(int ID, int Quantity);
 
-
+    
     UFUNCTION(BlueprintCallable)
         void AddQuest(FQuestData quest);
     //

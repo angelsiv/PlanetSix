@@ -52,6 +52,22 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		UClassComponent* Class;
 
+	///** Character's regeneration of health*/
+	//UPROPERTY(BlueprintReadWrite, Category = "Attributes")
+	//	float HealthRegenTime;
+
+	/** Character's regeneration of shields*/
+	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
+		float ShieldRegenTime;
+
+	/** Character's time after which he will start recovering*/
+	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
+		float RecoveryTime = 8.f;
+
+	/** Character's value of recovery*/
+	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
+		float RecoveryValue = 5.f;
+
 	FTransform RespawnPoint;
 
 protected:
@@ -65,6 +81,12 @@ public:
 	/** Method that lowers the health of the character it is called upon */
 	UFUNCTION(BlueprintCallable)
 		void ReceiveDamage(float Damage);
+	/** Method that heals the character it is called upon */
+	UFUNCTION(BlueprintCallable)
+		void HealthRegen(float Regen);
+	/** Method that heals the character it is called upon */
+	UFUNCTION(BlueprintCallable)
+		void ShieldRegen(float Regen);
 	/** Method that returns weapon damage  */
 	UFUNCTION(BlueprintCallable)
 		float WeaponDamage();

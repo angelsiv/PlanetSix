@@ -50,7 +50,7 @@ void AWeaponBase::Fire_Implementation()
 		QueryParams.bTraceComplex = true;
 
 		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, BeginCrosshair, EndCrosshair, ECC_Visibility, QueryParams))
+		if (GetWorld()->LineTraceSingleByChannel(Hit, BeginCrosshair, EndCrosshair, ECC_Pawn, QueryParams))
 		{
 			DrawDebugLine(GetWorld(), BeginCrosshair, EndCrosshair, FColor::Blue, false, 1.0f, 0, 1.0f);
 			FVector StartFiringLocation = MuzzleLocation->GetComponentLocation();

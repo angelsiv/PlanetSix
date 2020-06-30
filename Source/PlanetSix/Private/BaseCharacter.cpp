@@ -6,7 +6,7 @@
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -20,7 +20,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	RespawnPoint = GetActorTransform();
 }
 
@@ -33,6 +33,18 @@ void ABaseCharacter::Tick(float DeltaTime)
 	{
 		Death();
 	}
+	//HealthRegenTime -= DeltaTime;
+	/*if (HealthRegenTime <= 0)
+	{
+		HealthRegen(RecoveryValue);
+		HealthRegenTime = 2.f;
+	}*/
+	ShieldRegenTime -= DeltaTime;
+	if (ShieldRegenTime <= 0)
+	{
+		ShieldRegen(RecoveryValue);
+		ShieldRegenTime = 2.f;
+	}
 }
 
 void ABaseCharacter::ReceiveDamage(float Damage)
@@ -44,6 +56,32 @@ void ABaseCharacter::ReceiveDamage(float Damage)
 	else if (Attributes->Health.GetCurrentValue() > 0)
 	{
 		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
+	}
+	//HealthRegenTime = RecoveryTime;
+	ShieldRegenTime = RecoveryTime;
+}
+
+void ABaseCharacter::HealthRegen(float Regen)
+{
+	if (Attributes->Health.GetCurrentValue() < Attributes->Health.GetMaxValue())
+	{
+		Attributes->Health.SetCurrentValue(Attributes->Health.GetCurrentValue() + Regen);
+	}
+	else
+	{
+		Attributes->Health.SetCurrentValue(Attributes->Health.GetMaxValue());
+	}
+}
+
+void ABaseCharacter::ShieldRegen(float Regen)
+{
+	if (Attributes->Shield.GetCurrentValue() < Attributes->Shield.GetMaxValue())
+	{
+		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetCurrentValue() + Regen);
+	}
+	else
+	{
+		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetMaxValue());
 	}
 }
 

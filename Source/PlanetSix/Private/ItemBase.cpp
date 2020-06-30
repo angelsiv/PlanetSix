@@ -40,7 +40,7 @@ AItemBase::AItemBase()
 void AItemBase::BeginPlay()
 {
     Super::BeginPlay();
-
+    Rotation.Add(1, 0, 0);
 }
 
 // Called every frame
@@ -48,6 +48,7 @@ void AItemBase::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    mesh->AddLocalRotation(Rotation);
 }
 
 FItemBaseData AItemBase::ToItemInv()
@@ -88,7 +89,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
         {
             this->Destroy();
         }
-
+        GameInstance->ReloadNetwork();
         
         GameInstance->ReloadNetwork();
     }

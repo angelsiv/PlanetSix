@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Engine/DataTable.h"
-#include"Engine.h"
+#include "Engine.h"
 #include "UObject/ConstructorHelpers.h"
 #include "QuestActor.generated.h"
 
@@ -71,6 +71,9 @@ struct FQuestData :public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		bool IsQuestCompleted = false;
 
+
+	UPROPERTY(BlueprintReadWrite, Category = "Quest")
+		bool IsQuestRegistered = false;
 	//array of objective so that each quest can have a multiple objectives
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		TArray<FObjectiveData> objectives;
@@ -100,7 +103,7 @@ public:
 	// Sets default values for this actor's properties
 	AQuestActor();
 
-	bool IsQuestActive=false;
+	bool IsQuestRegistered=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 	FName QuestID;

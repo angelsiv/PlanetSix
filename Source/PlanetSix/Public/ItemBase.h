@@ -62,7 +62,7 @@ protected:
 		class UStaticMeshComponent* mesh;
 	UPROPERTY(Category = Item, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 		USphereComponent* sphereCollider;
-	
+	FRotator Rotation;
 
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
