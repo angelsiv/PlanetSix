@@ -6,6 +6,7 @@
 #include "Engine/DataTable.h"
 #include "DrawDebugHelpers.h"
 #include "PlanetSixCharacter.h"
+#include "PlanetSixEnemy.h"
 
 // Sets default values
 ASkill::ASkill()
@@ -68,7 +69,7 @@ void ASkill::Tick(float DeltaTime)
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
 @PARAMS DamageReceiver is the person who will receive damage.*/
-void ASkill::DoDamage_Implementation(ABaseCharacter* DamageReceiver)
+void ASkill::DoDamage_Implementation(APlanetSixEnemy* DamageReceiver)
 {
 	float AbilityDamage = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability damage depending on their type
@@ -99,7 +100,7 @@ void ASkill::DoDamage_Implementation(ABaseCharacter* DamageReceiver)
 
 /** Heals the receiver depending on the caster's abilitydamage.
 @PARAMS HealReceiver is the person who will receive heals.*/
-void ASkill::DoHealthRegen_Implementation(ABaseCharacter* HealReceiver)
+void ASkill::DoHealthRegen_Implementation(APlanetSixCharacter* HealReceiver)
 {
 	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability heal depending on abilities proficiency
@@ -131,7 +132,7 @@ void ASkill::DoHealthRegen_Implementation(ABaseCharacter* HealReceiver)
 
 /** Heals the receiver<s shields depending on the caster's abilitydamage.
 @PARAMS HealReceiver is the person who will receive shield heals.*/
-void ASkill::DoShieldRegen_Implementation(ABaseCharacter* HealReceiver)
+void ASkill::DoShieldRegen_Implementation(APlanetSixCharacter* HealReceiver)
 {
 	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability heal depending on abilities proficiency
