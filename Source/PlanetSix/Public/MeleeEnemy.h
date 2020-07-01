@@ -3,17 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseCharacter.h"
+#include "PlanetSixEnemy.h"
 #include "MeleeEnemy.generated.h"
 
 /**
  *
  */
 UCLASS()
-class PLANETSIX_API AMeleeEnemy : public ABaseCharacter
+class PLANETSIX_API AMeleeEnemy : public APlanetSixEnemy
 {
 	GENERATED_BODY()
 public:
-	AMeleeEnemy(const FObjectInitializer& ObjectInitializer);
-
+    
 };
