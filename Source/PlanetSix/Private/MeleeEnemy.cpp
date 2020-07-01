@@ -3,12 +3,3 @@
 
 #include "MeleeEnemy.h"
 
-AMeleeEnemy::AMeleeEnemy(const FObjectInitializer& ObjectInitializer)
-{
-	PrimaryActorTick.bCanEverTick = true;
-
-
-	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes"));
-	SetReplicates(true);
-
-}
