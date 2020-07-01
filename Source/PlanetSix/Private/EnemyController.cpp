@@ -27,9 +27,6 @@ AEnemyController::AEnemyController()
 	PerceptionComp->SetDominantSense(SightConfig->GetSenseImplementation());
 	PerceptionComp->ConfigureSense(*SightConfig);
 
-
-
-
 }
 
 
@@ -40,7 +37,6 @@ void AEnemyController::OnPossess(APawn* InPawn)
 
 	AnimInstance = Cast<UEnemyAnimInstance>(Cast<APlanetSixEnemy>(InPawn)->GetMesh()->GetAnimInstance());
 	PawnMesh = Cast<APlanetSixEnemy>(InPawn)->GetMesh();
-
 
 }
 
@@ -57,8 +53,6 @@ void AEnemyController::BeginPlay()
 	if (Players.Num() < 0) {
 		print("Caught " + FString::FromInt(Players.Num()) + " players in scene", -1);
 	}
-
-
 }
 
 float CountdownToShoot = 0;
