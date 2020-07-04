@@ -18,6 +18,7 @@
 #include "PlanetSixGameInstance.h"
 #include "inventoryWidget.h"
 #include "MapTravel.h"
+#include "DrawDebugHelpers.h"
 #include "Engine.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
@@ -243,7 +244,7 @@ void APlanetSixCharacter::ItemPickup()
 
 void APlanetSixCharacter::Interact()
 {
-   
+ 
 
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
@@ -459,9 +460,31 @@ bool APlanetSixCharacter::DropItem(FItemBaseData item)
     return false;
 }
 
+FString GetEnumText(ENetRole Role)
+{
+    switch (Role)
+    {
+    case ROLE_None:
+        return "None";
+    case ROLE_SimulatedProxy:
+        return "SimulatedProxy";
+    case ROLE_AutonomousProxy:
+        return "AutonomousProxy";
+    case ROLE_Authority:
+        return "Authority";
+    case ROLE_MAX:
+        return "ERROR";
+    default:
+        break;
+    }
+    return "ERROR";
+}
+
 void APlanetSixCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
+    DrawDebugString(GetWorld(), FVector(0, 0, 100), GetEnumText(GetLocalRole()), this, FColor::White, DeltaSeconds);
 }
 
 void APlanetSixCharacter::BeginPlay()

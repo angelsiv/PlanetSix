@@ -42,11 +42,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		FVector ShootingEnd;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		float Experience;
+
 protected:
 
 
-	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		UBoxComponent* Collider;
+	
 
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UFloatingPawnMovement* MovComp;
@@ -66,6 +68,10 @@ public:
 
 	// Called to do damage calcs and check if Enemy is dead
 	//bool IsDead(float damage = 0);
+
+	//// Called upon death to give experience to all players
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	//	void GiveExperience(TArray<APlanetSixCharacter*> Players, float Exp);
 
 	virtual void Death() override;
 
