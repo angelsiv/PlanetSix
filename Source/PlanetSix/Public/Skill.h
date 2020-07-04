@@ -7,6 +7,7 @@
 #include "Skill.generated.h"
 
 class APlanetSixCharacter;
+class APlanetSixEnemy;
 struct FTableRowBase;
 class UTexture2D;
 
@@ -135,17 +136,17 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	/** Function that is called by the skill, replicated, deals damage */
-	UFUNCTION(BlueprintCallable, NetMulticast, Reliable, Category = "Damage Mechanics")
-		void DoDamage(ABaseCharacter* DamageReceiver);
-	void DoDamage_Implementation(ABaseCharacter* DamageReceiver);
+	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Damage Mechanics")
+		void DoDamage(APlanetSixEnemy* DamageReceiver);
+	void DoDamage_Implementation(APlanetSixEnemy* DamageReceiver);
 
 	/** Function that is called by the skill, replicated, heals health */
-	UFUNCTION(BlueprintCallable, NetMulticast, Reliable, Category = "Damage Mechanics")
-		void DoHealthRegen(ABaseCharacter* HealReceiver);
-	void DoHealthRegen_Implementation(ABaseCharacter* HealReceiver);
+	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Damage Mechanics")
+		void DoHealthRegen(APlanetSixCharacter* HealReceiver);
+	void DoHealthRegen_Implementation(APlanetSixCharacter* HealReceiver);
 
 	/** Function that is called by the skill, replicated, heals shields */
-	UFUNCTION(BlueprintCallable, NetMulticast, Reliable, Category = "Damage Mechanics")
-		void DoShieldRegen(ABaseCharacter* HealReceiver);
-	void DoShieldRegen_Implementation(ABaseCharacter* HealReceiver);
+	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Damage Mechanics")
+		void DoShieldRegen(APlanetSixCharacter* HealReceiver);
+	void DoShieldRegen_Implementation(APlanetSixCharacter* HealReceiver);
 };

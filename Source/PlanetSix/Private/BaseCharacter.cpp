@@ -39,6 +39,10 @@ void ABaseCharacter::Tick(float DeltaTime)
 		HealthRegen(RecoveryValue);
 		HealthRegenTime = 2.f;
 	}*/
+}
+
+void ABaseCharacter::ReloadShields_Implementation(float DeltaTime)
+{
 	ShieldRegenTime -= DeltaTime;
 	if (ShieldRegenTime <= 0)
 	{
@@ -47,7 +51,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 	}
 }
 
-void ABaseCharacter::ReceiveDamage(float Damage)
+void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
 {
 	if (Attributes->Shield.GetCurrentValue() > 0)
 	{
@@ -87,7 +91,7 @@ void ABaseCharacter::ShieldRegen(float Regen)
 
 float ABaseCharacter::WeaponDamage()
 {
-	return Attributes->WeaponDamage.GetCurrentValue() + FMath::CeilToFloat(FMath::Sqrt(Attributes->Level.GetCurrentValue() * 10));
+	return Attributes->WeaponDamage.GetCurrentModifier() == 0 ? Attributes->WeaponDamage.GetCurrentValue() + FMath::CeilToFloat(FMath::Sqrt(Attributes->Level.GetCurrentValue() * 10)) : Attributes->WeaponDamage.GetCurrentValue() + FMath::CeilToFloat(FMath::Sqrt(Attributes->Level.GetCurrentValue() * 10))* Attributes->WeaponDamage.GetCurrentModifier();
 }
 
 bool ABaseCharacter::IsDead()

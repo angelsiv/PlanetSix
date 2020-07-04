@@ -27,9 +27,6 @@ AEnemyController::AEnemyController()
 	PerceptionComp->SetDominantSense(SightConfig->GetSenseImplementation());
 	PerceptionComp->ConfigureSense(*SightConfig);
 
-
-	
-
 }
 
 
@@ -37,14 +34,12 @@ AEnemyController::AEnemyController()
 void AEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	
+
 	AnimInstance = Cast<UEnemyAnimInstance>(Cast<APlanetSixEnemy>(InPawn)->GetMesh()->GetAnimInstance());
 	PawnMesh = Cast<APlanetSixEnemy>(InPawn)->GetMesh();
-	
-	
+
 }
 
-FRotator StartRotationHip;
 
 void AEnemyController::BeginPlay()
 {
@@ -58,48 +53,62 @@ void AEnemyController::BeginPlay()
 	if (Players.Num() < 0) {
 		print("Caught " + FString::FromInt(Players.Num()) + " players in scene", -1);
 	}
-
-	StartRotationHip = PawnMesh->GetSocketRotation("spine_01");
-
 }
 
 float CountdownToShoot = 0;
 
 void AEnemyController::Tick(float DeltaTime)
 {
+
 	if (PlayerInSight) {
 		float distance = FVector::Distance(PlayerInSight->GetActorLocation(), GetPawn()->GetActorLocation());
 		if (distance > 1500) {
 			PlayerInSight = nullptr;
+			return;
 		}
 		//print("Distance " + FString::SanitizeFloat(distance), 3);
 
+		FRotator RotationHip = PawnMesh->GetSocketRotation("spine_02");
+
 		if (!IsFollowingAPath()) {
 			AnimInstance->bIsShooting = true;
-			
 
 			//Turning Enemy at player
 			FVector Begin = GetPawn()->GetActorLocation();
 			FVector End = PlayerInSight->GetActorLocation();
 
+			FRotator EnemyRotation = GetPawn()->GetActorRotation();
 			FRotator RotationToLook = UKismetMathLibrary::FindLookAtRotation(Begin, End);
-			FRotator BoneRotation = PawnMesh->GetSocketRotation("spine_01");
-			RotationToLook.Pitch = BoneRotation.Pitch;
-			RotationToLook.Roll = BoneRotation.Roll;
-			RotationToLook.Yaw += 20;
 			
-			//RotationToLook -= BoneRotation;
-			FRotator LerpedRotation = FMath::Lerp(BoneRotation, RotationToLook, 0.2);
-			float Yaw = StartRotationHip.Yaw;
-			LerpedRotation.Yaw = FMath::Clamp(LerpedRotation.Yaw, Yaw-40.0f, Yaw+40.0f);
-		
+				RotationToLook.Pitch = 0;
+				RotationToLook.Roll = 0;
+			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) > 90) {
+				
+				FRotator LerpedRotation = FMath::Lerp(EnemyRotation,RotationToLook,0.1);
+				GetPawn()->SetActorRotation(LerpedRotation);
+				RotationToLook.Yaw -= GetPawn()->GetActorRotation().Yaw;
+				//RotationToLook.Yaw = -RotationToLook.Yaw;
+				AnimInstance->RotationToAim = RotationToLook;
+			}
+			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) <= 90) {
 
-			AnimInstance->RotationToAim = LerpedRotation;
-			//Finish turning 
+				//FRotator BoneRotation = PawnMesh->GetSocketRotation("spine_02");
+				
+				RotationToLook.Yaw -= GetPawn()->GetActorRotation().Yaw;
+				AnimInstance->RotationToAim = RotationToLook;
+			}
+			//print("HipRotation " + RotationHip.ToString(), -1);
+		/*if (RotationToLook.Yaw < 40 || RotationToLook.Yaw >  40) {
 
 
-			//print("Is gonna shoot", -1);
-			
+		}*/
+
+
+		//Finish turning 
+
+
+		//print("Is gonna shoot", -1);
+
 			if (CountdownToShoot < 3) {
 				CountdownToShoot += DeltaTime;
 
@@ -136,19 +145,19 @@ void AEnemyController::SenseStuff(const TArray<AActor*>& actors)
 		}
 	}
 	else {
-	
-	/*	if (AnimInstance->bIsShooting) {
-			
-			FVector Begin = GetPawn()->GetActorLocation();
-			FVector End = PlayerInSight->GetActorLocation();
 
-			FRotator RotationToLook = UKismetMathLibrary::FindLookAtRotation(Begin, End);
-			FRotator LerpedRotation = FMath::Lerp(GetPawn()->GetActorRotation(), RotationToLook, 0.2);
-			GetPawn()->SetActorRotation(LerpedRotation);
+		/*	if (AnimInstance->bIsShooting) {
 
-		
-		}*/
-		
+				FVector Begin = GetPawn()->GetActorLocation();
+				FVector End = PlayerInSight->GetActorLocation();
+
+				FRotator RotationToLook = UKismetMathLibrary::FindLookAtRotation(Begin, End);
+				FRotator LerpedRotation = FMath::Lerp(GetPawn()->GetActorRotation(), RotationToLook, 0.2);
+				GetPawn()->SetActorRotation(LerpedRotation);
+
+
+			}*/
+
 	}
 
 }
@@ -159,6 +168,7 @@ void AEnemyController::Shoot()
 	if (PlayerInSight) {
 		auto EnemyBase = Cast<APlanetSixEnemy>(GetPawn());
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), EnemyBase->ShootingSound, EnemyBase->GetActorLocation());
+		AnimInstance->Montage_Play(EnemyBase->ShootAnimation);
 		FVector Begin = EnemyBase->ShootingBegin;
 		FVector End = EnemyBase->ShootingEnd - Begin;
 		End *= 100;
@@ -172,16 +182,12 @@ void AEnemyController::Shoot()
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, Begin, End, ECC_Pawn, QueryParams))
 		{
-
-
 			auto ActorHit = Cast<APlanetSixCharacter>(Hit.GetActor());
 			if (ActorHit)
 			{
 				print("Hit Player", -1);
 				ActorHit->ReceiveDamage(EnemyBase->WeaponDamage());
 			}
-			
-
 		}
 		DrawDebugLine(GetWorld(), Begin, End, FColor::Blue, false, 1.0f, 0, 1.0f);
 

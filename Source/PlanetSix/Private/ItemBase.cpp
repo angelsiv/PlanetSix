@@ -20,7 +20,6 @@ AItemBase::AItemBase()
     RootComponent = sphereCollider;
     mesh->AttachToComponent(sphereCollider, FAttachmentTransformRules::KeepRelativeTransform);
 
-    itemData = FItemBaseData();
 
 
     //static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("R:/git/PlanetSix/Content/Geometry/Meshes/1M_Cube_Chamfer.1M_Cube_Chamfer"));
@@ -41,6 +40,23 @@ void AItemBase::BeginPlay()
 {
     Super::BeginPlay();
     Rotation.Add(1, 0, 0);
+
+    static const FString contextString(TEXT("ItemDataTable"));
+    FName IdName = FName(*FString::FromInt(itemId));
+    itemDataPointer = ItemDataTable->FindRow<FItemBaseData>(IdName, contextString, true);
+    itemData = FItemBaseData();
+    if (itemDataPointer)
+    {
+        itemData.id = itemDataPointer->getId();
+        itemData.displayName = itemDataPointer->getDisplayName();
+        itemData.value = itemDataPointer->getValue();
+        itemData.weight = itemDataPointer->getWeight();
+        itemData.icon = itemDataPointer->getIcon();
+        itemData.quantity = quantity;
+    }
+
+    //itemData = FItemBaseData(itemId, quantity);
+
 }
 
 // Called every frame
@@ -83,15 +99,15 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
                 }
             }
         }
+        //NumberOfQuestItems = Player->GetNumberNeededForQuest(itemData.id, itemData.quantity);
 
-        auto it = ToItemInv();
-
-
-        if (Player->InventoryComponent->add(it, NumberOfQuestItems) && DestroyOnPickup)
+        if (Player->InventoryComponent->add(ToItemInv(), NumberOfQuestItems) && DestroyOnPickup)
         {
+
+
             this->Destroy();
         }
-        GameInstance->ReloadNetwork();
+      
         
         GameInstance->ReloadNetwork();
     }

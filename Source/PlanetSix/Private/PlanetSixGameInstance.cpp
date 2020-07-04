@@ -10,7 +10,6 @@
 void UPlanetSixGameInstance::SetPlayerInfo(FPlayerInfo info)
 {
 	PlayerInfo = info;
-
 	ReloadNetwork();
 }
 
@@ -92,8 +91,17 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
 	if (PlayerInfo.QuestAccepted.AtObjectiveNumber >= PlayerInfo.QuestAccepted.objectives.Num()) {
+
 		PlayerInfo.QuestAccepted.IsQuestCompleted = true;
+		//auto gameinstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+		//int objectiveNumber = gameinstance->GetCurrentQuest().AtObjectiveNumber;
+		//Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->InventoryComponent->RemoveQuestItem(PlayerInfo.QuestAccepted.objectives[]);
 		Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->QuestCompletedWidget->AddToViewport();
+		if (PlayerInfo.QuestAccepted.QuestItemReward.getId() != 0) 
+		{
+		Cast<APlanetSixCharacter>(GetPrimaryPlayerController()->GetPawn())->InventoryComponent->add(PlayerInfo.QuestAccepted.QuestItemReward, 0);
+		}
+
 		for (FQuestData q : PlayerInfo.QuestsRegistered) 
 		{
 			if (q.QuestID == PlayerInfo.QuestAccepted.QuestID) {
@@ -101,10 +109,9 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 				PlayerInfo.QuestAccepted = FQuestData::Empty();
 					break;
 			}
-		}
+		}	
 	}
 	ReloadNetwork();
-
 }
 
 
@@ -127,6 +134,18 @@ void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 	}
 	else {
 		print("Quest already registered", -1);
+	}
+}
+
+void UPlanetSixGameInstance::AddItemsToinventoryplayer(TArray<FItemBaseData> Items)
+{
+
+	PlayerInfo.InventoryItemsID.Empty();
+
+	for (int i = 0; i < Items.Num(); i++)
+	{
+		PlayerInfo.InventoryItemsID.Add(Items[i].getId(), Items[i].getQuantity());
+		
 	}
 }
 
