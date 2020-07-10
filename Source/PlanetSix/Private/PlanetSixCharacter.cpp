@@ -240,12 +240,16 @@ void APlanetSixCharacter::Interact()
     {
         if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
         {
-            print("SHOW THE Dialgue Widget", -1);
-            WidgetDialogueNPC->AddToViewport();
-            PC->SetInputMode(FInputModeUIOnly());
-            PC->bShowMouseCursor = true;
-            PC->bEnableClickEvents = true;
-            PC->bEnableMouseOverEvents = true;
+            if (!WidgetDialogueNPC->IsVisible()) 
+            {
+                print("SHOW THE Dialgue Widget", -1);
+                WidgetDialogueNPC->AddToViewport();
+                PC->SetInputMode(FInputModeUIOnly());
+                PC->bShowMouseCursor = true;
+                PC->bEnableClickEvents = true;
+                PC->bEnableMouseOverEvents = true;
+            }
+           
         }
 
         if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
@@ -256,6 +260,7 @@ void APlanetSixCharacter::Interact()
             //No work for some reason, Engine crashes with no pop-out -Alonso
             GetCharacterMovement()->StopActiveMovement();
             print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
+
             if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
             {
                 WidgetQuestNPC->AddToViewport();
