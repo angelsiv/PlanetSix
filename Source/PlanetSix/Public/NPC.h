@@ -53,7 +53,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		class UDataTable* QuestDatatable;
 
-	
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FText dialogueLines;
+
 	
 
 protected:
