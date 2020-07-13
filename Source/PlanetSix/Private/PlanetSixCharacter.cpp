@@ -243,10 +243,6 @@ void APlanetSixCharacter::Interact()
 
             if (!WidgetDialogueNPC->IsVisible()) 
             {
-                WidgetDialogueNPC->TextLineDialogue= NPCReference->dialogueLines;
-
-
-                print("SHOW THE Dialgue Widget", -1);
                 WidgetDialogueNPC->AddToViewport();
                 PC->SetInputMode(FInputModeUIOnly());
                 PC->bShowMouseCursor = true;

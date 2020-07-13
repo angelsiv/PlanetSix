@@ -56,10 +56,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		class UDataTable* QuestDatatable;
 
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FText dialogueLines;
-
+	//the text for each dialogue line of the NPC 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		TArray<FText> dialogueLinesArray;
 	
