@@ -183,7 +183,7 @@ void UInventoryComponent::RemoveQuestItem(int id, int quantity)
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
+bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems=0)
 {
     if (numberOfQuestItems > item.quantity)
     {
@@ -210,6 +210,25 @@ bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems)
 
     }
     return true;
+}
+
+bool UInventoryComponent::add(int Id, int Quantity)
+{
+    static const FString contextString(TEXT("ItemDataTable"));
+    FName IdName = FName(*FString::FromInt(Id));
+    itemDataPointer = ItemDataTable->FindRow<FItemBaseData>(IdName, contextString, true);
+    auto itemData = FItemBaseData();
+    if (itemDataPointer)
+    {
+        itemData.id = itemDataPointer->getId();
+        itemData.displayName = itemDataPointer->getDisplayName();
+        itemData.value = itemDataPointer->getValue();
+        itemData.weight = itemDataPointer->getWeight();
+        itemData.icon = itemDataPointer->getIcon();
+        itemData.quantity = Quantity;
+        return add(itemData);
+    }
+    return false;
 }
 
 // Description:
@@ -262,6 +281,24 @@ FItemBaseData UInventoryComponent::swap(FItemBaseData item, int index)
 FItemBaseData UInventoryComponent::takeItem(int index)
 {
     return swap(FItemBaseData(), index);
+}
+
+void UInventoryComponent::RemoveItem(int id, int quantity)
+{
+    for (size_t i = 0; i < items.Num(); i++)
+    {
+        if (items[i].id == id)
+        {
+            if (quantity < 0|| items[i].quantity<=quantity)
+            {
+                takeItem(i);
+            }
+            else
+            {
+                items[i].quantity -= quantity;
+            }
+        }
+    }
 }
 
 
@@ -409,7 +446,6 @@ int FItemBaseData::compare(FItemBaseData  i1, FItemBaseData  i2, ECompareField t
 
     return result;
 }
-
 
 int FItemBaseData::getId()
 {

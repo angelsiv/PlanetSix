@@ -13,6 +13,7 @@
 #include "ClassComponent.h"
 #include "BaseCharacter.h"
 #include "QuestBoardWidget.h"
+#include "craftingStation.h"
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -87,6 +88,10 @@ public:
 
 	//Reference to NPC Actor
 	ANPC* NPCReference;
+
+	//Reference to Crafting station Actor
+	AcraftingStation* craftingStationRef;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
 		TSubclassOf<UUserWidget> QuestBoardWidgetRef;

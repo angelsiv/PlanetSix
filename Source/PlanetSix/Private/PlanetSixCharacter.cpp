@@ -91,11 +91,16 @@ APlanetSixCharacter::APlanetSixCharacter()
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
     NPCReference = Cast<ANPC>(OtherActor);
+    craftingStationRef = Cast<AcraftingStation>(OtherActor);
 
     if (NPCReference)
     {
         NPCReference->textrenderInteraction->SetVisibility(true);
 
+    }
+    else if(craftingStationRef)
+    {
+        print("crafting cast ok",-1);
     }
 
     Portal = Cast<AMapTravel>(OtherActor);
