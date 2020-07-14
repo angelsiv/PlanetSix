@@ -93,7 +93,9 @@ public:
    //Quest Accepted By Player
 	FQuestData QuestAccepted;
 
+
 	//Reference to NPC Actor
+	UPROPERTY(BlueprintReadWrite)
 	ANPC* NPCReference;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
