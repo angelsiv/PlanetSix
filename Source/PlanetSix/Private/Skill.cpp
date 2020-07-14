@@ -4,7 +4,9 @@
 #include "Skill.h"
 #include "Engine/Texture2D.h"
 #include "Engine/DataTable.h"
+#include "DrawDebugHelpers.h"
 #include "PlanetSixCharacter.h"
+#include "PlanetSixEnemy.h"
 
 // Sets default values
 ASkill::ASkill()
@@ -33,6 +35,26 @@ void ASkill::BeginPlay()
 	SetReplicates(true);
 }
 
+FString GetEnumSkillText(ENetRole Role)
+{
+	switch (Role)
+	{
+	case ROLE_None:
+		return "None";
+	case ROLE_SimulatedProxy:
+		return "SimulatedProxy";
+	case ROLE_AutonomousProxy:
+		return "AutonomousProxy";
+	case ROLE_Authority:
+		return "Authority";
+	case ROLE_MAX:
+		return "ERROR";
+	default:
+		break;
+	}
+	return "ERROR";
+}
+
 // Called every frame
 void ASkill::Tick(float DeltaTime)
 {
@@ -41,11 +63,13 @@ void ASkill::Tick(float DeltaTime)
 	Duration -= DeltaTime;
 	ActivationTime -= DeltaTime;
 	CurrentCooldown -= DeltaTime;
+
+	DrawDebugString(GetWorld(), FVector(0, 0, 50), GetEnumSkillText(GetLocalRole()), this, FColor::White, DeltaTime);
 }
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.
 @PARAMS DamageReceiver is the person who will receive damage.*/
-void ASkill::DoDamage_Implementation(ABaseCharacter* DamageReceiver)
+void ASkill::DoDamage_Implementation(APlanetSixEnemy* DamageReceiver)
 {
 	float AbilityDamage = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability damage depending on their type
@@ -76,7 +100,7 @@ void ASkill::DoDamage_Implementation(ABaseCharacter* DamageReceiver)
 
 /** Heals the receiver depending on the caster's abilitydamage.
 @PARAMS HealReceiver is the person who will receive heals.*/
-void ASkill::DoHealthRegen_Implementation(ABaseCharacter* HealReceiver)
+void ASkill::DoHealthRegen_Implementation(APlanetSixCharacter* HealReceiver)
 {
 	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability heal depending on abilities proficiency
@@ -108,7 +132,7 @@ void ASkill::DoHealthRegen_Implementation(ABaseCharacter* HealReceiver)
 
 /** Heals the receiver<s shields depending on the caster's abilitydamage.
 @PARAMS HealReceiver is the person who will receive shield heals.*/
-void ASkill::DoShieldRegen_Implementation(ABaseCharacter* HealReceiver)
+void ASkill::DoShieldRegen_Implementation(APlanetSixCharacter* HealReceiver)
 {
 	float AbilityHeal = OwnerCharacter->Attributes->AbilityDamage.GetCurrentValue();
 	//ability heal depending on abilities proficiency

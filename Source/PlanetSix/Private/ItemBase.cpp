@@ -103,9 +103,11 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
 
         if (Player->InventoryComponent->add(ToItemInv(), NumberOfQuestItems) && DestroyOnPickup)
         {
+
+
             this->Destroy();
         }
-        GameInstance->ReloadNetwork();
+      
         
         GameInstance->ReloadNetwork();
     }

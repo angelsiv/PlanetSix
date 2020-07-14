@@ -77,3 +77,11 @@ int APlanetSixEnemy::GetID()
 {
 	return ID;
 }
+
+//void APlanetSixEnemy::GiveExperience(TArray<APlanetSixCharacter*> Players, float Exp)
+//{
+//	for (int i = 0; i < Players.Max(); i++)
+//	{
+//		Players[i]->Attributes->Experience.SetCurrentValue(Players[i]->Attributes->Experience.GetCurrentValue() + Experience);
+//	}
+//}

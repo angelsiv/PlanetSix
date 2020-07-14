@@ -27,9 +27,6 @@ AEnemyController::AEnemyController()
 	PerceptionComp->SetDominantSense(SightConfig->GetSenseImplementation());
 	PerceptionComp->ConfigureSense(*SightConfig);
 
-
-
-
 }
 
 
@@ -40,7 +37,6 @@ void AEnemyController::OnPossess(APawn* InPawn)
 
 	AnimInstance = Cast<UEnemyAnimInstance>(Cast<APlanetSixEnemy>(InPawn)->GetMesh()->GetAnimInstance());
 	PawnMesh = Cast<APlanetSixEnemy>(InPawn)->GetMesh();
-
 
 }
 
@@ -57,8 +53,6 @@ void AEnemyController::BeginPlay()
 	if (Players.Num() < 0) {
 		print("Caught " + FString::FromInt(Players.Num()) + " players in scene", -1);
 	}
-
-
 }
 
 float CountdownToShoot = 0;
@@ -79,13 +73,9 @@ void AEnemyController::Tick(float DeltaTime)
 		if (!IsFollowingAPath()) {
 			AnimInstance->bIsShooting = true;
 
-
-
 			//Turning Enemy at player
 			FVector Begin = GetPawn()->GetActorLocation();
 			FVector End = PlayerInSight->GetActorLocation();
-
-
 
 			FRotator EnemyRotation = GetPawn()->GetActorRotation();
 			FRotator RotationToLook = UKismetMathLibrary::FindLookAtRotation(Begin, End);
@@ -94,7 +84,6 @@ void AEnemyController::Tick(float DeltaTime)
 				RotationToLook.Roll = 0;
 			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) > 90) {
 				
-				
 				FRotator LerpedRotation = FMath::Lerp(EnemyRotation,RotationToLook,0.1);
 				GetPawn()->SetActorRotation(LerpedRotation);
 				RotationToLook.Yaw -= GetPawn()->GetActorRotation().Yaw;
@@ -102,7 +91,6 @@ void AEnemyController::Tick(float DeltaTime)
 				AnimInstance->RotationToAim = RotationToLook;
 			}
 			if (FMath::Abs(RotationHip.Yaw - EnemyRotation.Yaw) <= 90) {
-
 
 				//FRotator BoneRotation = PawnMesh->GetSocketRotation("spine_02");
 				
@@ -194,16 +182,12 @@ void AEnemyController::Shoot()
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, Begin, End, ECC_Pawn, QueryParams))
 		{
-
-
 			auto ActorHit = Cast<APlanetSixCharacter>(Hit.GetActor());
 			if (ActorHit)
 			{
 				print("Hit Player", -1);
 				ActorHit->ReceiveDamage(EnemyBase->WeaponDamage());
 			}
-
-
 		}
 		DrawDebugLine(GetWorld(), Begin, End, FColor::Blue, false, 1.0f, 0, 1.0f);
 
