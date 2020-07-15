@@ -29,7 +29,10 @@ public:
     
     //Event after main menu when loading for the first time
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
-        bool bIsFirstSetup;
+        bool bIsFirstSetup = true;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+       TSubclassOf<UUserWidget> SavingEffectWidget;
 
 public:
 

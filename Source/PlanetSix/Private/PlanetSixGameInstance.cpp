@@ -163,12 +163,14 @@ void UPlanetSixGameInstance::SaveGame()
 	
 	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::CreateSaveGameObject(UPlanetSixSaveGame::StaticClass()));
 	SavedGame->PlayerInfo = GetPlayerInfoToSave();
+
 	if (UGameplayStatics::SaveGameToSlot(SavedGame, PlayerSave.SaveName, 0)) {
 	
 		print("Saved true",-1);
 	}
 
-
+	CreateWidget<UUserWidget>(GetWorld(), SavingEffectWidget)->AddToViewport();
+	
 
 }
 
