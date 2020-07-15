@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "PlanetSixCharacter.h"
+#include "PlanetSixSaveGame.h"
 #include "PlanetSixGameInstance.generated.h"
 
 /**
@@ -21,10 +22,23 @@ private:
     //PlayerCharacter values
     FPlayerInfo PlayerInfo;
 
+    FPlayerSaveData PlayerSave;
+public:
+    UPROPERTY(BlueprintReadWrite,EditAnywhere)
+    UDataTable* SkillDataTable;
+    
+
 public:
 
     UFUNCTION(BlueprintCallable)
-        void SetPlayerInfo(FPlayerInfo info);
+        void SetPlayerInfo(FPlayerInfo info);   
+    
+    UFUNCTION(BlueprintCallable)
+        void SetPlayerSavedInfo(FPlayerSaveData info);
+     
+    
+    UFUNCTION(BlueprintCallable)
+        FPlayerSaveData GetPlayerInfoToSave();
 
     UFUNCTION(BlueprintCallable)
         FPlayerInfo GetPlayerInfo();
@@ -40,6 +54,9 @@ public:
         void SetCurrentQuest(FQuestData Quest);
 
   
+    UFUNCTION(BlueprintCallable)
+        void SaveGame();
+
     UFUNCTION(BlueprintCallable)
         bool GetQuestRegistered(FQuestData Quest);
 
