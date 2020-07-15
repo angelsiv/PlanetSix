@@ -27,6 +27,12 @@ public:
     UPROPERTY(BlueprintReadWrite,EditAnywhere)
     UDataTable* SkillDataTable;
     
+    //Event after main menu when loading for the first time
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+        bool bIsFirstSetup = true;
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+       TSubclassOf<UUserWidget> SavingEffectWidget;
 
 public:
 
@@ -38,7 +44,10 @@ public:
      
     
     UFUNCTION(BlueprintCallable)
-        FPlayerSaveData GetPlayerInfoToSave();
+        FPlayerSaveData GetPlayerInfoToSave(); 
+    
+    UFUNCTION(BlueprintCallable)
+        FPlayerSaveData GetPlayerSave();
 
     UFUNCTION(BlueprintCallable)
         FPlayerInfo GetPlayerInfo();

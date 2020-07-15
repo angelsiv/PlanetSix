@@ -85,6 +85,11 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 
 }
 
+FPlayerSaveData UPlanetSixGameInstance::GetPlayerSave()
+{
+	return PlayerSave;
+}
+
 FPlayerInfo UPlanetSixGameInstance::GetPlayerInfo()
 {
 	return PlayerInfo;
@@ -157,13 +162,15 @@ void UPlanetSixGameInstance::SaveGame()
 {
 	
 	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::CreateSaveGameObject(UPlanetSixSaveGame::StaticClass()));
-	SavedGame->PlayerInfo = PlayerSave;
+	SavedGame->PlayerInfo = GetPlayerInfoToSave();
+
 	if (UGameplayStatics::SaveGameToSlot(SavedGame, PlayerSave.SaveName, 0)) {
 	
 		print("Saved true",-1);
 	}
 
-
+	CreateWidget<UUserWidget>(GetWorld(), SavingEffectWidget)->AddToViewport();
+	
 
 }
 
