@@ -62,11 +62,6 @@ public:
 
 public:
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-       UDataTable* ItemDataTable;
-
-    //FItemBaseData* itemDataPointer;
-
     static int compare(FItemBaseData i1, FItemBaseData i2, ECompareField type);
 
     int getId();
@@ -155,6 +150,7 @@ public:
         FString Test();
 
     APlanetSixCharacter* owner;
+
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         class UDataTable* ItemDataTable;
