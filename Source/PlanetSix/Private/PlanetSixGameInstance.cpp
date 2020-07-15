@@ -85,6 +85,11 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 
 }
 
+FPlayerSaveData UPlanetSixGameInstance::GetPlayerSave()
+{
+	return PlayerSave;
+}
+
 FPlayerInfo UPlanetSixGameInstance::GetPlayerInfo()
 {
 	return PlayerInfo;
