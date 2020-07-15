@@ -82,10 +82,16 @@ APlanetSixCharacter::APlanetSixCharacter()
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
     NPCReference = Cast<ANPC>(OtherActor);
+    craftingStationRef = Cast<AcraftingStation>(OtherActor);
 
     if (NPCReference)
     {
         NPCReference->textrenderInteraction->SetVisibility(true);
+
+    }
+    else if(craftingStationRef)
+    {
+       
 
     }
 
@@ -238,40 +244,68 @@ void APlanetSixCharacter::Interact()
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
-        if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
-        {
+        //if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
+        //{
 
-            if (!WidgetDialogueNPC->IsVisible()) 
+        //    if (!WidgetDialogueNPC->IsVisible()) 
+        //    {
+        //        WidgetDialogueNPC->AddToViewport();
+        //        PC->SetInputMode(FInputModeUIOnly());
+        //        PC->bShowMouseCursor = true;
+        //        PC->bEnableClickEvents = true;
+        //        PC->bEnableMouseOverEvents = true;
+        //    }
+        //   
+        //}
+
+        //if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
+        //    NPCReference->bOnInteraction = true;
+        //    NPCReference->textrenderQuest->SetVisibility(false);
+        //    WidgetQuestNPC->QuestDataNPC = NPCReference;
+
+        //    //No work for some reason, Engine crashes with no pop-out -Alonso
+        //    GetCharacterMovement()->StopActiveMovement();
+        //    print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
+
+        //    if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
+        //    {
+        //        WidgetQuestNPC->AddToViewport();
+        //        PC->SetInputMode(FInputModeUIOnly());
+        //        PC->bShowMouseCursor = true;
+        //        PC->bEnableClickEvents = true;
+        //        PC->bEnableMouseOverEvents = true;
+
+        //    }
+        //}
+
+
+        //Not functionnal at the moment 
+
+         if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
+        {
+            if (!NPCReference->QuestID.IsNone()) 
             {
+                NPCReference->bOnInteraction = true;
+                NPCReference->textrenderQuest->SetVisibility(false);
+                WidgetQuestNPC->QuestDataNPC = NPCReference;
+            }
                 WidgetDialogueNPC->AddToViewport();
                 PC->SetInputMode(FInputModeUIOnly());
                 PC->bShowMouseCursor = true;
                 PC->bEnableClickEvents = true;
                 PC->bEnableMouseOverEvents = true;
-            }
-           
-        }
-
-        if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
-            NPCReference->bOnInteraction = true;
-            NPCReference->textrenderQuest->SetVisibility(false);
-            WidgetQuestNPC->QuestDataNPC = NPCReference;
-
-            //No work for some reason, Engine crashes with no pop-out -Alonso
-            GetCharacterMovement()->StopActiveMovement();
-            print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
-
-            if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
-            {
-                WidgetQuestNPC->AddToViewport();
-                PC->SetInputMode(FInputModeUIOnly());
-                PC->bShowMouseCursor = true;
-                PC->bEnableClickEvents = true;
-                PC->bEnableMouseOverEvents = true;
-
-            }
         }
     }
+
+    if (craftingStationRef)
+    {
+        CraftingWidget->AddToViewport();
+        PC->SetInputMode(FInputModeUIOnly());
+        PC->bShowMouseCursor = true;
+        PC->bEnableClickEvents = true;
+        PC->bEnableMouseOverEvents = true;
+    }
+
     /* Interaction with Travel Portal */
     if (Portal)
     {
