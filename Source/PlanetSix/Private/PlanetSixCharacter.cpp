@@ -271,6 +271,23 @@ void APlanetSixCharacter::Interact()
 
             }
         }
+
+        //Not functionnal at the moment 
+
+        /* if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
+        {
+            if (!NPCReference->QuestID.IsNone()) 
+            {
+                NPCReference->bOnInteraction = true;
+                NPCReference->textrenderQuest->SetVisibility(false);
+                WidgetQuestNPC->QuestDataNPC = NPCReference;
+            }
+                WidgetDialogueNPC->AddToViewport();
+                PC->SetInputMode(FInputModeUIOnly());
+                PC->bShowMouseCursor = true;
+                PC->bEnableClickEvents = true;
+                PC->bEnableMouseOverEvents = true;
+        }*/
     }
     /* Interaction with Travel Portal */
     if (Portal)
