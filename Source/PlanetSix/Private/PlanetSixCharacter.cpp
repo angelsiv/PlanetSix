@@ -244,43 +244,44 @@ void APlanetSixCharacter::Interact()
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
-        if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
-        {
+        //if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
+        //{
 
-            if (!WidgetDialogueNPC->IsVisible()) 
-            {
-                WidgetDialogueNPC->AddToViewport();
-                PC->SetInputMode(FInputModeUIOnly());
-                PC->bShowMouseCursor = true;
-                PC->bEnableClickEvents = true;
-                PC->bEnableMouseOverEvents = true;
-            }
-           
-        }
+        //    if (!WidgetDialogueNPC->IsVisible()) 
+        //    {
+        //        WidgetDialogueNPC->AddToViewport();
+        //        PC->SetInputMode(FInputModeUIOnly());
+        //        PC->bShowMouseCursor = true;
+        //        PC->bEnableClickEvents = true;
+        //        PC->bEnableMouseOverEvents = true;
+        //    }
+        //   
+        //}
 
-        if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
-            NPCReference->bOnInteraction = true;
-            NPCReference->textrenderQuest->SetVisibility(false);
-            WidgetQuestNPC->QuestDataNPC = NPCReference;
+        //if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
+        //    NPCReference->bOnInteraction = true;
+        //    NPCReference->textrenderQuest->SetVisibility(false);
+        //    WidgetQuestNPC->QuestDataNPC = NPCReference;
 
-            //No work for some reason, Engine crashes with no pop-out -Alonso
-            GetCharacterMovement()->StopActiveMovement();
-            print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
+        //    //No work for some reason, Engine crashes with no pop-out -Alonso
+        //    GetCharacterMovement()->StopActiveMovement();
+        //    print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
 
-            if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
-            {
-                WidgetQuestNPC->AddToViewport();
-                PC->SetInputMode(FInputModeUIOnly());
-                PC->bShowMouseCursor = true;
-                PC->bEnableClickEvents = true;
-                PC->bEnableMouseOverEvents = true;
+        //    if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
+        //    {
+        //        WidgetQuestNPC->AddToViewport();
+        //        PC->SetInputMode(FInputModeUIOnly());
+        //        PC->bShowMouseCursor = true;
+        //        PC->bEnableClickEvents = true;
+        //        PC->bEnableMouseOverEvents = true;
 
-            }
-        }
+        //    }
+        //}
+
 
         //Not functionnal at the moment 
 
-        /* if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
+         if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
         {
             if (!NPCReference->QuestID.IsNone()) 
             {
@@ -293,11 +294,7 @@ void APlanetSixCharacter::Interact()
                 PC->bShowMouseCursor = true;
                 PC->bEnableClickEvents = true;
                 PC->bEnableMouseOverEvents = true;
-        }*/
-    }
-    else
-    {
-        //GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
+        }
     }
 
     if (craftingStationRef)
