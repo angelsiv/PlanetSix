@@ -82,10 +82,16 @@ APlanetSixCharacter::APlanetSixCharacter()
 void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
     NPCReference = Cast<ANPC>(OtherActor);
+    craftingStationRef = Cast<AcraftingStation>(OtherActor);
 
     if (NPCReference)
     {
         NPCReference->textrenderInteraction->SetVisibility(true);
+
+    }
+    else if(craftingStationRef)
+    {
+       
 
     }
 
@@ -271,7 +277,38 @@ void APlanetSixCharacter::Interact()
 
             }
         }
+
+        //Not functionnal at the moment 
+
+        /* if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
+        {
+            if (!NPCReference->QuestID.IsNone()) 
+            {
+                NPCReference->bOnInteraction = true;
+                NPCReference->textrenderQuest->SetVisibility(false);
+                WidgetQuestNPC->QuestDataNPC = NPCReference;
+            }
+                WidgetDialogueNPC->AddToViewport();
+                PC->SetInputMode(FInputModeUIOnly());
+                PC->bShowMouseCursor = true;
+                PC->bEnableClickEvents = true;
+                PC->bEnableMouseOverEvents = true;
+        }*/
     }
+    else
+    {
+        //GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Blue, TEXT("GO NEAR SOMETHING "));
+    }
+
+    if (craftingStationRef)
+    {
+        CraftingWidget->AddToViewport();
+        PC->SetInputMode(FInputModeUIOnly());
+        PC->bShowMouseCursor = true;
+        PC->bEnableClickEvents = true;
+        PC->bEnableMouseOverEvents = true;
+    }
+
     /* Interaction with Travel Portal */
     if (Portal)
     {
