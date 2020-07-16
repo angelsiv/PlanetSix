@@ -1,7 +1,7 @@
 // This work is the sole property of 2Pow6 Games.
 
-#include "InventoryComponent.h"
 #include "craftingStation.h"
+#include "InventoryComponent.h"
 
 // Sets default values
 AcraftingStation::AcraftingStation()
