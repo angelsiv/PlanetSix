@@ -10,6 +10,7 @@
 class UTexture2D;
 class AItemBase;
 class APlanetSixCharacter;
+class UDataTable;
 
 USTRUCT(BlueprintType)
 struct PLANETSIX_API FItemBaseData : public FTableRowBase  //: public UObject
@@ -31,8 +32,8 @@ public:
         displayName(),
         weight(0),
         value(0),
-        icon(nullptr),
-        quantity(0)
+        quantity(0),
+        icon(nullptr)
     {};
     FItemBaseData(FItemBaseData* original)
         :id(original->id),
@@ -42,7 +43,6 @@ public:
         quantity(original->quantity),
         icon(original->icon)
     {};
-
 
 
 
@@ -122,6 +122,7 @@ public:
     UInventoryComponent(int32 invSize);
 
     bool add(FItemBaseData item, int  numberOfQuestItems);
+    bool add(int Id, int Quantity);
     bool addNormal(FItemBaseData item);
     bool addQuest(FItemBaseData item);
 
@@ -131,6 +132,8 @@ public:
         FItemBaseData swap(FItemBaseData item, int index);
     UFUNCTION(BlueprintCallable)
         FItemBaseData takeItem(int index);
+
+    void RemoveItem(int id, int quantity);
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         int32 inventorySize UMETA(ExposeOnSpawn = "true");
@@ -147,6 +150,12 @@ public:
         FString Test();
 
     APlanetSixCharacter* owner;
+
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        class UDataTable* ItemDataTable;
+
+    FItemBaseData* itemDataPointer;
 
 public:
     // Called when the game starts

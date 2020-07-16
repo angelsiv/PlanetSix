@@ -3,6 +3,8 @@
 
 #include "PlanetSixGameInstance.h"
 #include "PlanetSixPlayerState.h"
+#include "Skill.h"
+
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
@@ -11,6 +13,81 @@ void UPlanetSixGameInstance::SetPlayerInfo(FPlayerInfo info)
 {
 	PlayerInfo = info;
 	ReloadNetwork();
+}
+
+void UPlanetSixGameInstance::SetPlayerSavedInfo(FPlayerSaveData info)
+{
+	PlayerSave = info;
+}
+
+FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
+{
+	FPlayerSaveData SimplifiedPlayerInfo = FPlayerSaveData();
+	
+	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+	 
+
+	//Equipped Skills
+	for (auto Skill : Player->Class->EquippedSkillsArray) {
+		
+		TArray<FName> RNames;
+		RNames = SkillDataTable->GetRowNames();
+		FString ContextString;
+		for (auto& name : RNames) {
+		
+			FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
+			if (SkillData->SkillClass == Skill) {
+			
+				SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
+			
+			}
+
+
+
+		}
+		
+	
+	
+	}
+
+
+	//Attributes
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->ArmorsProficiency.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponsProficiency.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilitiesProficiency.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Level.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Experience.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Health.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Shield.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->ArmorReduction.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponDamage.GetBaseValue());
+	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilityDamage.GetBaseValue());
+
+
+
+	//QuestsRegistered
+	for (auto Quest : PlayerInfo.QuestsRegistered) {
+	
+		SimplifiedPlayerInfo.QuestsRegistered.Add(Quest.QuestID);
+	
+	}
+
+	if (PlayerInfo.QuestsRegistered.Num() > 0) {
+		SimplifiedPlayerInfo.LastQuestRegisteredName = PlayerInfo.QuestsRegistered[PlayerInfo.QuestsRegistered.Num() - 1].QuestTitleName.ToString();
+	}
+	//Inventory
+
+	SimplifiedPlayerInfo.InventoryItemsID = PlayerInfo.InventoryItemsID;
+	
+
+
+	return SimplifiedPlayerInfo;
+
+}
+
+FPlayerSaveData UPlanetSixGameInstance::GetPlayerSave()
+{
+	return PlayerSave;
 }
 
 FPlayerInfo UPlanetSixGameInstance::GetPlayerInfo()
@@ -79,6 +156,22 @@ int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
 
 	}
 	return 0;
+}
+
+void UPlanetSixGameInstance::SaveGame()
+{
+	
+	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::CreateSaveGameObject(UPlanetSixSaveGame::StaticClass()));
+	SavedGame->PlayerInfo = GetPlayerInfoToSave();
+
+	if (UGameplayStatics::SaveGameToSlot(SavedGame, PlayerSave.SaveName, 0)) {
+	
+		print("Saved true",-1);
+	}
+
+	CreateWidget<UUserWidget>(GetWorld(), SavingEffectWidget)->AddToViewport();
+	
+
 }
 
 bool UPlanetSixGameInstance::GetQuestRegistered(FQuestData Quest)

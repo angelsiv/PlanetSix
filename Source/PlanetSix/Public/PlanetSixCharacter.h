@@ -13,10 +13,12 @@
 #include "ClassComponent.h"
 #include "BaseCharacter.h"
 #include "QuestBoardWidget.h"
+#include "craftingStation.h"
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
 class UNPCQuestWidget;
+class UNPCDialogueWidget;
 class UQuestWidget;
 class AQuestActor;
 class APlayerController;
@@ -50,6 +52,13 @@ public:
 	//Specified Portal
 	AMapTravel* Portal;
 
+	//this is to create the widget of the Dialogue  
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue UI")
+		TSubclassOf<UUserWidget> NPCDialogueWidgetClass;
+
+	UPROPERTY(BlueprintReadWrite)
+		UNPCDialogueWidget* WidgetDialogueNPC;
+
 #pragma region(Quests Logic)
 	//this is to create the widget of the NPCQuest  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
@@ -75,6 +84,12 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		UUserWidget* QuestCompletedWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<UUserWidget> CraftingWidgetClass;
+
+	UPROPERTY(BlueprintReadWrite)
+		UUserWidget* CraftingWidget;
+
 	//this is for the WidgetQuestLog
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UUserWidget* WidgetQuestLog;
@@ -85,8 +100,14 @@ public:
    //Quest Accepted By Player
 	FQuestData QuestAccepted;
 
+
 	//Reference to NPC Actor
+	UPROPERTY(BlueprintReadWrite)
 	ANPC* NPCReference;
+
+	//Reference to Crafting station Actor
+	AcraftingStation* craftingStationRef;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
 		TSubclassOf<UUserWidget> QuestBoardWidgetRef;
