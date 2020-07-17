@@ -51,6 +51,7 @@ void UAttributesComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+
 	SetActive(true);
 	SetIsReplicated(true);
 }
