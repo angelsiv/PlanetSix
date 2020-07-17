@@ -49,7 +49,7 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 
 
 		}
-	}
+	
 
 
 	//Attributes
@@ -64,7 +64,7 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponDamage.GetBaseValue());
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilityDamage.GetBaseValue());
 
-
+	}
 
 	//QuestsRegistered
 	for (auto Quest : PlayerInfo.QuestsRegistered) {
