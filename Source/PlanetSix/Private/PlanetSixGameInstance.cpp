@@ -26,28 +26,29 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 	
 	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 	 
+	if (Player) {
+		//Equipped Skills
+		for (auto Skill : Player->Class->EquippedSkillsArray) {
 
-	//Equipped Skills
-	for (auto Skill : Player->Class->EquippedSkillsArray) {
-		
-		TArray<FName> RNames;
-		RNames = SkillDataTable->GetRowNames();
-		FString ContextString;
-		for (auto& name : RNames) {
-		
-			FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
-			if (SkillData->SkillClass == Skill) {
-			
-				SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
-			
+			TArray<FName> RNames;
+			RNames = SkillDataTable->GetRowNames();
+			FString ContextString;
+			for (auto& name : RNames) {
+
+				FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
+				if (SkillData->SkillClass == Skill) {
+
+					SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
+
+				}
+
+
+
 			}
 
 
 
 		}
-		
-	
-	
 	}
 
 
