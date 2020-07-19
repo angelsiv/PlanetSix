@@ -438,7 +438,7 @@ void APlanetSixCharacter::OpenIngameMenu()
     }
     UWidgetBlueprintLibrary::SetInputMode_GameOnly(Cast<APlayerController>(Controller));
 
-    UGameplayStatics::SetGamePaused(GetWorld(), true);
+    //UGameplayStatics::SetGamePaused(GetWorld(), true);
 
     CreateWidget(Cast<APlayerController>(Controller), InGameMenu)->AddToViewport();
 
