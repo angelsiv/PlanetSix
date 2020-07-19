@@ -68,7 +68,7 @@ public:
 		void ChangeResolution(FString Value, ESelectInfo::Type type);
 	
 	UFUNCTION(BlueprintCallable)
-		void Return();
+		void ReturnMainMenu();
 private:
 	FText ChangeStatus(float Value);
 
