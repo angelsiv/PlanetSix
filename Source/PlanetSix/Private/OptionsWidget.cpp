@@ -24,7 +24,7 @@ UOptionsWidget::UOptionsWidget(const FObjectInitializer& ObjectInitializer) :Sup
 void UOptionsWidget::NativeConstruct()
 {
 	//Assigning functions to events
-	ReturnButton->OnClicked.AddDynamic(this, &UOptionsWidget::ReturnMainMenu);
+	ReturnButton->OnClicked.AddDynamic(this, &UOptionsWidget::Return);
 	ShadowSlider->OnValueChanged.AddDynamic(this, &UOptionsWidget::ChangeShadowQuality);
 	TextureSlider->OnValueChanged.AddDynamic(this, &UOptionsWidget::ChangeTextureQuality);
 	PostSlider->OnValueChanged.AddDynamic(this, &UOptionsWidget::ChangePostQuality);
@@ -161,11 +161,14 @@ void UOptionsWidget::ChangeResolution(FString Value, ESelectInfo::Type type)
 
 }
 
-void UOptionsWidget::ReturnMainMenu()
+void UOptionsWidget::Return()
 {
-	UUserWidget* MainMenuWidget = CreateWidget<UUserWidget>(GetWorld(), RefWidget);
-	MainMenuWidget->AddToViewport();
-	RemoveFromParent();
+	UUserWidget* ReturnWidget = CreateWidget<UUserWidget>(GetWorld(), RefWidget);
+	if (RefWidget != nullptr)
+	{
+		ReturnWidget->AddToViewport();
+		RemoveFromParent();
+	}
 }
 
 FText UOptionsWidget::ChangeStatus(float Value)
