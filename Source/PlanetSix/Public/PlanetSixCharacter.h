@@ -7,6 +7,7 @@
 #include "QuestActor.h"
 #include "NPC.h"
 #include "NPCQuestWidget.h"
+#include "CurrentQuestTracker.h"
 #include "AttributesComponent.h"
 #include "InventoryComponent.h"
 #include "WeaponComponent.h"
@@ -22,12 +23,12 @@ class UNPCQuestWidget;
 class UNPCDialogueWidget;
 class UQuestWidget;
 class AQuestActor;
+class AQuestBoard;
 class APlayerController;
 class ASkill;
 struct FSkillData;
 class AMapTravel;
 class UinventoryWidget;
-class UCurrentQuestTracker;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ABaseCharacter
@@ -75,10 +76,11 @@ public:
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
-		TSubclassOf<UUserWidget> CurrentQuestWidget;
+		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
 
+	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
-		UUserWidget* CurrentQuest;
+		UCurrentQuestTracker* CurrentQuestTracker;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
 		TSubclassOf<UUserWidget> QuestCompletedClass;
@@ -96,12 +98,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UUserWidget* WidgetQuestLog;
 
-	//QuestInfos for player 
-	//TArray<FQuestData> QuestInfos;
 
    //Quest Accepted By Player
 	FQuestData QuestAccepted;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool OnInteractionWithBoard=false;
+
+	UPROPERTY(BlueprintReadWrite)
+	AQuestBoard* QuestBoardRef;
 
 	//Reference to NPC Actor
 	UPROPERTY(BlueprintReadWrite)
@@ -118,12 +123,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UQuestBoardWidget* QuestBoardWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
-		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
-
-	//Reference to QuestBoardWidget
-	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
-		UCurrentQuestTracker* CurrentQuestTracker;
 
 
 
@@ -151,7 +150,7 @@ public:
 
 	//Interaction Text Widget
 	UPROPERTY(EditAnywhere, Category = "UI")
-		UInteractionWidget* InteractionWidget;
+		TSubclassOf<UUserWidget> InteractionWidget;
 
 	//Skill Data for the player
 	FSkillData* SkillData;

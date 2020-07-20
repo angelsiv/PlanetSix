@@ -84,16 +84,16 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
     NPCReference = Cast<ANPC>(OtherActor);
     craftingStationRef = Cast<AcraftingStation>(OtherActor);
 
-	InteractionWidget->SetVisibility(ESlateVisibility::Visible);
+	//InteractionWidget->SetVisibility(ESlateVisibility::Visible);
 
     if (NPCReference)
     {
         NPCReference->textrenderInteraction->SetVisibility(true);
-		InteractionWidget->SetInteractionText(FText::FromString("Talk To"));
+		//InteractionWidget->SetInteractionText(FText::FromString("Talk To"));
     }
     else if(craftingStationRef)
     {
-		InteractionWidget->SetInteractionText(FText::FromString("Craft"));
+		//InteractionWidget->SetInteractionText(FText::FromString("Craft"));
 
     }
 
@@ -113,7 +113,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
         NPCReference->textrenderInteraction->SetVisibility(false);
         NPCReference = nullptr;
     }
-	InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
+	//InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -246,41 +246,6 @@ void APlanetSixCharacter::Interact()
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
-        //if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
-        //{
-
-        //    if (!WidgetDialogueNPC->IsVisible()) 
-        //    {
-        //        WidgetDialogueNPC->AddToViewport();
-        //        PC->SetInputMode(FInputModeUIOnly());
-        //        PC->bShowMouseCursor = true;
-        //        PC->bEnableClickEvents = true;
-        //        PC->bEnableMouseOverEvents = true;
-        //    }
-        //   
-        //}
-
-        //if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
-        //    NPCReference->bOnInteraction = true;
-        //    NPCReference->textrenderQuest->SetVisibility(false);
-        //    WidgetQuestNPC->QuestDataNPC = NPCReference;
-
-        //    //No work for some reason, Engine crashes with no pop-out -Alonso
-        //    GetCharacterMovement()->StopActiveMovement();
-        //    print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
-
-        //    if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
-        //    {
-        //        WidgetQuestNPC->AddToViewport();
-        //        PC->SetInputMode(FInputModeUIOnly());
-        //        PC->bShowMouseCursor = true;
-        //        PC->bEnableClickEvents = true;
-        //        PC->bEnableMouseOverEvents = true;
-
-        //    }
-        //}
-
-
         //Not functionnal at the moment 
 
          if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
@@ -306,6 +271,13 @@ void APlanetSixCharacter::Interact()
         PC->bShowMouseCursor = true;
         PC->bEnableClickEvents = true;
         PC->bEnableMouseOverEvents = true;
+    }
+
+    if (QuestBoardRef)
+    {
+        OnInteractionWithBoard = true;
+        print("Interaction with board true", 0);
+
     }
 
     /* Interaction with Travel Portal */

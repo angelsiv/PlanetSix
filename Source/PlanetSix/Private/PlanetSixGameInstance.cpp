@@ -24,7 +24,7 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 {
 	FPlayerSaveData SimplifiedPlayerInfo = FPlayerSaveData();
 	
-	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetPawn());
 	 
 	if (Player) {
 		//Equipped Skills
@@ -60,6 +60,11 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponDamage.GetBaseValue());
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilityDamage.GetBaseValue());
 
+		print("Player found to save", -1);
+	}
+	else {
+		print("No player found", -1);
+	
 	}
 
 	//QuestsRegistered
@@ -181,8 +186,15 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
 
-	auto x = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	x->CurrentQuestTracker->Objectives->SetText(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].ObjectiveDescription);
+
+	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (Player) 
+	{
+		Player->CurrentQuestTracker->Objectives->SetText(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].ObjectiveDescription);
+	
+	}
+
+	
 
 	if (PlayerInfo.QuestAccepted.AtObjectiveNumber >= PlayerInfo.QuestAccepted.objectives.Num()) {
 
