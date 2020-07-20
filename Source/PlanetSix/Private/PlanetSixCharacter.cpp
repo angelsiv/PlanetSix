@@ -84,16 +84,16 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
     NPCReference = Cast<ANPC>(OtherActor);
     craftingStationRef = Cast<AcraftingStation>(OtherActor);
 
-	InteractionWidget->SetVisibility(ESlateVisibility::Visible);
+	//InteractionWidget->SetVisibility(ESlateVisibility::Visible);
 
     if (NPCReference)
     {
         NPCReference->textrenderInteraction->SetVisibility(true);
-		InteractionWidget->SetInteractionText(FText::FromString("Talk To"));
+		//InteractionWidget->SetInteractionText(FText::FromString("Talk To"));
     }
     else if(craftingStationRef)
     {
-		InteractionWidget->SetInteractionText(FText::FromString("Craft"));
+		//InteractionWidget->SetInteractionText(FText::FromString("Craft"));
 
     }
 
@@ -113,7 +113,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
         NPCReference->textrenderInteraction->SetVisibility(false);
         NPCReference = nullptr;
     }
-	InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
+	//InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 //////////////////////////////////////////////////////////////////////////

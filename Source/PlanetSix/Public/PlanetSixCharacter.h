@@ -150,7 +150,7 @@ public:
 
 	//Interaction Text Widget
 	UPROPERTY(EditAnywhere, Category = "UI")
-		UInteractionWidget* InteractionWidget;
+		TSubclassOf<UUserWidget> InteractionWidget;
 
 	//Skill Data for the player
 	FSkillData* SkillData;
