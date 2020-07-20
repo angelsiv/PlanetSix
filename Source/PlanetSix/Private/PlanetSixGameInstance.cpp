@@ -181,12 +181,17 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
 
-
+	int32 x = PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[PlayerInfo.QuestAccepted.AtObjectiveNumber];
+    
+	//auto var = PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[PlayerInfo.QuestAccepted.AtObjectiveNumber].ToString();
 	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (Player) 
 	{
 		Player->CurrentQuestTracker->Objectives->SetText(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].ObjectiveDescription);
-	
+
+		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(x)+"Left"));
+
+		print("NOW YOU HAVE TO COLLECT "+FString::FromInt(x), -1);
 	}
 
 	
