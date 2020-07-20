@@ -22,6 +22,7 @@ class UNPCQuestWidget;
 class UNPCDialogueWidget;
 class UQuestWidget;
 class AQuestActor;
+class AQuestBoard;
 class APlayerController;
 class ASkill;
 struct FSkillData;
@@ -96,12 +97,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UUserWidget* WidgetQuestLog;
 
-	//QuestInfos for player 
-	//TArray<FQuestData> QuestInfos;
 
    //Quest Accepted By Player
 	FQuestData QuestAccepted;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool OnInteractionWithBoard=false;
+
+	UPROPERTY(BlueprintReadWrite)
+	AQuestBoard* QuestBoardRef;
 
 	//Reference to NPC Actor
 	UPROPERTY(BlueprintReadWrite)
