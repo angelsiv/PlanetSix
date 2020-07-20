@@ -26,29 +26,30 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 	
 	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 	 
+	if (Player) {
+		//Equipped Skills
+		for (auto Skill : Player->Class->EquippedSkillsArray) {
 
-	//Equipped Skills
-	for (auto Skill : Player->Class->EquippedSkillsArray) {
-		
-		TArray<FName> RNames;
-		RNames = SkillDataTable->GetRowNames();
-		FString ContextString;
-		for (auto& name : RNames) {
-		
-			FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
-			if (SkillData->SkillClass == Skill) {
-			
-				SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
-			
+			TArray<FName> RNames;
+			RNames = SkillDataTable->GetRowNames();
+			FString ContextString;
+			for (auto& name : RNames) {
+
+				FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
+				if (SkillData->SkillClass == Skill) {
+
+					SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
+
+				}
+
+
+
 			}
 
 
 
 		}
-		
 	
-	
-	}
 
 
 	//Attributes
@@ -63,7 +64,7 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponDamage.GetBaseValue());
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilityDamage.GetBaseValue());
 
-
+	}
 
 	//QuestsRegistered
 	for (auto Quest : PlayerInfo.QuestsRegistered) {
