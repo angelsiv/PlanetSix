@@ -26,6 +26,7 @@ class ASkill;
 struct FSkillData;
 class AMapTravel;
 class UinventoryWidget;
+class UCurrentQuestTracker;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ABaseCharacter
@@ -115,6 +116,13 @@ public:
 	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UQuestBoardWidget* QuestBoardWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
+		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
+
+	//Reference to QuestBoardWidget
+	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
+		UCurrentQuestTracker* CurrentQuestTracker;
 
 #pragma endregion
 

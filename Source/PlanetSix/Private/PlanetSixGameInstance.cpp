@@ -42,11 +42,7 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 
 				}
 
-
-
 			}
-
-
 
 		}
 	
@@ -184,12 +180,13 @@ bool UPlanetSixGameInstance::GetQuestRegistered(FQuestData Quest)
 void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
+
+	auto x = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	x->CurrentQuestTracker->Objectives->SetText(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].ObjectiveDescription);
+
 	if (PlayerInfo.QuestAccepted.AtObjectiveNumber >= PlayerInfo.QuestAccepted.objectives.Num()) {
 
 		PlayerInfo.QuestAccepted.IsQuestCompleted = true;
-		//auto gameinstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
-		//int objectiveNumber = gameinstance->GetCurrentQuest().AtObjectiveNumber;
-		//Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->InventoryComponent->RemoveQuestItem(PlayerInfo.QuestAccepted.objectives[]);
 		Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->QuestCompletedWidget->AddToViewport();
 		if (PlayerInfo.QuestAccepted.QuestItemReward.getId() != 0) 
 		{
