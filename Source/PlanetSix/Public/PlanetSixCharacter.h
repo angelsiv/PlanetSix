@@ -7,6 +7,7 @@
 #include "QuestActor.h"
 #include "NPC.h"
 #include "NPCQuestWidget.h"
+#include "CurrentQuestTracker.h"
 #include "AttributesComponent.h"
 #include "InventoryComponent.h"
 #include "WeaponComponent.h"
@@ -73,10 +74,11 @@ public:
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
-		TSubclassOf<UUserWidget> CurrentQuestWidget;
+		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
 
+	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
-		UUserWidget* CurrentQuest;
+		UCurrentQuestTracker* CurrentQuestTracker;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
 		TSubclassOf<UUserWidget> QuestCompletedClass;
@@ -115,6 +117,7 @@ public:
 	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UQuestBoardWidget* QuestBoardWidget;
+
 
 #pragma endregion
 
