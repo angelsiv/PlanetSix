@@ -61,6 +61,8 @@ protected:
 		EClassName ClassEnumName;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		int32 SkillPoints;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		int32 ProficiencyPoints;
 
 public:
 	// Called every frame

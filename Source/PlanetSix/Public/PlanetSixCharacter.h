@@ -7,6 +7,7 @@
 #include "QuestActor.h"
 #include "NPC.h"
 #include "NPCQuestWidget.h"
+#include "CurrentQuestTracker.h"
 #include "AttributesComponent.h"
 #include "InventoryComponent.h"
 #include "WeaponComponent.h"
@@ -14,6 +15,7 @@
 #include "BaseCharacter.h"
 #include "QuestBoardWidget.h"
 #include "craftingStation.h"
+#include "InteractionWidget.h"
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -21,6 +23,7 @@ class UNPCQuestWidget;
 class UNPCDialogueWidget;
 class UQuestWidget;
 class AQuestActor;
+class AQuestBoard;
 class APlayerController;
 class ASkill;
 struct FSkillData;
@@ -73,10 +76,11 @@ public:
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
-		TSubclassOf<UUserWidget> CurrentQuestWidget;
+		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
 
+	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
-		UUserWidget* CurrentQuest;
+		UCurrentQuestTracker* CurrentQuestTracker;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
 		TSubclassOf<UUserWidget> QuestCompletedClass;
@@ -94,12 +98,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UUserWidget* WidgetQuestLog;
 
-	//QuestInfos for player 
-	//TArray<FQuestData> QuestInfos;
 
    //Quest Accepted By Player
 	FQuestData QuestAccepted;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool OnInteractionWithBoard=false;
+
+	UPROPERTY(BlueprintReadWrite)
+	AQuestBoard* QuestBoardRef;
 
 	//Reference to NPC Actor
 	UPROPERTY(BlueprintReadWrite)
@@ -115,6 +122,9 @@ public:
 	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UQuestBoardWidget* QuestBoardWidget;
+
+
+
 
 #pragma endregion
 
@@ -137,6 +147,13 @@ public:
 	/** Player's HUD. */
 	UPROPERTY(EditAnywhere, Category = "UI")
 		TSubclassOf<UUserWidget> MainHUD;
+
+	//Interaction Text Widget
+	UPROPERTY(EditAnywhere, Category = "UI")
+		TSubclassOf<UUserWidget> InteractionWidget;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "UI")
+		UInteractionWidget* InteractWidget;
 
 	//Skill Data for the player
 	FSkillData* SkillData;

@@ -34,6 +34,7 @@ public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
        TSubclassOf<UUserWidget> SavingEffectWidget;
 
+
 public:
 
     UFUNCTION(BlueprintCallable)
@@ -86,6 +87,6 @@ public:
     UFUNCTION(BlueprintCallable)
         void AddItemsToinventoryplayer(TArray<FItemBaseData> Items);
 
-
+    
 
 };
