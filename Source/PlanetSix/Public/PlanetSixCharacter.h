@@ -7,6 +7,7 @@
 #include "QuestActor.h"
 #include "NPC.h"
 #include "NPCQuestWidget.h"
+#include "CurrentQuestTracker.h"
 #include "AttributesComponent.h"
 #include "InventoryComponent.h"
 #include "WeaponComponent.h"
@@ -26,7 +27,6 @@ class ASkill;
 struct FSkillData;
 class AMapTravel;
 class UinventoryWidget;
-class UCurrentQuestTracker;
 
 UCLASS(config = Game)
 class APlanetSixCharacter : public ABaseCharacter
@@ -74,10 +74,11 @@ public:
 		TSubclassOf<UUserWidget> QuestWidgetLog;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
-		TSubclassOf<UUserWidget> CurrentQuestWidget;
+		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
 
+	//Reference to QuestBoardWidget
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
-		UUserWidget* CurrentQuest;
+		UCurrentQuestTracker* CurrentQuestTracker;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
 		TSubclassOf<UUserWidget> QuestCompletedClass;
@@ -117,12 +118,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
 		UQuestBoardWidget* QuestBoardWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest UI")
-		TSubclassOf<UUserWidget> CurrentQuestWidgetTrackerRef;
-
-	//Reference to QuestBoardWidget
-	UPROPERTY(BlueprintReadWrite, Category = "Quest UI")
-		UCurrentQuestTracker* CurrentQuestTracker;
 
 #pragma endregion
 
