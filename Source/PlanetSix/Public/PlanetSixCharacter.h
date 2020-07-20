@@ -152,6 +152,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "UI")
 		TSubclassOf<UUserWidget> InteractionWidget;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "UI")
+		UInteractionWidget* InteractWidget;
+
 	//Skill Data for the player
 	FSkillData* SkillData;
 

@@ -83,22 +83,25 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
     NPCReference = Cast<ANPC>(OtherActor);
     craftingStationRef = Cast<AcraftingStation>(OtherActor);
+    Portal = Cast<AMapTravel>(OtherActor);
+	
+	//Set Interaction Widget to visible on any actor
+	InteractWidget->SetVisibility(ESlateVisibility::Visible);
 
-	//InteractionWidget->SetVisibility(ESlateVisibility::Visible);
-
+	//Set the appropriate InteractionText for each casted actor
     if (NPCReference)
     {
-        NPCReference->textrenderInteraction->SetVisibility(true);
-		//InteractionWidget->SetInteractionText(FText::FromString("Talk To"));
+		InteractWidget->SetInteractionText(FText::FromString("Talk To"));
     }
     else if(craftingStationRef)
     {
-		//InteractionWidget->SetInteractionText(FText::FromString("Craft"));
+		InteractWidget->SetInteractionText(FText::FromString("Craft"));
 
     }
-
-    Portal = Cast<AMapTravel>(OtherActor);
-    print("Press F to Interact with portal", 0);
+	if (Portal)
+	{
+		InteractWidget->SetInteractionText(FText::FromString("Teleport"));
+	}
 }
 
 void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
@@ -110,10 +113,9 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
 
     if (NPCReference)
     {
-        NPCReference->textrenderInteraction->SetVisibility(false);
         NPCReference = nullptr;
     }
-	//InteractionWidget->SetVisibility(ESlateVisibility::Hidden);
+	InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 //////////////////////////////////////////////////////////////////////////
