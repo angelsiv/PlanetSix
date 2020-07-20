@@ -213,4 +213,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 		class APawn* OwnerPawn;
+
+	UFUNCTION(BlueprintCallable)
+		void UpdateWeaponDamage(float BaseWeaponDamage);
 };

@@ -9,13 +9,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "EnemyController.generated.h"
 
-/**
- * 
- */
 
- /**
-  *
-  */
 class UEnemyAnimInstance;
 
 
@@ -36,8 +30,6 @@ public:
         
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = State)
         bool isAiming;
-
-
 
 protected:
 
@@ -63,8 +55,5 @@ public:
     UFUNCTION(BlueprintCallable, Category = Shoot)
     void Shoot(); 
     
-    
-
-
 };
 

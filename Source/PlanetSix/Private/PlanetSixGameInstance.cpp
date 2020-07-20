@@ -24,31 +24,28 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 {
 	FPlayerSaveData SimplifiedPlayerInfo = FPlayerSaveData();
 	
-	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetPawn());
 	 
+	if (Player) {
+		//Equipped Skills
+		for (auto Skill : Player->Class->EquippedSkillsArray) {
 
-	//Equipped Skills
-	for (auto Skill : Player->Class->EquippedSkillsArray) {
-		
-		TArray<FName> RNames;
-		RNames = SkillDataTable->GetRowNames();
-		FString ContextString;
-		for (auto& name : RNames) {
-		
-			FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
-			if (SkillData->SkillClass == Skill) {
-			
-				SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
-			
+			TArray<FName> RNames;
+			RNames = SkillDataTable->GetRowNames();
+			FString ContextString;
+			for (auto& name : RNames) {
+
+				FSkillData* SkillData = SkillDataTable->FindRow<FSkillData>(name, ContextString);
+				if (SkillData->SkillClass == Skill) {
+
+					SimplifiedPlayerInfo.EquippedSkills.Add(SkillData->SkillName);
+
+				}
+
 			}
 
-
-
 		}
-		
 	
-	
-	}
 
 
 	//Attributes
@@ -63,7 +60,12 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponDamage.GetBaseValue());
 	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilityDamage.GetBaseValue());
 
-
+		print("Player found to save", -1);
+	}
+	else {
+		print("No player found", -1);
+	
+	}
 
 	//QuestsRegistered
 	for (auto Quest : PlayerInfo.QuestsRegistered) {
@@ -183,12 +185,25 @@ bool UPlanetSixGameInstance::GetQuestRegistered(FQuestData Quest)
 void UPlanetSixGameInstance::MoveToNextObjective()
 {
 	PlayerInfo.QuestAccepted.AtObjectiveNumber++;
+
+	int32 x = PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[PlayerInfo.QuestAccepted.AtObjectiveNumber];
+    
+	//auto var = PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[PlayerInfo.QuestAccepted.AtObjectiveNumber].ToString();
+	APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (Player) 
+	{
+		Player->CurrentQuestTracker->Objectives->SetText(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].ObjectiveDescription);
+
+		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(x)+"Left"));
+
+		print("NOW YOU HAVE TO COLLECT "+FString::FromInt(x), -1);
+	}
+
+	
+
 	if (PlayerInfo.QuestAccepted.AtObjectiveNumber >= PlayerInfo.QuestAccepted.objectives.Num()) {
 
 		PlayerInfo.QuestAccepted.IsQuestCompleted = true;
-		//auto gameinstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
-		//int objectiveNumber = gameinstance->GetCurrentQuest().AtObjectiveNumber;
-		//Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->InventoryComponent->RemoveQuestItem(PlayerInfo.QuestAccepted.objectives[]);
 		Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))->QuestCompletedWidget->AddToViewport();
 		if (PlayerInfo.QuestAccepted.QuestItemReward.getId() != 0) 
 		{
