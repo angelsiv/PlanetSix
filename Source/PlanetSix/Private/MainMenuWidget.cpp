@@ -22,9 +22,9 @@ UMainMenuWidget::UMainMenuWidget(const FObjectInitializer& ObjectInitializer) : 
 void UMainMenuWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
-	StartButton->OnClicked.AddDynamic(this, &UMainMenuWidget::StartGame);
-	OptionsButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OpenOptions);
-	ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::ExitGame);
+	StartButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::StartGame);
+	OptionsButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::OpenOptions);
+	ExitButton->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::ExitGame);
 	
 
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
@@ -53,7 +53,7 @@ void UMainMenuWidget::OpenOptions()
 	TArray<UUserWidget*> FoundWidgets;
 	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(), FoundWidgets, RefOptionWidget);
 	if (FoundWidgets.Num() == 0) {
-		UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld(), RefOptionWidget);
+		UUserWidget* OptionsWidget = CreateWidget<UUserWidget>(GetWorld()->GetFirstPlayerController(), RefOptionWidget);
 		OptionsWidget->AddToViewport();
 	}
 	RemoveFromParent();
