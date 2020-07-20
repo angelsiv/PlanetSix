@@ -20,4 +20,7 @@ public:
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UTextBlock* Objectives;
 	
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+			UTextBlock* Lefttokill;
+		
 };
