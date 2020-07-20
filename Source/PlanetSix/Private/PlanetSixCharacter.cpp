@@ -89,12 +89,6 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
         NPCReference->textrenderInteraction->SetVisibility(true);
 
     }
-    else if(craftingStationRef)
-    {
-       
-
-    }
-
     Portal = Cast<AMapTravel>(OtherActor);
     print("Press F to Interact with portal", 0);
 }
@@ -244,41 +238,6 @@ void APlanetSixCharacter::Interact()
     //check if the player is the perimiter of the NPC 
     if (NPCReference)
     {
-        //if (WidgetDialogueNPC && NPCReference->QuestID.IsNone()) 
-        //{
-
-        //    if (!WidgetDialogueNPC->IsVisible()) 
-        //    {
-        //        WidgetDialogueNPC->AddToViewport();
-        //        PC->SetInputMode(FInputModeUIOnly());
-        //        PC->bShowMouseCursor = true;
-        //        PC->bEnableClickEvents = true;
-        //        PC->bEnableMouseOverEvents = true;
-        //    }
-        //   
-        //}
-
-        //if (WidgetQuestNPC && !NPCReference->QuestID.IsNone()) {
-        //    NPCReference->bOnInteraction = true;
-        //    NPCReference->textrenderQuest->SetVisibility(false);
-        //    WidgetQuestNPC->QuestDataNPC = NPCReference;
-
-        //    //No work for some reason, Engine crashes with no pop-out -Alonso
-        //    GetCharacterMovement()->StopActiveMovement();
-        //    print("Registering " + WidgetQuestNPC->QuestDataNPC->NPCQuest.QuestTitleName.ToString(), -1);
-
-        //    if (!WidgetQuestNPC->IsVisible() && NPCReference->NPCQuest.IsQuestRegistered == false)
-        //    {
-        //        WidgetQuestNPC->AddToViewport();
-        //        PC->SetInputMode(FInputModeUIOnly());
-        //        PC->bShowMouseCursor = true;
-        //        PC->bEnableClickEvents = true;
-        //        PC->bEnableMouseOverEvents = true;
-
-        //    }
-        //}
-
-
         //Not functionnal at the moment 
 
          if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
@@ -304,6 +263,13 @@ void APlanetSixCharacter::Interact()
         PC->bShowMouseCursor = true;
         PC->bEnableClickEvents = true;
         PC->bEnableMouseOverEvents = true;
+    }
+
+    if (QuestBoardRef)
+    {
+        OnInteractionWithBoard = true;
+        print("Interaction with board true", 0);
+
     }
 
     /* Interaction with Travel Portal */
