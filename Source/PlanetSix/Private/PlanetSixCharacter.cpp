@@ -96,7 +96,6 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
     else if(craftingStationRef)
     {
 		InteractWidget->SetInteractionText(FText::FromString("Craft"));
-
     }
 	if (Portal)
 	{
@@ -116,6 +115,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
         NPCReference = nullptr;
     }
 	InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+    InteractWidget->SetInteractionText(FText::FromString("Interact"));
 }
 
 //////////////////////////////////////////////////////////////////////////
