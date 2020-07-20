@@ -26,9 +26,6 @@ public:
 		UBoxComponent* boxcomponent;
 
 	UPROPERTY(EditAnywhere)
-		UTextRenderComponent* textrenderInteraction;
-
-	UPROPERTY(EditAnywhere)
 		UTextRenderComponent* textrenderQuest;
 
 	UPROPERTY(EditAnywhere)

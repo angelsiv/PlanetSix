@@ -15,6 +15,7 @@
 #include "BaseCharacter.h"
 #include "QuestBoardWidget.h"
 #include "craftingStation.h"
+#include "InteractionWidget.h"
 #include "GameFramework/Character.h"
 #include "PlanetSixCharacter.generated.h"
 
@@ -123,6 +124,8 @@ public:
 		UQuestBoardWidget* QuestBoardWidget;
 
 
+
+
 #pragma endregion
 
 	/** Player's inventory. */
@@ -144,6 +147,13 @@ public:
 	/** Player's HUD. */
 	UPROPERTY(EditAnywhere, Category = "UI")
 		TSubclassOf<UUserWidget> MainHUD;
+
+	//Interaction Text Widget
+	UPROPERTY(EditAnywhere, Category = "UI")
+		TSubclassOf<UUserWidget> InteractionWidget;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "UI")
+		UInteractionWidget* InteractWidget;
 
 	//Skill Data for the player
 	FSkillData* SkillData;
