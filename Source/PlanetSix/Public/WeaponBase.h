@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Mesh, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class USceneComponent* MuzzleLocation;
 
+	UPROPERTY(EditAnywhere, Category = "Attributes", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+		float WeaponDamage;
+
 	/** ammo currently stored in the magazine. when shooting, this is the ammo used. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		int32 AmmoInMagazine;
