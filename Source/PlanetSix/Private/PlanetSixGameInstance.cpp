@@ -247,7 +247,6 @@ void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 
 void UPlanetSixGameInstance::AddItemsToinventoryplayer(TArray<FItemBaseData> Items)
 {
-
 	PlayerInfo.InventoryItemsID.Empty();
 
 	for (int i = 0; i < Items.Num(); i++)
