@@ -18,6 +18,7 @@ void UPlanetSixGameInstance::SetPlayerInfo(FPlayerInfo info)
 void UPlanetSixGameInstance::SetPlayerSavedInfo(FPlayerSaveData info)
 {
 	PlayerSave = info;
+	print("Saved info name: " + info.SaveName, -1);
 }
 
 FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
@@ -168,6 +169,8 @@ void UPlanetSixGameInstance::SaveGame()
 	
 	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::CreateSaveGameObject(UPlanetSixSaveGame::StaticClass()));
 	SavedGame->PlayerInfo = GetPlayerInfoToSave();
+
+	print("Saving in PlayerSave " + PlayerSave.SaveName, -1);
 
 	if (UGameplayStatics::SaveGameToSlot(SavedGame, PlayerSave.SaveName, 0)) {
 	
