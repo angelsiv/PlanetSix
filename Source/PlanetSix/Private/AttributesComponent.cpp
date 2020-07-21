@@ -51,8 +51,15 @@ void UAttributesComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+
 	SetActive(true);
 	SetIsReplicated(true);
+}
+
+// update weapon damage when changing weapons
+void UAttributesComponent::UpdateWeaponDamage(float BaseWeaponDamage)
+{
+	WeaponDamage.SetCurrentValue(BaseWeaponDamage);
 }
 
 //** getter for base value of attribute */

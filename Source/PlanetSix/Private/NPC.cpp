@@ -16,10 +16,6 @@ ANPC::ANPC()
 	//Declaring Box Component 
 	boxcomponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	RootComponent = boxcomponent;
-	
-	//Declare TextRender
-	textrenderInteraction = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDERInteraction"));
-	textrenderInteraction->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	textrenderQuest = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TEXTRENDERQuest"));
 	textrenderQuest->AttachToComponent(boxcomponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -34,9 +30,7 @@ ANPC::ANPC()
 void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	//Set the visibility of the text Press F to Interact to true 
-	textrenderInteraction->SetVisibility(false);
+
 	bOnInteraction = false;
 	
 	if (AnimIdle) 
