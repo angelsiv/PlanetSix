@@ -50,16 +50,10 @@ FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 
 
 	//Attributes
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->ArmorsProficiency.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponsProficiency.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilitiesProficiency.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Level.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Experience.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Health.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->Shield.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->ArmorReduction.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->WeaponDamage.GetBaseValue());
-	SimplifiedPlayerInfo.Attributes.Add(Player->Attributes->AbilityDamage.GetBaseValue());
+
+	SimplifiedPlayerInfo.Level = (Player->Attributes->Level.GetCurrentValue());
+	SimplifiedPlayerInfo.Experience = (Player->Attributes->Experience.GetCurrentValue());
+	
 
 		print("Player found to save", -1);
 	}
