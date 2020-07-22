@@ -93,9 +93,9 @@ void AcraftingStation::VeriyCraftability(TArray<FItemBaseData> inventory)
     {
         ///check all items are present in inventory and in sufficent number
         //check all items
+            bool craftable = true;
         for (auto& Elem : PossibleRecipies[i].ingredients)
         {
-            bool craftable = true;
             //check item is in inventory
             if (AvailableItems.Contains(Elem.Key))
             {
