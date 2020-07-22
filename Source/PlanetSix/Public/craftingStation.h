@@ -26,7 +26,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         TMap<int, int> ingredients;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        FCraftableItemData product;
+        FItemBaseData product;
+    //need to change the line above to a craftableitemdata
+    
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         bool craftable = false;
 
@@ -44,12 +46,13 @@ public:
     AcraftingStation();
 
 
-    TArray<FCraftingRecipe> PossibleRecipies;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        TArray<FCraftingRecipe> PossibleRecipies;
 
     UPROPERTY(EditAnywhere)
         UBoxComponent* boxcomponent;
 
-    FItemBaseData* RecipePointer;
+    FCraftingRecipe* RecipePointer;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         class UDataTable* RecipeTable;
@@ -63,16 +66,19 @@ public:
     virtual void Tick(float DeltaTime) override;
 
     UFUNCTION(BlueprintCallable)
-    TArray<FCraftingRecipe> GetRecipies();
+        TArray<FCraftingRecipe> GetRecipies();
 
     UFUNCTION(BlueprintCallable)
         FCraftingRecipe GetRecipe(int index);
     UFUNCTION(BlueprintCallable)
         void LoadRecipies(TArray<FItemBaseData> inventory);
-    UFUNCTION(BlueprintCallable)
-        void Craft(int index, UInventoryComponent* inventory);
     //UFUNCTION(BlueprintCallable)
+        //void Craft(int index, UInventoryComponent* inventory);
+    UFUNCTION(BlueprintCallable)
         void Craft(FCraftingRecipe Recipe, UInventoryComponent* inventory);
+
+    UFUNCTION(BlueprintCallable)
+    void Craft2(FCraftingRecipe Recipe, UInventoryComponent* inventory);
     UFUNCTION(BlueprintCallable)
         void VeriyCraftability(TArray<FItemBaseData> inventory);
     TArray<FCraftingRecipe> GetRecipeFromDataTable();
