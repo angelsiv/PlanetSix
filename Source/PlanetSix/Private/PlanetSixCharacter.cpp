@@ -269,6 +269,7 @@ void APlanetSixCharacter::Interact()
     if (craftingStationRef)
     {
         CraftingWidget->AddToViewport();
+        InventoryWidget->AddToViewport();
         PC->SetInputMode(FInputModeUIOnly());
         PC->bShowMouseCursor = true;
         PC->bEnableClickEvents = true;
