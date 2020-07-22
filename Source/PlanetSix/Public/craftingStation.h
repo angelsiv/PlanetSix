@@ -26,7 +26,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         TMap<int, int> ingredients;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-        FCraftableItemData product;
+        FItemBaseData product;
+    //need to change the line above to a craftableitemdata
+    
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
         bool craftable = false;
 
