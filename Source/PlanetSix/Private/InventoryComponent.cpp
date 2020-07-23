@@ -91,6 +91,18 @@ bool UInventoryComponent::addNormal(FItemBaseData item)
     auto x = Cast<UPlanetSixGameInstance>(owner->GetGameInstance());
 
     
+    //look for the same item in inv
+    for (int i = 0; i < items.Num(); i++)
+    {
+        //if same id
+        if (items[i].getId() == item.id)
+        {
+            if (items[i].Stack(item))
+            {
+                return true;
+            }
+        }
+    }
     //look for the first available spot.
     for (int i = 0; i < items.Num(); i++)
     {
@@ -192,7 +204,6 @@ bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems=0)
         numberOfQuestItems = item.quantity;
     }
 
-    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(numberOfQuestItems));
     if (numberOfQuestItems > 0)
     {
         FItemBaseData QuestItem = FItemBaseData(&item);
@@ -203,7 +214,6 @@ bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems=0)
         }
     }
 
-    GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Emerald, FString::FromInt(item.quantity - numberOfQuestItems));
     if (item.quantity - numberOfQuestItems > 0)
     {
         FItemBaseData NormalItem = FItemBaseData(&item);
