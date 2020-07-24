@@ -76,7 +76,8 @@ void AWeaponBase::Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& Damage
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f DAMAGE INFLICTED : %f"), ActorHit->Attributes->Health.GetCurrentValue(), OwnerPlayer->WeaponDamage()));
 				if (ActorHit->IsDead())
 				{
-					OwnerPlayer->Attributes->Experience.SetCurrentValue(OwnerPlayer->Attributes->Experience.GetCurrentValue() + ActorHit->Experience);
+					//add xp to the player
+					OwnerPlayer->Attributes->GainExperience(ActorHit->Experience);
 					//To check if Quest has a Killing condition
 					UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
 					int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;

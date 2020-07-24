@@ -45,6 +45,12 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	DOREPLIFETIME(UAttributesComponent, AbilityDamage);
 }
 
+void UAttributesComponent::GainExperience(float XpAmount)
+{
+	Experience.SetCurrentValue(Experience.GetCurrentValue() + XpAmount);
+	CheckLevelUp();
+}
+
 // Called when the game starts
 void UAttributesComponent::BeginPlay()
 {
@@ -60,6 +66,19 @@ void UAttributesComponent::BeginPlay()
 void UAttributesComponent::UpdateWeaponDamage(float BaseWeaponDamage)
 {
 	WeaponDamage.SetCurrentValue(BaseWeaponDamage);
+}
+
+void UAttributesComponent::CheckLevelUp()
+{
+	if (Experience.GetMaxValue() <= Experience.GetCurrentValue())
+	{
+
+	}
+}
+
+void UAttributesComponent::LevelUp()
+{
+	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
 }
 
 //** getter for base value of attribute */
