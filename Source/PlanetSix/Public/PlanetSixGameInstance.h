@@ -34,6 +34,8 @@ public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
        TSubclassOf<UUserWidget> SavingEffectWidget;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		FName LevelToLoad;
 
 public:
 
