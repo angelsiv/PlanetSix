@@ -63,6 +63,7 @@ void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
 	}
 	//HealthRegenTime = RecoveryTime;
 	ShieldRegenTime = RecoveryTime;
+	bIsDamaged = true;
 }
 
 void ABaseCharacter::HealthRegen(float Regen)

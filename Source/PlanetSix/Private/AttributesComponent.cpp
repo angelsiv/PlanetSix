@@ -70,10 +70,15 @@ void UAttributesComponent::UpdateWeaponDamage(float BaseWeaponDamage)
 
 void UAttributesComponent::CheckLevelUp()
 {
-	if (Experience.GetMaxValue() <= Experience.GetCurrentValue)
+	if (Experience.GetMaxValue() <= Experience.GetCurrentValue())
 	{
 
 	}
+}
+
+void UAttributesComponent::LevelUp()
+{
+	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
 }
 
 //** getter for base value of attribute */
