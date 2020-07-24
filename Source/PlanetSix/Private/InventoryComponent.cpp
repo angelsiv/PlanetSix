@@ -459,6 +459,108 @@ int FItemBaseData::compare(FItemBaseData  i1, FItemBaseData  i2, ECompareField t
     return result;
 }
 
+int FCraftableItemData::compare(FCraftableItemData  i1, FCraftableItemData  i2, ECompareField type)
+{
+    int result = 0;
+    switch (type)
+    {
+    case ECompareField::name:
+        if (i1.displayName > i2.displayName)
+        {
+            result = 1;
+        }
+        else if (i1.displayName < i2.displayName)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::price:
+        if (i1.value > i2.value)
+        {
+            result = 1;
+        }
+        else if (i1.value < i2.value)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::Health:
+        if (i1.Health > i2.Health)
+        {
+            result = 1;
+        }
+        else if (i1.Health < i2.Health)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::id:
+        if (i1.id > i2.id)
+        {
+            result = 1;
+        }
+        else if (i1.id < i2.id)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::quantity:
+        if (i1.quantity > i2.quantity)
+        {
+            result = 1;
+        }
+        else if (i1.quantity < i2.quantity)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::Shield:
+        if (i1.Shield > i2.Shield)
+        {
+            result = 1;
+        }
+        else if (i1.Shield < i2.Shield)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::Armor:
+        if (i1.Armor > i2.Armor)
+        {
+            result = 1;
+        }
+        else if (i1.Armor < i2.Armor)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::WeaponDMG:
+        if (i1.WeaponDamage > i2.WeaponDamage)
+        {
+            result = 1;
+        }
+        else if (i1.WeaponDamage < i2.WeaponDamage)
+        {
+            result = -1;
+        }
+        break;
+    case ECompareField::AbilityDMG:
+        if (i1.AbilityDamage > i2.AbilityDamage)
+        {
+            result = 1;
+        }
+        else if (i1.AbilityDamage < i2.AbilityDamage)
+        {
+            result = -1;
+        }
+        break;
+    default:
+        break;
+    }
+
+    return result;
+}
+
 int FItemBaseData::getId()
 {
     return id;

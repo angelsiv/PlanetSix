@@ -20,7 +20,6 @@ enum class EAttributes : uint8
 	Level UMETA(DisplayName = "Level"),
 	Experience UMETA(DisplayName = "Experience"),
 	Health UMETA(DisplayName = "Health"),
-	Energy UMETA(DisplayName = "Energy"),
 	Shield UMETA(DisplayName = "Shield"),
 	ArmorReduction UMETA(DisplayName = "Armor Reduction"),
 	WeaponDamage UMETA(DisplayName = "Weapon Damage"),

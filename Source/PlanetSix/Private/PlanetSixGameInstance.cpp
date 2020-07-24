@@ -104,6 +104,11 @@ void UPlanetSixGameInstance::ReduceCurrentTargetNumber(int ID)
 	if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets.Contains(ID)) {
 
 		PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID]--;
+
+		/*APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		int32 x = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
+		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(x)));*/
+
 		if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] <= 0)
 		{
 			//ObjectiveCompleted

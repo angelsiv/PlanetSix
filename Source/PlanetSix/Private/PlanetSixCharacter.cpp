@@ -84,23 +84,27 @@ void APlanetSixCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
     NPCReference = Cast<ANPC>(OtherActor);
     craftingStationRef = Cast<AcraftingStation>(OtherActor);
     Portal = Cast<AMapTravel>(OtherActor);
-	
-	//Set Interaction Widget to visible on any actor
-	InteractWidget->SetVisibility(ESlateVisibility::Visible);
 
-	//Set the appropriate InteractionText for each casted actor
-    if (NPCReference)
-    {
-		InteractWidget->SetInteractionText(FText::FromString("Talk To"));
-    }
-    else if(craftingStationRef)
-    {
-		InteractWidget->SetInteractionText(FText::FromString("Craft"));
-    }
-	if (Portal)
+	if (IsOwnedBy(InteractWidget->GetOwningPlayer()))
 	{
-		InteractWidget->SetInteractionText(FText::FromString("Teleport"));
+		//Set the appropriate InteractionText for each casted actor
+		if (NPCReference)
+		{
+			InteractWidget->SetVisibility(ESlateVisibility::Visible);
+			InteractWidget->SetInteractionText(FText::FromString("Talk To"));
+		}
+		if (craftingStationRef)
+		{
+			InteractWidget->SetVisibility(ESlateVisibility::Visible);
+			InteractWidget->SetInteractionText(FText::FromString("Craft"));
+		}
+		if (Portal)
+		{
+			InteractWidget->SetVisibility(ESlateVisibility::Visible);
+			InteractWidget->SetInteractionText(FText::FromString("Teleport"));
+		}
 	}
+	
 }
 
 void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
@@ -115,7 +119,7 @@ void APlanetSixCharacter::NotifyActorEndOverlap(AActor* OtherActor)
         NPCReference = nullptr;
     }
 	InteractWidget->SetVisibility(ESlateVisibility::Hidden);
-    InteractWidget->SetInteractionText(FText::FromString("Interact"));
+	InteractWidget->SetInteractionText(FText::FromString("Interact"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -245,49 +249,57 @@ void APlanetSixCharacter::Interact()
 {
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
-    //check if the player is the perimiter of the NPC 
-    if (NPCReference)
-    {
-        //Not functionnal at the moment 
 
-         if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
-        {
-            if (!NPCReference->QuestID.IsNone()) 
-            {
-                NPCReference->bOnInteraction = true;
-                NPCReference->textrenderQuest->SetVisibility(false);
-                WidgetQuestNPC->QuestDataNPC = NPCReference;
-            }
-                WidgetDialogueNPC->AddToViewport();
-                PC->SetInputMode(FInputModeUIOnly());
-                PC->bShowMouseCursor = true;
-                PC->bEnableClickEvents = true;
-                PC->bEnableMouseOverEvents = true;
-        }
-    }
+	if (IsOwnedBy(InteractWidget->GetOwningPlayer()))
+	{
+		InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 
-    if (craftingStationRef)
-    {
-        CraftingWidget->AddToViewport();
-        InventoryWidget->AddToViewport();
-        PC->SetInputMode(FInputModeUIOnly());
-        PC->bShowMouseCursor = true;
-        PC->bEnableClickEvents = true;
-        PC->bEnableMouseOverEvents = true;
-    }
+		//check if the player is the perimiter of the NPC 
+		if (NPCReference)
+		{
+			//Not functionnal at the moment 
 
-    if (QuestBoardRef)
-    {
-        OnInteractionWithBoard = true;
-        print("Interaction with board true", 0);
+			if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines > 0)
+			{
+				if (!NPCReference->QuestID.IsNone())
+				{
+					NPCReference->bOnInteraction = true;
+					NPCReference->textrenderQuest->SetVisibility(false);
+					WidgetQuestNPC->QuestDataNPC = NPCReference;
+				}
+				WidgetDialogueNPC->AddToViewport();
+				PC->SetInputMode(FInputModeUIOnly());
+				PC->bShowMouseCursor = true;
+				PC->bEnableClickEvents = true;
+				PC->bEnableMouseOverEvents = true;
+			}
+		}
 
-    }
+		if (craftingStationRef)
+		{
+			CraftingWidget->AddToViewport();
+			InventoryWidget->AddToViewport();
+			PC->SetInputMode(FInputModeUIOnly());
+			PC->bShowMouseCursor = true;
+			PC->bEnableClickEvents = true;
+			PC->bEnableMouseOverEvents = true;
+		}
 
-    /* Interaction with Travel Portal */
-    if (Portal)
-    {
-        Portal->TravelTo();
-    }
+		if (QuestBoardRef)
+		{
+			OnInteractionWithBoard = true;
+			print("Interaction with board true", 0);
+
+		}
+
+		/* Interaction with Travel Portal */
+		if (Portal)
+		{
+			Portal->TravelTo();
+		}
+	}
+
+    
 
 }
 

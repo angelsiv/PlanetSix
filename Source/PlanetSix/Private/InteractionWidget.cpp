@@ -3,6 +3,7 @@
 
 #include "InteractionWidget.h"
 #include "Components/TextBlock.h"
+#include "PlanetSixCharacter.h"
 
 
 void UInteractionWidget::NativeConstruct()
