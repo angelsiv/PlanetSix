@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// This work is the sole property of 2Pow6 Games.
 
 
 #include "MapTravel.h"
@@ -8,6 +8,7 @@
 #include "Engine.h"
 #include "Components/TextRenderComponent.h"
 #include "PlanetSixCharacter.h"
+#include "PlanetSixGameInstance.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text);
@@ -45,19 +46,21 @@ void AMapTravel::TravelTo()
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
-		if (GetWorld()->ServerTravel(LevelName)) 
+		if (GetWorld()->ServerTravel(TEXT("LoadingScreen"))) 
 		{
 			print("should travel", -1);	
 		}
 		else if (GetLocalRole() == ROLE_Authority)
 		{
-			UGameplayStatics::OpenLevel(GetWorld(), FName(*LevelName), true, "?listen");
+			UGameplayStatics::OpenLevel(GetWorld(), TEXT("LoadingScreen"), true, "?listen");
 			print("single travel", -1);
 		}
 		else
 		{
 			print("not allowed to travel", -1);
 		}
+		auto GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+		GameInstance->LevelToLoad = *LevelName;
 	}
 }
 
