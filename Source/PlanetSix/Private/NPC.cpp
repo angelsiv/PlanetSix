@@ -2,6 +2,7 @@
 
 #include "NPC.h"
 #include"Engine.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "PlanetSixPlayerState.h"
 #include "PlanetSixGameInstance.h"
 
@@ -95,6 +96,11 @@ void ANPC::Tick(float DeltaTime)
 			skeleton->PlayAnimation(AnimIdle, true);
 		}
 
+	}
+
+	if (textrenderQuest)
+	{
+		textrenderQuest->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(textrenderQuest->GetComponentLocation(), UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation()));
 	}
 
 }
