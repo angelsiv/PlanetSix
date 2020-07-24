@@ -249,49 +249,57 @@ void APlanetSixCharacter::Interact()
 {
     //Cast the player controller to get controller 
     auto PC = Cast<APlayerController>(GetController());
-    //check if the player is the perimiter of the NPC 
-    if (NPCReference)
-    {
-        //Not functionnal at the moment 
 
-         if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines>0) 
-        {
-            if (!NPCReference->QuestID.IsNone()) 
-            {
-                NPCReference->bOnInteraction = true;
-                NPCReference->textrenderQuest->SetVisibility(false);
-                WidgetQuestNPC->QuestDataNPC = NPCReference;
-            }
-                WidgetDialogueNPC->AddToViewport();
-                PC->SetInputMode(FInputModeUIOnly());
-                PC->bShowMouseCursor = true;
-                PC->bEnableClickEvents = true;
-                PC->bEnableMouseOverEvents = true;
-        }
-    }
+	if (IsOwnedBy(InteractWidget->GetOwningPlayer()))
+	{
+		InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 
-    if (craftingStationRef)
-    {
-        CraftingWidget->AddToViewport();
-        InventoryWidget->AddToViewport();
-        PC->SetInputMode(FInputModeUIOnly());
-        PC->bShowMouseCursor = true;
-        PC->bEnableClickEvents = true;
-        PC->bEnableMouseOverEvents = true;
-    }
+		//check if the player is the perimiter of the NPC 
+		if (NPCReference)
+		{
+			//Not functionnal at the moment 
 
-    if (QuestBoardRef)
-    {
-        OnInteractionWithBoard = true;
-        print("Interaction with board true", 0);
+			if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines > 0)
+			{
+				if (!NPCReference->QuestID.IsNone())
+				{
+					NPCReference->bOnInteraction = true;
+					NPCReference->textrenderQuest->SetVisibility(false);
+					WidgetQuestNPC->QuestDataNPC = NPCReference;
+				}
+				WidgetDialogueNPC->AddToViewport();
+				PC->SetInputMode(FInputModeUIOnly());
+				PC->bShowMouseCursor = true;
+				PC->bEnableClickEvents = true;
+				PC->bEnableMouseOverEvents = true;
+			}
+		}
 
-    }
+		if (craftingStationRef)
+		{
+			CraftingWidget->AddToViewport();
+			InventoryWidget->AddToViewport();
+			PC->SetInputMode(FInputModeUIOnly());
+			PC->bShowMouseCursor = true;
+			PC->bEnableClickEvents = true;
+			PC->bEnableMouseOverEvents = true;
+		}
 
-    /* Interaction with Travel Portal */
-    if (Portal)
-    {
-        Portal->TravelTo();
-    }
+		if (QuestBoardRef)
+		{
+			OnInteractionWithBoard = true;
+			print("Interaction with board true", 0);
+
+		}
+
+		/* Interaction with Travel Portal */
+		if (Portal)
+		{
+			Portal->TravelTo();
+		}
+	}
+
+    
 
 }
 
