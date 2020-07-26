@@ -56,7 +56,7 @@ public:
 		UMaterialInterface* EnemyMaterial;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
-		UMaterialInstanceDynamic* EnemyMaterial;
+		UMaterialInstanceDynamic* DynamicMat;
 	
 
 

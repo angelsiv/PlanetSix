@@ -48,8 +48,8 @@ void APlanetSixEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	//Find Player
-	NameWidget = CreateWidget<UUserWidget>(this, NameWidgetClass);
-	EnemyMaterial = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
+	/*NameWidget = CreateWidget<UUserWidget>(this, NameWidgetClass);
+	EnemyMaterial = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);*/
 }
 
 // Called every frame
@@ -57,13 +57,13 @@ void APlanetSixEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FRotator WidgetRotation;
+	//FRotator WidgetRotation;
 
-	FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation();
+	//FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation();
 
-	WidgetRotation = UKismetMathLibrary::FindLookAtRotation(Cast<USceneComponent>(NameWidget)->GetComponentLocation(), CameraLocation);
+	//WidgetRotation = UKismetMathLibrary::FindLookAtRotation(Cast<USceneComponent>(NameWidget)->GetComponentLocation(), CameraLocation);
 
-	Cast<USceneComponent>(NameWidget)->SetWorldRotation(WidgetRotation);
+	//Cast<USceneComponent>(NameWidget)->SetWorldRotation(WidgetRotation);
 }
 
 // Called to bind functionality to input
