@@ -45,6 +45,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		float Experience;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+		UUserWidget* NameWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+		TSubclassOf<UUserWidget> NameWidgetClass;
+
 protected:
 
 

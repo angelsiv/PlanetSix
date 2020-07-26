@@ -31,7 +31,7 @@ APlanetSixEnemy::APlanetSixEnemy(const FObjectInitializer& ObjectInitializer)
 	Collider->CanCharacterStepUpOn = ECB_No;
 	Collider->SetNotifyRigidBodyCollision(true);*/
 
-	AIControllerClass = AEnemyController::StaticClass();
+	//AIControllerClass = AEnemyController::StaticClass();
 
 
 	//RootComponent = Collider;
