@@ -35,7 +35,7 @@ AGrenadeLauncherProjectile::AGrenadeLauncherProjectile()
 
 void AGrenadeLauncherProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if ((OtherActor != NULL) && (OtherActor != this))
+	if ((OtherActor != nullptr) && (OtherActor != this))
 	{
 		OnDetonate();
 	}
