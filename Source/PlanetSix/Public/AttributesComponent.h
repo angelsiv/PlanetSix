@@ -209,6 +209,10 @@ public:
 	//Check if we can add a level, and it should be called when gaining XP.
 	UFUNCTION(BlueprintCallable)
 		void GainExperience(float XpAmount);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		bool bIsLevelUp = false;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

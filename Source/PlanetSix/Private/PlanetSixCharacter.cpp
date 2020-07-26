@@ -477,6 +477,11 @@ void APlanetSixCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 
+    if (Attributes->bIsLevelUp)
+    {
+        Class->GainSkillPoint();
+        Attributes->bIsLevelUp = false;
+    }
     DrawDebugString(GetWorld(), FVector(0, 0, 100), GetEnumText(GetLocalRole()), this, FColor::White, DeltaSeconds);
 }
 

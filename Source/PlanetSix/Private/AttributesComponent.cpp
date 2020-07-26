@@ -57,8 +57,9 @@ void UAttributesComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-
+	//TODO load previous experience
 	Experience.SetCurrentValue(0.f);
+
 	SetActive(true);
 	SetIsReplicated(true);
 }
@@ -83,6 +84,7 @@ void UAttributesComponent::LevelUp()
 	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
 	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
+	bIsLevelUp = true;
 }
 
 //** getter for base value of attribute */
