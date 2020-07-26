@@ -72,6 +72,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		float RecoveryValue = 5.f;
 
+	/** Is the character dead */
+	UPROPERTY(BlueprintReadWrite, Category = "Animation")
+		bool bIsDead = false;
+
+	/** did the character take damage */
+	UPROPERTY(BlueprintReadWrite, Category = "Animation")
+		bool bIsDamaged = false;
+
 	FTransform RespawnPoint;
 
 protected:
