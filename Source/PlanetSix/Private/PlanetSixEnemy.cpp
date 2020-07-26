@@ -9,6 +9,8 @@
 #include "PlanetSixGameInstance.h"
 #include "Engine/StaticMesh.h"
 #include "Math/UnrealMathUtility.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Blueprint/UserWidget.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
@@ -46,8 +48,8 @@ void APlanetSixEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	//Find Player
-
-
+	NameWidget = CreateWidget<UUserWidget>(this, NameWidgetClass);
+	EnemyMaterial = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
 }
 
 // Called every frame
@@ -55,6 +57,13 @@ void APlanetSixEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FRotator WidgetRotation;
+
+	FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation();
+
+	WidgetRotation = UKismetMathLibrary::FindLookAtRotation(Cast<USceneComponent>(NameWidget)->GetComponentLocation(), CameraLocation);
+
+	Cast<USceneComponent>(NameWidget)->SetWorldRotation(WidgetRotation);
 }
 
 // Called to bind functionality to input

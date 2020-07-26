@@ -51,6 +51,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
 		TSubclassOf<UUserWidget> NameWidgetClass;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+		UMaterialInterface* EnemyMaterial;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+		UMaterialInstanceDynamic* EnemyMaterial;
+	
+
+
 protected:
 
 
