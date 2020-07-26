@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// This work is the sole property of 2Pow6 Games.
 
 #pragma once
 

@@ -53,6 +53,7 @@ void ABaseCharacter::ReloadShields_Implementation(float DeltaTime)
 
 void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
 {
+
 	if (Attributes->Shield.GetCurrentValue() > 0)
 	{
 		Attributes->Shield.SetCurrentValue(Attributes->Shield.GetCurrentValue() - (Damage * (1 - (Attributes->ArmorReduction.GetCurrentValue() / 100))));
@@ -63,6 +64,7 @@ void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
 	}
 	//HealthRegenTime = RecoveryTime;
 	ShieldRegenTime = RecoveryTime;
+	bIsDamaged = true;
 }
 
 void ABaseCharacter::HealthRegen(float Regen)
@@ -96,12 +98,13 @@ float ABaseCharacter::WeaponDamage()
 
 bool ABaseCharacter::IsDead()
 {
-
 	return Attributes->Health.GetCurrentValue() <= 0;
+
 }
 
 void ABaseCharacter::Death()
 {
+
 
 }
 

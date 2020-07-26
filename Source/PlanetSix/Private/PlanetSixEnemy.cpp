@@ -6,6 +6,7 @@
 #include "PlanetSixCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "PlanetSixGameInstance.h"
 #include "Engine/StaticMesh.h"
 #include "Math/UnrealMathUtility.h"
 
@@ -70,7 +71,31 @@ void APlanetSixEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void APlanetSixEnemy::Death()
 {
-	Destroy();
+	if (bIsDeadOnce == false)
+	{
+		//add xp to the player
+		auto OwnerPlayer = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		OwnerPlayer->Attributes->GainExperience(Experience);
+
+		//To check if Quest has a Killing condition
+		UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+		int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
+		FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
+		if (CurrentQuest.objectives.Num() > 0) 
+		{
+			//If at location
+			if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) 
+			{
+				//If needs to kill
+				if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
+				{
+					print("Applying killing quest", -1);
+					GameInstance->ReduceCurrentTargetNumber(GetID());
+				}
+			}
+		}
+		bIsDeadOnce = true;
+	}
 }
 
 int APlanetSixEnemy::GetID()

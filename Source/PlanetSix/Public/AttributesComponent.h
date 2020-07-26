@@ -205,6 +205,13 @@ public:
 		virtual void OnRep_AbilityDamage();
 
 #pragma endregion
+public:
+	//Check if we can add a level, and it should be called when gaining XP.
+	UFUNCTION(BlueprintCallable)
+		void GainExperience(float XpAmount);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		bool bIsLevelUp = false;
 
 protected:
 	// Called when the game starts
@@ -215,4 +222,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 		void UpdateWeaponDamage(float BaseWeaponDamage);
+
+	//Check if we can add a level, and it should be called when gaining XP.
+	UFUNCTION(BlueprintCallable)
+		void CheckLevelUp();
+
+	//Add a level when XP reaches the required XP.
+	UFUNCTION(BlueprintCallable)
+		void LevelUp();
 };

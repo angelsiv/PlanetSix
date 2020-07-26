@@ -13,7 +13,7 @@ UClassComponent::UClassComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	ClassEnumName = EClassName::Gunner;
-	SkillPoints = 9;
+	SkillPoints = 0;
 	ClassTextName = TEXT("Gunner");
 }
 

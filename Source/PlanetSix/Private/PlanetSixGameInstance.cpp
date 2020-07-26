@@ -104,6 +104,11 @@ void UPlanetSixGameInstance::ReduceCurrentTargetNumber(int ID)
 	if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets.Contains(ID)) {
 
 		PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID]--;
+
+		APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		int32 var = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
+		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var)));
+
 		if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] <= 0)
 		{
 			//ObjectiveCompleted
@@ -135,9 +140,9 @@ int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
 			if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] > Quantity)
 			{
 				PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] -= Quantity;
-				int32 x = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
-				Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(x)));
-				print("numbers Left to pick " + FString::FromInt(x), -1);
+				int32 var = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
+				Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var)));
+				print("numbers Left to pick " + FString::FromInt(var), -1);
 				return Quantity;
 			}
 			else
@@ -204,18 +209,20 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 			}
 		}	
 	}
-
 	else 
 	{
-		int32 x = PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[PlayerInfo.QuestAccepted.AtObjectiveNumber];
+		int32 y;
 		APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 		if (Player)
 		{
 			Player->CurrentQuestTracker->Objectives->SetText(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].ObjectiveDescription);
 
-			Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(x)));
-
-			print("NOW YOU HAVE TO COLLECT " + FString::FromInt(x), -1);
+		for  (auto pair : PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets)
+			{
+			y = pair.Key;
+			}
+			Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[y])));
+			
 		}
 	}
 	ReloadNetwork();
