@@ -17,6 +17,11 @@ class PLANETSIX_API UCurrentQuestTracker : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		UTextBlock* NameCurrentQuestText;
+
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		UTextBlock* Objectives;
 	
