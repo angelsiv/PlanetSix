@@ -251,6 +251,21 @@ void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 	}
 }
 
+void UPlanetSixGameInstance::AbandonQuest()
+{
+	
+	for (FQuestData q : PlayerInfo.QuestsRegistered)
+	{
+		if (q.QuestID == PlayerInfo.QuestAccepted.QuestID) {
+			PlayerInfo.QuestAccepted = FQuestData::Empty();
+			break;
+		}
+	}
+	print("Quest Abadonned in C++", -1);
+	ReloadNetwork();
+
+}
+
 void UPlanetSixGameInstance::AddItemsToinventoryplayer(TArray<FItemBaseData> Items)
 {
 	PlayerInfo.InventoryItemsID.Empty();
