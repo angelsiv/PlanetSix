@@ -80,29 +80,31 @@ void APlanetSixEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void APlanetSixEnemy::Death()
 {
-	//Destroy();
-	//add xp to the player
-	auto OwnerPlayer = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	OwnerPlayer->Attributes->GainExperience(Experience);
-	//To check if Quest has a Killing condition
-	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
-	int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
-	FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
-	if (CurrentQuest.objectives.Num() > 0) {
-		//If at location
-		if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) {
+	if (bIsDeadOnce == false)
+	{
+		//add xp to the player
+		auto OwnerPlayer = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		OwnerPlayer->Attributes->GainExperience(Experience);
 
-			//If needs to kill
-			if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
+		//To check if Quest has a Killing condition
+		UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+		int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
+		FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
+		if (CurrentQuest.objectives.Num() > 0) 
+		{
+			//If at location
+			if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) 
 			{
-				print("Applying killing quest", -1);
+				//If needs to kill
+				if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
+				{
+					print("Applying killing quest", -1);
 					GameInstance->ReduceCurrentTargetNumber(GetID());
-				
+				}
 			}
 		}
+		bIsDeadOnce = true;
 	}
-
-
 }
 
 int APlanetSixEnemy::GetID()

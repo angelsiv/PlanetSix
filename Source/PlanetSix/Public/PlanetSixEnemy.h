@@ -74,7 +74,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 public:
+	bool bIsDeadOnce = false;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

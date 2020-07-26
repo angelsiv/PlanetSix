@@ -12,7 +12,7 @@ UAttributesComponent::UAttributesComponent()
 	, WeaponsProficiency(1.f)
 	, AbilitiesProficiency(1.f)
 	, Level(1.f)
-	, Experience(1.f)
+	, Experience(10000.f)
 	, Health(100.f)
 	, Shield(10.f)
 	, ArmorReduction(25.f)
@@ -57,6 +57,8 @@ void UAttributesComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+	//TODO load previous experience
+	Experience.SetCurrentValue(0.f);
 
 	SetActive(true);
 	SetIsReplicated(true);
@@ -72,13 +74,17 @@ void UAttributesComponent::CheckLevelUp()
 {
 	if (Experience.GetMaxValue() <= Experience.GetCurrentValue())
 	{
-
+		LevelUp();
 	}
 }
 
 void UAttributesComponent::LevelUp()
 {
+	float BaseXp = 10000;
+	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
+	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
+	bIsLevelUp = true;
 }
 
 //** getter for base value of attribute */
