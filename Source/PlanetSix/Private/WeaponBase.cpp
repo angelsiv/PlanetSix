@@ -74,11 +74,11 @@ void AWeaponBase::Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& Damage
 				DamageGiver = OwnerPlayer;
 				//DoWeaponDamage(ActorHit, OwnerPlayer);
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("LIFE OF ENEMY : %f DAMAGE INFLICTED : %f"), ActorHit->Attributes->Health.GetCurrentValue(), OwnerPlayer->WeaponDamage()));
-				if (ActorHit->IsDead())
+				/*if (ActorHit->IsDead())
 				{
 					ActorHit->Death();
-					/*//add xp to the player
-					OwnerPlayer->Attributes->GainExperience(ActorHit->Experience);
+					//add xp to the player
+					//OwnerPlayer->Attributes->GainExperience(ActorHit->Experience);
 					//To check if Quest has a Killing condition
 					UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
 					int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
@@ -103,8 +103,8 @@ void AWeaponBase::Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& Damage
 								}
 							}
 						}
-					}*/
-				}
+					}
+				}*/
 			}
 		}
 		AmmoInMagazine--;
