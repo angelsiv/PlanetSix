@@ -15,11 +15,11 @@ void UPlanetSixGameInstance::SetPlayerInfo(FPlayerInfo info)
 	ReloadNetwork();
 }
 
-void UPlanetSixGameInstance::SetPlayerSavedInfo(FPlayerSaveData info)
-{
-	PlayerSave = info;
-	print("Saved info name: " + info.SaveName, -1);
-}
+//void UPlanetSixGameInstance::SetPlayerSavedInfo(FPlayerSaveData info)
+//{
+//	PlayerSave = info;
+//	print("Saved info name: " + info.SaveName, -1);
+//}
 
 FPlayerSaveData UPlanetSixGameInstance::GetPlayerInfoToSave()
 {
