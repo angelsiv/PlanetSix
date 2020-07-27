@@ -46,21 +46,21 @@ void AMapTravel::TravelTo()
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
-		if (GetWorld()->ServerTravel(TEXT("LoadingScreen"))) 
+		if (GetWorld()->ServerTravel(LevelName)) 
 		{
 			print("should travel", -1);	
 		}
 		else if (GetLocalRole() == ROLE_Authority)
 		{
-			UGameplayStatics::OpenLevel(GetWorld(), TEXT("LoadingScreen"), true, "?listen");
+			UGameplayStatics::OpenLevel(GetWorld(), FName(*LevelName), true, "?listen");
 			print("single travel", -1);
 		}
 		else
 		{
 			print("not allowed to travel", -1);
 		}
-		auto GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
-		GameInstance->LevelToLoad = *LevelName;
+		/*auto GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+		GameInstance->LevelToLoad = *LevelName;*/
 	}
 }
 
