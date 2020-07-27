@@ -25,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* boxcomponent;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UTextRenderComponent* textrenderQuest;
 
 	UPROPERTY(EditAnywhere)
