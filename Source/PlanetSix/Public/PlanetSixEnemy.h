@@ -9,6 +9,7 @@
 #include "AttributesComponent.h"
 #include "EnemyController.h"
 #include "Engine.h"
+#include "Components/TimelineComponent.h"
 #include "PlanetSixEnemy.generated.h"
 
 class APlanetSixCharacter;
@@ -58,11 +59,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
 		UMaterialInstanceDynamic* DynamicMat;
 	
+	UPROPERTY(EditAnywhere)
+		UCurveFloat* TextureCurve;
 
+	FTimeline MyTimeline;
 
 protected:
 
-
+	float CurveFloatValue;
+	float TimelineValue;
 	
 
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -93,4 +98,8 @@ public:
 	virtual void Death() override;
 
 	int GetID();
+
+	void ControlMaterial();
+
+	
 };

@@ -48,8 +48,25 @@ void APlanetSixEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	//Find Player
-	/*NameWidget = CreateWidget<UUserWidget>(this, NameWidgetClass);
-	EnemyMaterial = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);*/
+	NameWidget = CreateWidget<UUserWidget>(GetWorld(), NameWidgetClass);
+	EnemyMaterial = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
+
+
+	if (TextureCurve) {
+	
+		FOnTimelineFloat TimelineCallback;
+		FOnTimelineEventStatic TimelineFinishedCallback;
+
+		TimelineCallback.BindUFunction(this, FName("ControlMaterial"));
+		TimelineFinishedCallback.BindUFunction(this, FName{ TEXT("Destroy") });
+		MyTimeline.AddInterpFloat(TextureCurve, TimelineCallback);
+		MyTimeline.SetTimelineFinishedFunc(TimelineFinishedCallback);
+
+
+	}
+
+
+
 }
 
 // Called every frame
@@ -57,13 +74,15 @@ void APlanetSixEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//FRotator WidgetRotation;
+	MyTimeline.TickTimeline(DeltaTime);
 
-	//FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation();
+	FRotator WidgetRotation;
 
-	//WidgetRotation = UKismetMathLibrary::FindLookAtRotation(Cast<USceneComponent>(NameWidget)->GetComponentLocation(), CameraLocation);
+	FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation();
 
-	//Cast<USceneComponent>(NameWidget)->SetWorldRotation(WidgetRotation);
+	WidgetRotation = UKismetMathLibrary::FindLookAtRotation(Cast<USceneComponent>(NameWidget)->GetComponentLocation(), CameraLocation);
+
+	Cast<USceneComponent>(NameWidget)->SetWorldRotation(WidgetRotation);
 }
 
 // Called to bind functionality to input
@@ -110,6 +129,16 @@ void APlanetSixEnemy::Death()
 int APlanetSixEnemy::GetID()
 {
 	return ID;
+}
+
+void APlanetSixEnemy::ControlMaterial()
+{
+	TimelineValue = MyTimeline.GetPlaybackPosition();
+	CurveFloatValue = TextureCurve->GetFloatValue(TimelineValue);
+
+
+	DynamicMat->SetScalarParameterValue(FName("Opacity"), CurveFloatValue);
+
 }
 
 //void APlanetSixEnemy::GiveExperience(TArray<APlanetSixCharacter*> Players, float Exp)
