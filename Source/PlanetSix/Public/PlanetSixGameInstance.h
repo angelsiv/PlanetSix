@@ -42,10 +42,9 @@ public:
     UFUNCTION(BlueprintCallable)
         void SetPlayerInfo(FPlayerInfo info);   
     
-    UFUNCTION(BlueprintCallable)
-        void SetPlayerSavedInfo(FPlayerSaveData info);
+    /*UFUNCTION(BlueprintCallable)
+        void SetPlayerSavedInfo(FPlayerSaveData info);*/
      
-    
     UFUNCTION(BlueprintCallable)
         FPlayerSaveData GetPlayerInfoToSave(); 
     
