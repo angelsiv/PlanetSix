@@ -208,7 +208,7 @@ public:
 	void RemoveItem(int id, int quantity);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 inventorySize UMETA(ExposeOnSpawn = "false");
+		int32 inventorySize UMETA(ExposeOnSpawn = "true");
 	TArray<FItemBaseData> items;
 
 	TArray<FItemBaseData> QuestItems;
