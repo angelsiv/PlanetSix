@@ -12,7 +12,7 @@ UAttributesComponent::UAttributesComponent()
 	, WeaponsProficiency(1.f)
 	, AbilitiesProficiency(1.f)
 	, Level(1.f)
-	, Experience(10000.f)
+	, Experience(5000.f)
 	, Health(100.f)
 	, Shield(10.f)
 	, ArmorReduction(25.f)
@@ -80,7 +80,7 @@ void UAttributesComponent::CheckLevelUp()
 
 void UAttributesComponent::LevelUp()
 {
-	float BaseXp = 10000;
+	float BaseXp = 5000;
 	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
 	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
