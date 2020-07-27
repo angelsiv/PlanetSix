@@ -107,7 +107,7 @@ void UPlanetSixGameInstance::ReduceCurrentTargetNumber(int ID)
 
 		APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 		int32 var = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
-		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var)));
+		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var) + " Left"));
 
 		if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] <= 0)
 		{
@@ -141,7 +141,7 @@ int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
 			{
 				PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] -= Quantity;
 				int32 var = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
-				Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var)));
+				Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var) + " Left"));
 				print("numbers Left to pick " + FString::FromInt(var), -1);
 				return Quantity;
 			}
@@ -221,7 +221,7 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 			{
 			y = pair.Key;
 			}
-			Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[y])));
+			Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[y])+" Left"));
 			
 		}
 	}
