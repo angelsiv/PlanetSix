@@ -100,7 +100,7 @@ void ANPC::Tick(float DeltaTime)
 
 	if (textrenderQuest)
 	{
-		textrenderQuest->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(textrenderQuest->GetComponentLocation(), UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation()));
+		//textrenderQuest->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(textrenderQuest->GetComponentLocation(), UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation()));
 	}
 
 }
