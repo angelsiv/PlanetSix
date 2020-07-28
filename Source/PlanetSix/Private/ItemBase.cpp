@@ -32,7 +32,8 @@ AItemBase::AItemBase()
     sphereCollider->InitSphereRadius(70.0f);
     sphereCollider->SetCollisionProfileName(TEXT("Item"));
 
-
+	static ConstructorHelpers::FObjectFinder<USoundCue> PickUpItemSoundFile(TEXT("/Game/Audio/SFX/Item/Cue_ItemPickUp"));
+	ItemPickUpCue = PickUpItemSoundFile.Object;
 }
 
 // Called when the game starts or when spawned
@@ -104,7 +105,7 @@ void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
         if (Player->InventoryComponent->add(ToItemInv(), NumberOfQuestItems) && DestroyOnPickup)
         {
 
-
+			UGameplayStatics::PlaySoundAtLocation(this, ItemPickUpCue, mesh->GetComponentLocation());
             this->Destroy();
         }
       
