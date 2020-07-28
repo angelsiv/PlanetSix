@@ -477,6 +477,7 @@ void APlanetSixCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 
+    Attributes->UpdateAttributes();
     if (Attributes->bIsLevelUp)
     {
         Class->GainSkillPoint();

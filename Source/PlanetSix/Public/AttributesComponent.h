@@ -37,7 +37,7 @@ struct PLANETSIX_API FAttributesData
 		: BaseValue(1.f)
 		, CurrentValue(BaseValue)
 		, MaxValue(BaseValue)
-		, CurrentModifier((int32)CurrentValue / 2)
+		, CurrentModifier(1)
 		, MainUI()
 	{}
 
@@ -45,7 +45,7 @@ struct PLANETSIX_API FAttributesData
 		: BaseValue(DefaultValue)
 		, CurrentValue(BaseValue)
 		, MaxValue(BaseValue)
-		, CurrentModifier((int32)CurrentValue / 2)
+		, CurrentModifier(1)
 		, MainUI()
 	{}
 
@@ -75,7 +75,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		float MaxValue;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
-		int32 CurrentModifier;
+		float CurrentModifier;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		UUserWidget* MainUI;
 };
@@ -212,6 +212,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		bool bIsLevelUp = false;
+
+	//update the values of attributes depending on the modifiers
+	void UpdateAttributes();
 
 protected:
 	// Called when the game starts

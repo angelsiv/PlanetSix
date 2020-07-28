@@ -70,7 +70,7 @@ void UAttributesComponent::BeginPlay()
 	// ...
 	//TODO load previous experience
 	Experience.SetCurrentValue(0.f);
-	/*Experience.SetMaxValue(5000)*/
+
 	SetActive(true);
 	SetIsReplicated(true);
 }
@@ -86,6 +86,7 @@ void UAttributesComponent::CheckLevelUp()
 	if (Experience.GetMaxValue() <= Experience.GetCurrentValue())
 	{
 		LevelUp();
+		CheckLevelUp();
 	}
 }
 
@@ -94,7 +95,7 @@ void UAttributesComponent::LevelUp()
 	float BaseXp = 5000;
 	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
-	Experience.SetCurrentValue(Experience.GetCurrentValue() - Experience.GetMaxValue());
+	//Experience.SetCurrentValue(Experience.GetCurrentValue() - Experience.GetMaxValue());
 	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
 	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetOwner()->GetGameInstance());
 	FPlayerInfo TempPlayer = GameInstance->GetPlayerInfo();
@@ -106,6 +107,11 @@ void UAttributesComponent::LevelUp()
 	print(FString::FromInt(TempPlayer.Level), -1);
 	//print(FString::SanitizeFloat(TempPlayer.MaxExperience), -1);
 	bIsLevelUp = true;
+}
+
+void UAttributesComponent::UpdateAttributes()
+{
+	Health.SetMaxValue(FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier()));
 }
 
 //** getter for base value of attribute */
