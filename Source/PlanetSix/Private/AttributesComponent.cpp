@@ -4,7 +4,11 @@
 #include "AttributesComponent.h"
 #include "Engine.h"
 #include "UMG/Public/Blueprint/UserWidget.h"
+#include "PlanetSixGameInstance.h"
 #include "Net/UnrealNetwork.h"
+
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
 // Sets default values for this component's properties
 UAttributesComponent::UAttributesComponent()
@@ -48,6 +52,13 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 void UAttributesComponent::GainExperience(float XpAmount)
 {
 	Experience.SetCurrentValue(Experience.GetCurrentValue() + XpAmount);
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetOwner()->GetGameInstance());
+	FPlayerInfo tempplayer = GameInstance->GetPlayerInfo();
+	tempplayer.Experience = Experience.GetCurrentValue();
+
+	print(FString::SanitizeFloat(tempplayer.Experience), -1);
+
+	GameInstance->SetPlayerInfo(tempplayer);
 	CheckLevelUp();
 }
 
@@ -59,7 +70,7 @@ void UAttributesComponent::BeginPlay()
 	// ...
 	//TODO load previous experience
 	Experience.SetCurrentValue(0.f);
-
+	/*Experience.SetMaxValue(5000)*/
 	SetActive(true);
 	SetIsReplicated(true);
 }
@@ -83,7 +94,17 @@ void UAttributesComponent::LevelUp()
 	float BaseXp = 5000;
 	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
+	Experience.SetCurrentValue(Experience.GetCurrentValue() - Experience.GetMaxValue());
 	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetOwner()->GetGameInstance());
+	FPlayerInfo TempPlayer = GameInstance->GetPlayerInfo();
+	TempPlayer.Level = Level.GetCurrentValue();
+	/*TempPlayer.MaxExperience = Level.GetMaxValue();*/
+
+	GameInstance->SetPlayerInfo(TempPlayer);
+
+	print(FString::FromInt(TempPlayer.Level), -1);
+	//print(FString::SanitizeFloat(TempPlayer.MaxExperience), -1);
 	bIsLevelUp = true;
 }
 
