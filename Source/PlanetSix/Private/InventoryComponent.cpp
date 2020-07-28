@@ -54,8 +54,6 @@ FString UInventoryComponent::Test()
 
 void UInventoryComponent::UseItem(int index, APlanetSixCharacter* player)
 {
-    bool temp = items[index].Use(player);
-    GEngine->AddOnScreenDebugMessage(1, 1.5, FColor::Purple, FString().FromInt(items[index].use.DestroyItemOnUse));
     if (items[index].Use(player))
     {
         this->RemoveItem(items[index].id, 1);
@@ -529,11 +527,11 @@ void FUseData::EquipCrystal(APlanetSixCharacter* player)
         weaponValue *= -1;
         shieldValue *= -1;
     }
-    player->Attributes->Health.BaseValue += healthValue;
-    player->Attributes->AbilityDamage.BaseValue += abilityValue;
-    player->Attributes->ArmorReduction.BaseValue += armorValue;
-    player->Attributes->WeaponDamage.BaseValue += weaponValue;
-    player->Attributes->Shield.BaseValue += shieldValue;
+    player->Attributes->Health.CurrentModifier += healthValue;
+    player->Attributes->AbilityDamage.CurrentModifier += abilityValue;
+    player->Attributes->ArmorReduction.CurrentModifier += armorValue;
+    player->Attributes->WeaponDamage.CurrentModifier += weaponValue;
+    player->Attributes->Shield.CurrentModifier += shieldValue;
     Bvalues[0] = !Bvalues[0];
     PRINT("crystal", 1);
 }
