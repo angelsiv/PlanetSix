@@ -68,9 +68,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	/** Cast a Skill*/
-	/*UFUNCTION(Blueprintable)
-		void CastSkill(ASkill* SkillToCast, APlanetSixCharacter* Instigator);*/
+	/** Gain a skill point */
+	UFUNCTION(BlueprintCallable)
+		void GainSkillPoint() { SkillPoints += 1; }
 
 	UFUNCTION(BlueprintPure, BlueprintGetter = "IsUnlocked")
 		bool GetIsUnlocked() { return bIsUnlocked; }

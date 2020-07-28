@@ -42,10 +42,9 @@ public:
     UFUNCTION(BlueprintCallable)
         void SetPlayerInfo(FPlayerInfo info);   
     
-    UFUNCTION(BlueprintCallable)
-        void SetPlayerSavedInfo(FPlayerSaveData info);
+    /*UFUNCTION(BlueprintCallable)
+        void SetPlayerSavedInfo(FPlayerSaveData info);*/
      
-    
     UFUNCTION(BlueprintCallable)
         FPlayerSaveData GetPlayerInfoToSave(); 
     
@@ -85,6 +84,8 @@ public:
     UFUNCTION(BlueprintCallable)
         void AddQuest(FQuestData quest);
     
+    UFUNCTION(BlueprintCallable)
+        void AbandonQuest();
 
     UFUNCTION(BlueprintCallable)
         void AddItemsToinventoryplayer(TArray<FItemBaseData> Items);

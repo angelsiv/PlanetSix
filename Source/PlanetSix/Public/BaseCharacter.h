@@ -23,6 +23,12 @@ public:
 		int32 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+		float Experience;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
+		float MaxExperience;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
 		TArray<FQuestData> QuestsRegistered;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
@@ -30,6 +36,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Info")
 		TMap<int,int> InventoryItemsID;
+
+	
 
 };
 
@@ -71,6 +79,14 @@ public:
 	/** Character's value of recovery*/
 	UPROPERTY(BlueprintReadWrite, Category = "Attributes")
 		float RecoveryValue = 5.f;
+
+	/** Is the character dead */
+	UPROPERTY(BlueprintReadWrite, Category = "Animation")
+		bool bIsDead = false;
+
+	/** did the character take damage */
+	UPROPERTY(BlueprintReadWrite, Category = "Animation")
+		bool bIsDamaged = false;
 
 	FTransform RespawnPoint;
 
