@@ -29,10 +29,6 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (IsDead())
-	{
-		Death();
-	}
 	//HealthRegenTime -= DeltaTime;
 	/*if (HealthRegenTime <= 0)
 	{
@@ -51,7 +47,7 @@ void ABaseCharacter::ReloadShields_Implementation(float DeltaTime)
 	}
 }
 
-void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
+void ABaseCharacter::ReceiveDamage_Implementation(float Damage, APlanetSixCharacter* Actor)
 {
 
 	if (Attributes->Shield.GetCurrentValue() > 0)
@@ -65,6 +61,7 @@ void ABaseCharacter::ReceiveDamage_Implementation(float Damage)
 	//HealthRegenTime = RecoveryTime;
 	ShieldRegenTime = RecoveryTime;
 	bIsDamaged = true;
+	EnemyReceieveDamage(Actor);
 }
 
 void ABaseCharacter::HealthRegen(float Regen)
@@ -98,7 +95,8 @@ float ABaseCharacter::WeaponDamage()
 
 bool ABaseCharacter::IsDead()
 {
-	return Attributes->Health.GetCurrentValue() <= 0;
+	bIsDead = Attributes->Health.GetCurrentValue() <= 0;
+	return bIsDead;
 
 }
 
@@ -106,5 +104,9 @@ void ABaseCharacter::Death()
 {
 
 
+}
+
+void ABaseCharacter::EnemyReceieveDamage(APlanetSixCharacter* Actor)
+{
 }
 

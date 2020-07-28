@@ -113,5 +113,9 @@ public:
 	/** Method that is called upon death  */
 	UFUNCTION(BlueprintCallable)
 		virtual void Death();
+
+	UFUNCTION()
+		virtual void EnemyReceieveDamage(APlanetSixCharacter* Actor);
+
 };
 

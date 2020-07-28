@@ -10,6 +10,9 @@
 #include "Engine/StaticMesh.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "EnemyNameWidget.h"
+#include "Components/WidgetComponent.h"
+#include "Curves/CurveFloat.h"
 #include "Blueprint/UserWidget.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
@@ -22,6 +25,7 @@ APlanetSixEnemy::APlanetSixEnemy(const FObjectInitializer& ObjectInitializer)
 	//Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	MovComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovComp"));
 	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes"));
+
 
 
 
@@ -48,17 +52,23 @@ void APlanetSixEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	//Find Player
-	NameWidget = CreateWidget<UUserWidget>(GetWorld(), NameWidgetClass);
-	EnemyMaterial = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
+	//NameWidget = CreateWidget<UEnemyNameWidget>(GetWorld(), NameWidgetClass);
+
+
+
+	SetWidget();
+
+
+	DynamicMat = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
 
 
 	if (TextureCurve) {
-	
+
 		FOnTimelineFloat TimelineCallback;
 		FOnTimelineEventStatic TimelineFinishedCallback;
 
 		TimelineCallback.BindUFunction(this, FName("ControlMaterial"));
-		TimelineFinishedCallback.BindUFunction(this, FName{ TEXT("Destroy") });
+		TimelineFinishedCallback.BindUFunction(this, FName("DestroyEnemy"));
 		MyTimeline.AddInterpFloat(TextureCurve, TimelineCallback);
 		MyTimeline.SetTimelineFinishedFunc(TimelineFinishedCallback);
 
@@ -73,16 +83,23 @@ void APlanetSixEnemy::BeginPlay()
 void APlanetSixEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (bIsDead) {
+		MyTimeline.TickTimeline(DeltaTime);
+	}
 
-	MyTimeline.TickTimeline(DeltaTime);
 
-	FRotator WidgetRotation;
+	UpdateWidget();
 
-	FVector CameraLocation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation();
+	if (IsDead()) {
 
-	WidgetRotation = UKismetMathLibrary::FindLookAtRotation(Cast<USceneComponent>(NameWidget)->GetComponentLocation(), CameraLocation);
+		if (!bIsDeadOnce)
+		{
 
-	Cast<USceneComponent>(NameWidget)->SetWorldRotation(WidgetRotation);
+			Death();
+			bIsDeadOnce = true;
+
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -99,31 +116,41 @@ void APlanetSixEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void APlanetSixEnemy::Death()
 {
-	if (bIsDeadOnce == false)
-	{
-		//add xp to the player
-		auto OwnerPlayer = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-		OwnerPlayer->Attributes->GainExperience(Experience);
 
-		//To check if Quest has a Killing condition
-		UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
-		int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
-		FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
-		if (CurrentQuest.objectives.Num() > 0) 
+	MyTimeline.PlayFromStart();
+	//add xp to the player
+	auto OwnerPlayer = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	OwnerPlayer->Attributes->GainExperience(Experience);
+
+	//To check if Quest has a Killing condition
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+	int objectiveNumber = GameInstance->GetCurrentQuest().AtObjectiveNumber;
+	FQuestData CurrentQuest = GameInstance->GetCurrentQuest();
+	if (CurrentQuest.objectives.Num() > 0)
+	{
+		//If at location
+		if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld()))
 		{
-			//If at location
-			if (CurrentQuest.objectives[objectiveNumber].LocationToGo == UGameplayStatics::GetCurrentLevelName(GetWorld())) 
+			//If needs to kill
+			if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
 			{
-				//If needs to kill
-				if (CurrentQuest.objectives[objectiveNumber].Objectivetype == EObjectiveType::Kill)
-				{
-					print("Applying killing quest", -1);
-					GameInstance->ReduceCurrentTargetNumber(GetID());
-				}
+				print("Applying killing quest", -1);
+				GameInstance->ReduceCurrentTargetNumber(GetID());
 			}
 		}
-		bIsDeadOnce = true;
 	}
+
+}
+
+void APlanetSixEnemy::EnemyReceieveDamage(APlanetSixCharacter* Actor)
+{
+	
+}
+
+void APlanetSixEnemy::DestroyEnemy()
+{
+	Destroy();
+
 }
 
 int APlanetSixEnemy::GetID()
@@ -135,10 +162,10 @@ void APlanetSixEnemy::ControlMaterial()
 {
 	TimelineValue = MyTimeline.GetPlaybackPosition();
 	CurveFloatValue = TextureCurve->GetFloatValue(TimelineValue);
-
-
-	DynamicMat->SetScalarParameterValue(FName("Opacity"), CurveFloatValue);
-
+	print("CurveFloatValue : " + FString::SanitizeFloat(CurveFloatValue) + " at " + FString::SanitizeFloat(TimelineValue), 11);
+	if (DynamicMat) {
+		DynamicMat->SetScalarParameterValue(FName("Opacity"), CurveFloatValue);
+	}
 }
 
 //void APlanetSixEnemy::GiveExperience(TArray<APlanetSixCharacter*> Players, float Exp)

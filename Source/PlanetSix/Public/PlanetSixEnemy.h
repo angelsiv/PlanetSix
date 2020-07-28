@@ -14,8 +14,10 @@
 
 class APlanetSixCharacter;
 class UWeaponComponent;
+class UWidgetComponent;
 class USkeletalMeshComponent;
 class UAnimMontage;
+class UEnemyNameWidget;
 
 UCLASS()
 class PLANETSIX_API APlanetSixEnemy : public ABaseCharacter
@@ -27,6 +29,9 @@ public:
 	APlanetSixEnemy(const FObjectInitializer& ObjectInitializer);
 
 	//Enemy Stats
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
+		FString Name;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		int32 ID;
 
@@ -46,20 +51,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Info)
 		float Experience;
 
+	
+	
+	UPROPERTY(BlueprintReadWrite, Category = Widget)
+		UEnemyNameWidget* NameWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
-		UUserWidget* NameWidget;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MandatoryToFill)
 		TSubclassOf<UUserWidget> NameWidgetClass;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MandatoryToFill)
 		UMaterialInterface* EnemyMaterial;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
 		UMaterialInstanceDynamic* DynamicMat;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = MandatoryToFill)
 		UCurveFloat* TextureCurve;
 
 	FTimeline MyTimeline;
@@ -68,10 +74,12 @@ protected:
 
 	float CurveFloatValue;
 	float TimelineValue;
-	
+	bool bIsDeadOnce=false;
 
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UFloatingPawnMovement* MovComp;
+	
+
 
 
 
@@ -81,7 +89,7 @@ protected:
 
 
 public:
-	bool bIsDeadOnce = false;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -96,10 +104,24 @@ public:
 	//	void GiveExperience(TArray<APlanetSixCharacter*> Players, float Exp);
 
 	virtual void Death() override;
-
+	
+	
+	virtual void EnemyReceieveDamage(APlanetSixCharacter* Actor) override;
+	
+	
 	int GetID();
 
+	UFUNCTION()
+	void DestroyEnemy();
+
+	UFUNCTION()
 	void ControlMaterial();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetWidget();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateWidget();
 
 	
 };
