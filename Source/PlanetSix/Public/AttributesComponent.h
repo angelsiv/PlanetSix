@@ -8,6 +8,7 @@
 #include "AttributesComponent.generated.h"
 
 class UUserWidget;
+class USoundCue;
 
 /** Base Attributes for all characters. */
 UENUM(BlueprintType)
@@ -155,6 +156,9 @@ public:
 	/** Ability damage attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", Replicated, ReplicatedUsing = OnRep_AbilityDamage)
 		FAttributesData AbilityDamage;
+	/* To store the Level Up Sound Cue*/
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue* LevelUpSoundCue;
 
 	/** Response to armors proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnArmorsProficiencyUpdate();
@@ -178,7 +182,7 @@ public:
 	void OnWeaponDamageUpdate();
 	/** Response to ability damage attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnAbilityDamageUpdate();
-
+		
 	/** This region below is for replication on a server - client model only*/
 #pragma region OnRep_Attributes
 	UFUNCTION()

@@ -26,9 +26,10 @@ UAttributesComponent::UAttributesComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 	
+	// Find the LevelUp Sound Cue
+	static ConstructorHelpers::FObjectFinder<USoundCue> LevelUpSoundFile(TEXT("/Game/Audio/SFX/Character/Cue_LevelUp"));
+	LevelUpSoundCue = LevelUpSoundFile.Object;
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -73,6 +74,7 @@ void UAttributesComponent::BeginPlay()
 	/*Experience.SetMaxValue(5000)*/
 	SetActive(true);
 	SetIsReplicated(true);
+	
 }
 
 // update weapon damage when changing weapons
@@ -106,6 +108,9 @@ void UAttributesComponent::LevelUp()
 	print(FString::FromInt(TempPlayer.Level), -1);
 	//print(FString::SanitizeFloat(TempPlayer.MaxExperience), -1);
 	bIsLevelUp = true;
+	
+	//Play Level Up Sound cue
+	UGameplayStatics::PlaySound2D(this, LevelUpSoundCue);
 }
 
 //** getter for base value of attribute */
