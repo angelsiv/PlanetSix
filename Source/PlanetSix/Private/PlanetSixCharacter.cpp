@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "NPCDialogueWidget.h"
 #include "QuestWidget.h"
 #include "Net/UnrealNetwork.h"
@@ -257,13 +258,15 @@ void APlanetSixCharacter::Interact()
 		//check if the player is the perimiter of the NPC 
 		if (NPCReference)
 		{
+           
 			//Not functionnal at the moment 
-
+          //  UKismetMathLibrary::FindLookAtRotation(NPCReference->GetActorLocation(), GetActorLocation());
 			if (WidgetDialogueNPC && NPCReference->MaxNumOfDialogueLines > 0)
 			{
+                NPCReference->bOnInteraction = true;
 				if (!NPCReference->QuestID.IsNone())
 				{
-					NPCReference->bOnInteraction = true;
+					
 					NPCReference->textrenderQuest->SetVisibility(false);
 					WidgetQuestNPC->QuestDataNPC = NPCReference;
 				}
