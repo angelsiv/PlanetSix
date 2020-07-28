@@ -94,6 +94,7 @@ void UAttributesComponent::LevelUp()
 	float BaseXp = 5000;
 	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
+	Experience.SetCurrentValue(Experience.GetCurrentValue() - Experience.GetMaxValue());
 	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
 	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetOwner()->GetGameInstance());
 	FPlayerInfo TempPlayer = GameInstance->GetPlayerInfo();
