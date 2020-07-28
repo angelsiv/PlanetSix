@@ -8,6 +8,7 @@
 #include "AttributesComponent.generated.h"
 
 class UUserWidget;
+class USoundCue;
 
 /** Base Attributes for all characters. */
 UENUM(BlueprintType)
@@ -37,7 +38,7 @@ struct PLANETSIX_API FAttributesData
 		: BaseValue(1.f)
 		, CurrentValue(BaseValue)
 		, MaxValue(BaseValue)
-		, CurrentModifier((int32)CurrentValue / 2)
+		, CurrentModifier(1)
 		, MainUI()
 	{}
 
@@ -45,7 +46,7 @@ struct PLANETSIX_API FAttributesData
 		: BaseValue(DefaultValue)
 		, CurrentValue(BaseValue)
 		, MaxValue(BaseValue)
-		, CurrentModifier((int32)CurrentValue / 2)
+		, CurrentModifier(1)
 		, MainUI()
 	{}
 
@@ -75,7 +76,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		float MaxValue;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
-		int32 CurrentModifier;
+		float CurrentModifier;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		UUserWidget* MainUI;
 };
@@ -155,6 +156,9 @@ public:
 	/** Ability damage attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", Replicated, ReplicatedUsing = OnRep_AbilityDamage)
 		FAttributesData AbilityDamage;
+	/* To store the Level Up Sound Cue*/
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue* LevelUpSoundCue;
 
 	/** Response to armors proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnArmorsProficiencyUpdate();
@@ -178,7 +182,7 @@ public:
 	void OnWeaponDamageUpdate();
 	/** Response to ability damage attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnAbilityDamageUpdate();
-
+		
 	/** This region below is for replication on a server - client model only*/
 #pragma region OnRep_Attributes
 	UFUNCTION()
@@ -212,6 +216,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		bool bIsLevelUp = false;
+
+	//update the values of attributes depending on the modifiers
+	void UpdateAttributes();
 
 protected:
 	// Called when the game starts

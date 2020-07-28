@@ -36,7 +36,7 @@ DECLARE_DELEGATE_RetVal_TwoParams(int, FItemPickUp, int, int)
 
 
 
-
+class USoundCue;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PLANETSIX_API AItemBase : public AActor
@@ -87,4 +87,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UDataTable* ItemDataTable;
+
+	UPROPERTY(BlueprintReadOnly)
+		USoundCue* ItemPickUpCue;
 };
