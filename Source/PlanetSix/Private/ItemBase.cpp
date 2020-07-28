@@ -52,6 +52,7 @@ void AItemBase::BeginPlay()
         itemData.value = itemDataPointer->getValue();
         itemData.weight = itemDataPointer->getWeight();
         itemData.icon = itemDataPointer->getIcon();
+        itemData.use = itemDataPointer->use;
         itemData.quantity = quantity;
     }
 
@@ -73,7 +74,7 @@ FItemBaseData AItemBase::ToItemInv()
     //auto item = FitemInv(1,TEXT("item"),2.0f,3.0f,1);
 
     //return item;
-    return FItemBaseData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon());
+    return FItemBaseData(itemData.getId(), itemData.getDisplayName(), itemData.getWeight(), itemData.getValue(), itemData.getQuantity(), itemData.getIcon(),itemData.use);
 }
 
 void AItemBase::NotifyActorBeginOverlap(AActor* OtherActor)
