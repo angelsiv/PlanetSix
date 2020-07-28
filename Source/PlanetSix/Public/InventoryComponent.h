@@ -38,7 +38,7 @@ public:
 
     bool Use(APlanetSixCharacter* player);
 
-    void Heal(APlanetSixCharacter* player);
+    bool Heal(APlanetSixCharacter* player);
     void EquipCrystal(APlanetSixCharacter* player);
 
 

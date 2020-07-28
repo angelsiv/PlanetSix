@@ -56,7 +56,7 @@ void UInventoryComponent::UseItem(int index, APlanetSixCharacter* player)
 {
     bool temp = items[index].Use(player);
     GEngine->AddOnScreenDebugMessage(1, 1.5, FColor::Purple, FString().FromInt(items[index].use.DestroyItemOnUse));
-    if (items[index].use.DestroyItemOnUse)
+    if (items[index].Use(player))
     {
         this->RemoveItem(items[index].id, 1);
     }
@@ -339,7 +339,7 @@ void UInventoryComponent::RemoveItem(int id, int quantity)
 
 FItemBaseData FItemBaseData::GetCopy(FItemBaseData original)
 {
-    return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity, original.icon,original.use);
+    return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity, original.icon, original.use);
 }
 
 
@@ -406,109 +406,6 @@ int FItemBaseData::compare(FItemBaseData  i1, FItemBaseData  i2, ECompareField t
     return result;
 }
 
-//int FCraftableItemData::compare(FCraftableItemData  i1, FCraftableItemData  i2, ECompareField type)
-//{
-//    int result = 0;
-//    switch (type)
-//    {
-//    case ECompareField::name:
-//        if (i1.displayName > i2.displayName)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.displayName < i2.displayName)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::price:
-//        if (i1.value > i2.value)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.value < i2.value)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::Health:
-//        if (i1.Health > i2.Health)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.Health < i2.Health)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::id:
-//        if (i1.id > i2.id)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.id < i2.id)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::quantity:
-//        if (i1.quantity > i2.quantity)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.quantity < i2.quantity)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::Shield:
-//        if (i1.Shield > i2.Shield)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.Shield < i2.Shield)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::Armor:
-//        if (i1.Armor > i2.Armor)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.Armor < i2.Armor)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::WeaponDMG:
-//        if (i1.WeaponDamage > i2.WeaponDamage)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.WeaponDamage < i2.WeaponDamage)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    case ECompareField::AbilityDMG:
-//        if (i1.AbilityDamage > i2.AbilityDamage)
-//        {
-//            result = 1;
-//        }
-//        else if (i1.AbilityDamage < i2.AbilityDamage)
-//        {
-//            result = -1;
-//        }
-//        break;
-//    default:
-//        break;
-//    }
-//
-//    return result;
-//}
-
-
 
 int FItemBaseData::getId()
 {
@@ -571,39 +468,39 @@ bool FItemBaseData::Stack(FItemBaseData other)
 #pragma endregion
 
 
-//UUtility UUtility::GetNewHealUtility()
-//{
-//    return UHealUtility();
-//}
-
 bool FUseData::Use(APlanetSixCharacter* player)
 {
     int x = (int)UseType;
     FString s = s.FromInt(x);
     GEngine->AddOnScreenDebugMessage(1, 1.5, FColor::Magenta, s);
+    bool used = true;
     switch (UseType)
     {
     default:
     case EUseTypes::none:
         break;
     case EUseTypes::heal:
-        Heal(player);
+        used = Heal(player);
         break;
     case EUseTypes::crystal:
         EquipCrystal(player);
         break;
     }
-    return DestroyItemOnUse;
+    return DestroyItemOnUse && used;
 }
 
-void FUseData::Heal(APlanetSixCharacter* player)
+bool FUseData::Heal(APlanetSixCharacter* player)
 {
     for (size_t i = Fvalues.Num(); i < 1; i++)
     {
         Fvalues.Add(0);
     }
-    player->HealthRegen(Fvalues[0]);
-    PRINT("heal " , 1);
+    if (player->Attributes->Health.GetCurrentValue() < player->Attributes->Health.GetMaxValue())
+    {
+        player->HealthRegen(Fvalues[0]);
+        return true;
+    }
+    return false;
 }
 
 void FUseData::EquipCrystal(APlanetSixCharacter* player)
@@ -638,6 +535,6 @@ void FUseData::EquipCrystal(APlanetSixCharacter* player)
     player->Attributes->WeaponDamage.BaseValue += weaponValue;
     player->Attributes->Shield.BaseValue += shieldValue;
     Bvalues[0] = !Bvalues[0];
-    PRINT("crystal", 1);   
+    PRINT("crystal", 1);
 }
 
