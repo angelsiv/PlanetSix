@@ -28,7 +28,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UTextRenderComponent* textrenderQuest;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		USkeletalMeshComponent* skeleton;
 
 	UPROPERTY(EditAnywhere)
@@ -36,9 +36,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Quest")
 		FName QuestID;
+
 	UPROPERTY(EditAnywhere)
 		UAnimationAsset* AnimInteract;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bOnInteraction;
 
 	UPROPERTY(BlueprintReadWrite)
