@@ -43,7 +43,7 @@ APlayerCameraManager* AWeaponBase::GetLocalCameraManager()
 
 void AWeaponBase::DoWeaponDamage_Implementation(ABaseCharacter* ActorHit, APlanetSixCharacter* DamageDealer)
 {
-	ActorHit->ReceiveDamage(DamageDealer->WeaponDamage());
+	ActorHit->ReceiveDamage(DamageDealer->WeaponDamage(),DamageDealer);
 }
 
 void AWeaponBase::Fire(ABaseCharacter*& ActorToHit, APlanetSixCharacter*& DamageGiver)
