@@ -280,6 +280,9 @@ void UPlanetSixGameInstance::AddItemsToinventoryplayer(TArray<FItemBaseData> Ite
 void UPlanetSixGameInstance::ReloadNetwork()
 {
 	APlanetSixPlayerState* PlayerState = GetPrimaryPlayerController()->GetPlayerState<APlanetSixPlayerState>();
-	PlayerState->ReloadPlayerInfo();
-
+	if (!PlayerState) {
+		print("No player State F",-1);
+		
+		//	PlayerState->ReloadPlayerInfo();
+	}
 }

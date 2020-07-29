@@ -85,13 +85,13 @@ void ASkill::DoDamage_Implementation(APlanetSixEnemy* DamageReceiver)
 	case ESkillDamageType::None:
 		break;
 	case ESkillDamageType::Raw:
-		DamageReceiver->ReceiveDamage(AbilityDamage_Raw);
+		DamageReceiver->ReceiveDamage(AbilityDamage_Raw, OwnerCharacter);
 		break;
 	case ESkillDamageType::AoE:
-		DamageReceiver->ReceiveDamage(AbilityDamage_AoE);
+		DamageReceiver->ReceiveDamage(AbilityDamage_AoE, OwnerCharacter);
 		break;
 	case ESkillDamageType::DoT:
-		DamageReceiver->ReceiveDamage(AbilityDamage_DoT);
+		DamageReceiver->ReceiveDamage(AbilityDamage_DoT,OwnerCharacter);
 		break;
 	default:
 		break;
