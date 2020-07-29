@@ -88,7 +88,7 @@ class PLANETSIX_API UAttributesDataFunctionLibrary : public UBlueprintFunctionLi
 public:
 	/* Getters */
 
-	/** Blueprint Function to return the value of CurrentValue from the struct 
+	/** Blueprint Function to return the value of CurrentValue from the struct
 	@Params AttributesData value to get from the struct*/
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Getter")
 		static float GetCurrentValue(UPARAM(ref) FAttributesData& AttributesData) { return AttributesData.GetCurrentValue(); }
@@ -182,7 +182,7 @@ public:
 	void OnWeaponDamageUpdate();
 	/** Response to ability damage attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnAbilityDamageUpdate();
-		
+
 	/** This region below is for replication on a server - client model only*/
 #pragma region OnRep_Attributes
 	UFUNCTION()
@@ -218,7 +218,8 @@ public:
 		bool bIsLevelUp = false;
 
 	//update the values of attributes depending on the modifiers
-	void UpdateAttributes();
+	UFUNCTION(BlueprintCallable)
+		void UpdateAttributes();
 
 protected:
 	// Called when the game starts
@@ -237,4 +238,7 @@ protected:
 	//Add a level when XP reaches the required XP.
 	UFUNCTION(BlueprintCallable)
 		void LevelUp();
+
+	UFUNCTION(BlueprintCallable)
+		void FullHeal();
 };

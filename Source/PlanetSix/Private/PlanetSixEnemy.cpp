@@ -28,9 +28,6 @@ APlanetSixEnemy::APlanetSixEnemy(const FObjectInitializer& ObjectInitializer)
 	MovComp = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovComp"));
 	Attributes = CreateDefaultSubobject<UAttributesComponent>(TEXT("Attributes"));
 
-
-
-
 	/*Mesh->SetGenerateOverlapEvents(false);
 	Mesh->SetCollisionProfileName(TEXT("NoCollision"));
 	Mesh->CanCharacterStepUpOn = ECB_No;
@@ -41,7 +38,6 @@ APlanetSixEnemy::APlanetSixEnemy(const FObjectInitializer& ObjectInitializer)
 	Collider->SetNotifyRigidBodyCollision(true);*/
 
 	//AIControllerClass = AEnemyController::StaticClass();
-
 
 	//RootComponent = Collider;
 	//Collider->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel1,ECollisionResponse::ECR_Block);
@@ -56,16 +52,12 @@ void APlanetSixEnemy::BeginPlay()
 	//Find Player
 	//NameWidget = CreateWidget<UEnemyNameWidget>(GetWorld(), NameWidgetClass);
 
-
-
 	SetWidget();
-
 
 	DynamicMat = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
 
-
-	if (TextureCurve) {
-
+	if (TextureCurve) 
+	{
 		FOnTimelineFloat TimelineCallback;
 		FOnTimelineEventStatic TimelineFinishedCallback;
 
@@ -73,12 +65,7 @@ void APlanetSixEnemy::BeginPlay()
 		TimelineFinishedCallback.BindUFunction(this, FName("DestroyEnemy"));
 		MyTimeline.AddInterpFloat(TextureCurve, TimelineCallback);
 		MyTimeline.SetTimelineFinishedFunc(TimelineFinishedCallback);
-
-
 	}
-
-
-
 }
 
 // Called every frame
@@ -89,17 +76,14 @@ void APlanetSixEnemy::Tick(float DeltaTime)
 		MyTimeline.TickTimeline(DeltaTime);
 	}
 
-
 	UpdateWidget();
 
-	if (IsDead()) {
-
+	if (IsDead()) 
+	{
 		if (!bIsDeadOnce)
 		{
-
 			Death();
 			bIsDeadOnce = true;
-
 		}
 	}
 }
@@ -118,7 +102,6 @@ void APlanetSixEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void APlanetSixEnemy::Death()
 {
-
 	MyTimeline.PlayFromStart();
 	//add xp to the player
 	auto OwnerPlayer = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
@@ -157,7 +140,6 @@ void APlanetSixEnemy::EnemyReceieveDamage(ABaseCharacter* Actor)
 void APlanetSixEnemy::DestroyEnemy()
 {
 	Destroy();
-
 }
 
 int APlanetSixEnemy::GetID()
@@ -170,7 +152,8 @@ void APlanetSixEnemy::ControlMaterial()
 	TimelineValue = MyTimeline.GetPlaybackPosition();
 	CurveFloatValue = TextureCurve->GetFloatValue(TimelineValue);
 	print("CurveFloatValue : " + FString::SanitizeFloat(CurveFloatValue) + " at " + FString::SanitizeFloat(TimelineValue), 11);
-	if (DynamicMat) {
+	if (DynamicMat) 
+	{
 		DynamicMat->SetScalarParameterValue(FName("Opacity"), CurveFloatValue);
 	}
 }
