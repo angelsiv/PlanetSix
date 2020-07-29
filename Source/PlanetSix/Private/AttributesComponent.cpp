@@ -122,7 +122,8 @@ void UAttributesComponent::LevelUp()
 
 void UAttributesComponent::UpdateAttributes()
 {
-	Health.SetMaxValue(FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier()));
+	float HealthScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier());
+	Health.SetMaxValue(HealthScaledToLevel);
 }
 
 //** getter for base value of attribute */
