@@ -68,6 +68,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = MandatoryToFill)
 		UCurveFloat* TextureCurve;
 
+
+
 	FTimeline MyTimeline;
 
 protected:
@@ -75,6 +77,9 @@ protected:
 	float CurveFloatValue;
 	float TimelineValue;
 	bool bIsDeadOnce=false;
+
+
+
 
 	UPROPERTY(Category = Movement, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UFloatingPawnMovement* MovComp;

@@ -16,6 +16,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "AIEnemyBaseController.h"
 
 #define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
@@ -60,9 +61,9 @@ void APlanetSixEnemy::BeginPlay()
 
 	SetWidget();
 
-
-	DynamicMat = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
-
+	if (EnemyMaterial) {
+		DynamicMat = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
+	}
 
 	if (TextureCurve) {
 
@@ -141,6 +142,9 @@ void APlanetSixEnemy::Death()
 			}
 		}
 	}
+	if(!DynamicMat){
+		Destroy();
+	}
 
 }
 
@@ -149,7 +153,14 @@ void APlanetSixEnemy::EnemyReceieveDamage(ABaseCharacter* Actor)
 	if (GetController()) {
 		UBlackboardComponent* Blackboard = UAIBlueprintHelperLibrary::GetBlackboard(GetController());
 		if (Blackboard) { Blackboard->SetValueAsObject(FName("TargetToFollow"), Actor); }
-	
+		print("Recieve enemy target in blackboard", -1);
+	}
+
+	AAIEnemyBaseController* AICont = Cast<AAIEnemyBaseController>(GetController());
+	if (AICont) {
+		AICont->PlayerRef = Cast<APlanetSixCharacter>(Actor);
+		print("Recieve enemy target in AI", -1);
+
 	}
 	
 }
