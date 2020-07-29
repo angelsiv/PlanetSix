@@ -257,6 +257,7 @@ public:
     UInventoryComponent(int32 invSize);
 
     bool add(FItemBaseData item, int  numberOfQuestItems);
+
     bool add(int Id, int Quantity);
     bool addNormal(FItemBaseData item);
     bool addQuest(FItemBaseData item);
