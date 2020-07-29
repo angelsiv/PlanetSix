@@ -26,6 +26,9 @@ AMapTravel::AMapTravel()
 	RootComponent = BoxCollider;
 	MeshComponent->AttachToComponent(BoxCollider, FAttachmentTransformRules::KeepRelativeTransform);
 	LocationText->AttachToComponent(BoxCollider, FAttachmentTransformRules::KeepRelativeTransform);
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> PortalUseSoundFile(TEXT("/Game/Audio/SFX/Portal/Cue_Portal_Enter"));
+	PortalUseSoundCue = PortalUseSoundFile.Object;
 }
 
 // Called when the game starts or when spawned
@@ -53,6 +56,10 @@ void AMapTravel::TravelTo()
 			GameInstance->AddItemsToinventoryplayer(Player->InventoryComponent->GetItems());
 		}
 
+		//Play sound cue
+		UGameplayStatics::PlaySound2D(this, PortalUseSoundCue);
+
+		//Travel
 		if (GetWorld()->ServerTravel(LevelName)) 
 		{
 			print("should travel", -1);	
