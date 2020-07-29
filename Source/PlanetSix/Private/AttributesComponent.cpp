@@ -71,10 +71,11 @@ void UAttributesComponent::BeginPlay()
 	// ...
 	//TODO load previous experience
 	Experience.SetCurrentValue(0.f);
+	UpdateAttributes();
+	FullHeal();
 
 	SetActive(true);
 	SetIsReplicated(true);
-	
 }
 
 // update weapon damage when changing weapons
@@ -90,6 +91,11 @@ void UAttributesComponent::CheckLevelUp()
 		LevelUp();
 		CheckLevelUp();
 	}
+}
+
+void UAttributesComponent::FullHeal()
+{
+	Health.SetCurrentValue(Health.GetMaxValue());
 }
 
 void UAttributesComponent::LevelUp()
@@ -116,7 +122,8 @@ void UAttributesComponent::LevelUp()
 
 void UAttributesComponent::UpdateAttributes()
 {
-	Health.SetMaxValue(FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier()));
+	float HealthScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier());
+	Health.SetMaxValue(HealthScaledToLevel);
 }
 
 //** getter for base value of attribute */

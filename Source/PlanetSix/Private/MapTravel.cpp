@@ -49,6 +49,13 @@ void AMapTravel::TravelTo()
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->HasAuthority() && !(GetWorld()->IsInSeamlessTravel()))
 	{
+		UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetGameInstance());
+		APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
+		if (Player)
+		{
+			GameInstance->AddItemsToinventoryplayer(Player->InventoryComponent->GetItems());
+		}
+
 		//Play sound cue
 		UGameplayStatics::PlaySound2D(this, PortalUseSoundCue);
 

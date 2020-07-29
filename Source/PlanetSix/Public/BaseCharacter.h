@@ -100,8 +100,8 @@ public:
 
 	/** Method that lowers the health of the character it is called upon */
 	UFUNCTION(BlueprintCallable, Server, Reliable)
-		void ReceiveDamage(float Damage);
-	void ReceiveDamage_Implementation(float Damage);
+		void ReceiveDamage(float Damage, ABaseCharacter* Actor);
+	void ReceiveDamage_Implementation(float Damage, ABaseCharacter* Actor);
 	/** Method that reloads shields over time on the server*/
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 		void ReloadShields(float DeltaSeconds);
@@ -121,5 +121,9 @@ public:
 	/** Method that is called upon death  */
 	UFUNCTION(BlueprintCallable)
 		virtual void Death();
+
+	UFUNCTION()
+		virtual void EnemyReceieveDamage(ABaseCharacter* Actor);
+
 };
 
