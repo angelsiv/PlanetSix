@@ -8,6 +8,7 @@
 #include "AttributesComponent.generated.h"
 
 class UUserWidget;
+class USoundCue;
 
 /** Base Attributes for all characters. */
 UENUM(BlueprintType)
@@ -37,7 +38,7 @@ struct PLANETSIX_API FAttributesData
 		: BaseValue(1.f)
 		, CurrentValue(BaseValue)
 		, MaxValue(BaseValue)
-		, CurrentModifier((int32)CurrentValue / 2)
+		, CurrentModifier(1)
 		, MainUI()
 	{}
 
@@ -45,7 +46,7 @@ struct PLANETSIX_API FAttributesData
 		: BaseValue(DefaultValue)
 		, CurrentValue(BaseValue)
 		, MaxValue(BaseValue)
-		, CurrentModifier((int32)CurrentValue / 2)
+		, CurrentModifier(1)
 		, MainUI()
 	{}
 
@@ -75,7 +76,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 		float MaxValue;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
-		int32 CurrentModifier;
+		float CurrentModifier;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 		UUserWidget* MainUI;
 };
@@ -87,7 +88,7 @@ class PLANETSIX_API UAttributesDataFunctionLibrary : public UBlueprintFunctionLi
 public:
 	/* Getters */
 
-	/** Blueprint Function to return the value of CurrentValue from the struct 
+	/** Blueprint Function to return the value of CurrentValue from the struct
 	@Params AttributesData value to get from the struct*/
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Attributes Data Getter")
 		static float GetCurrentValue(UPARAM(ref) FAttributesData& AttributesData) { return AttributesData.GetCurrentValue(); }
@@ -155,6 +156,9 @@ public:
 	/** Ability damage attribute for the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Damage", Replicated, ReplicatedUsing = OnRep_AbilityDamage)
 		FAttributesData AbilityDamage;
+	/* To store the Level Up Sound Cue*/
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue* LevelUpSoundCue;
 
 	/** Response to armors proficiency attribute being updated. Called on the server immediately after modification, and on clients in response to a RepNotify */
 	void OnArmorsProficiencyUpdate();
@@ -213,6 +217,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		bool bIsLevelUp = false;
 
+	//update the values of attributes depending on the modifiers
+	UFUNCTION(BlueprintCallable)
+		void UpdateAttributes();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -230,4 +238,7 @@ protected:
 	//Add a level when XP reaches the required XP.
 	UFUNCTION(BlueprintCallable)
 		void LevelUp();
+
+	UFUNCTION(BlueprintCallable)
+		void FullHeal();
 };

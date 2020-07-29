@@ -107,7 +107,7 @@ void UPlanetSixGameInstance::ReduceCurrentTargetNumber(int ID)
 
 		APlanetSixCharacter* Player = Cast<APlanetSixCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 		int32 var = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
-		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var)));
+		Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var) + " Left"));
 
 		if (PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] <= 0)
 		{
@@ -141,7 +141,7 @@ int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
 			{
 				PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID] -= Quantity;
 				int32 var = PlayerInfo.QuestAccepted.objectives[objectiveNumber].Targets[ID];
-				Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var)));
+				Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(var) + " Left"));
 				print("numbers Left to pick " + FString::FromInt(var), -1);
 				return Quantity;
 			}
@@ -221,7 +221,7 @@ void UPlanetSixGameInstance::MoveToNextObjective()
 			{
 			y = pair.Key;
 			}
-			Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[y])));
+			Player->CurrentQuestTracker->Lefttokill->SetText(FText::FromString(FString::FromInt(PlayerInfo.QuestAccepted.objectives[PlayerInfo.QuestAccepted.AtObjectiveNumber].Targets[y])+" Left"));
 			
 		}
 	}
@@ -251,6 +251,21 @@ void UPlanetSixGameInstance::AddQuest(FQuestData Quest)
 	}
 }
 
+void UPlanetSixGameInstance::AbandonQuest()
+{
+	
+	for (FQuestData q : PlayerInfo.QuestsRegistered)
+	{
+		if (q.QuestID == PlayerInfo.QuestAccepted.QuestID) {
+			PlayerInfo.QuestAccepted = FQuestData::Empty();
+			break;
+		}
+	}
+	print("Quest Abadonned in C++", -1);
+	ReloadNetwork();
+
+}
+
 void UPlanetSixGameInstance::AddItemsToinventoryplayer(TArray<FItemBaseData> Items)
 {
 	PlayerInfo.InventoryItemsID.Empty();
@@ -265,6 +280,9 @@ void UPlanetSixGameInstance::AddItemsToinventoryplayer(TArray<FItemBaseData> Ite
 void UPlanetSixGameInstance::ReloadNetwork()
 {
 	APlanetSixPlayerState* PlayerState = GetPrimaryPlayerController()->GetPlayerState<APlanetSixPlayerState>();
-	PlayerState->ReloadPlayerInfo();
-
+	if (!PlayerState) {
+		print("No player State F",-1);
+		
+		//	PlayerState->ReloadPlayerInfo();
+	}
 }

@@ -6,6 +6,8 @@
 #include "ItemBase.h"
 #include "Engine.h"
 
+#define PRINT(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::Black,text)
+
 
 #pragma region Inventory
 
@@ -50,6 +52,14 @@ FString UInventoryComponent::Test()
     return FString::FromInt(items.Num());
 }
 
+void UInventoryComponent::UseItem(int index, APlanetSixCharacter* player)
+{
+    if (items[index].Use(player))
+    {
+        this->RemoveItem(items[index].id, 1);
+    }
+}
+
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
@@ -90,7 +100,7 @@ bool UInventoryComponent::addNormal(FItemBaseData item)
 {
     auto x = Cast<UPlanetSixGameInstance>(owner->GetGameInstance());
 
-    
+
     //look for the same item in inv
     for (int i = 0; i < items.Num(); i++)
     {
@@ -111,7 +121,7 @@ bool UInventoryComponent::addNormal(FItemBaseData item)
         {
             //it item already in inventory
             //return items[i].Stack(item);
-          
+
             if (items[i].Stack(item))
             {
                 return true;
@@ -128,7 +138,7 @@ bool UInventoryComponent::addNormal(FItemBaseData item)
         }
     }
 
-  
+
     x->AddItemsToinventoryplayer(items);
 
     //if there is no spot left
@@ -197,7 +207,7 @@ void UInventoryComponent::RemoveQuestItem(int id, int quantity)
 // Returns:
 //   Return true if it was able to add the item, otherwise return false.
 //
-bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems=0)
+bool UInventoryComponent::add(FItemBaseData item, int  numberOfQuestItems = 0)
 {
     if (numberOfQuestItems > item.quantity)
     {
@@ -237,6 +247,7 @@ bool UInventoryComponent::add(int Id, int Quantity)
         itemData.value = itemDataPointer->getValue();
         itemData.weight = itemDataPointer->getWeight();
         itemData.icon = itemDataPointer->getIcon();
+        itemData.use = itemDataPointer->use;
         itemData.quantity = Quantity;
         return add(itemData);
     }
@@ -301,7 +312,7 @@ void UInventoryComponent::RemoveItem(int id, int quantity)
     {
         if (items[i].id == id)
         {
-            if (quantity < 0|| items[i].quantity<=quantity)
+            if (quantity < 0 || items[i].quantity <= quantity)
             {
                 takeItem(i);
             }
@@ -312,72 +323,6 @@ void UInventoryComponent::RemoveItem(int id, int quantity)
         }
     }
 }
-
-
-//
-//int Uinventory::compare(FitemInv* i1, FitemInv* i2, sortingMode mode)
-//{
-//	switch (mode)
-//	{
-//	case Uinventory::alphabetical:
-//		return FitemInv::compare(i1, i2, 1);
-//	case Uinventory::price:
-//		return FitemInv::compare(i1, i2, 1);
-//	case Uinventory::weight:
-//		return FitemInv::compare(i1, i2, 1);
-//	case Uinventory::totalPrice:
-//		if (i1->getTotalValue() > i2->getTotalValue())
-//		{
-//			return 1;
-//		}
-//		else if (i1->getTotalValue() < i2->getTotalValue())
-//		{
-//			return -1;
-//		}
-//		break;
-//	case Uinventory::totalWeight:
-//		if (i1->getTotalWeight() > i2->getTotalWeight())
-//		{
-//			return 1;
-//		}
-//		else if (i1->getTotalWeight() < i2->getTotalWeight())
-//		{
-//			return -1;
-//		}
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	return 0;
-//}
-
-void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
-{
-    int largest = i; // Initialize largest as root 
-    int l = 2 * i + 1; // left = 2*i + 1 
-    int r = 2 * i + 2; // right = 2*i + 2 
-
-    // If left child is larger than root 
-    //if (l < n && compare(items[i], items[largest], mode)>0)
-        //largest = l;
-
-    // If right child is larger than largest so far 
-    //if (r < n && compare(items[r], items[largest], mode)>0)
-        //largest = r;
-
-    // If largest is not root 
-    if (largest != i)
-    {
-        auto temp = items[largest];
-        items[largest] = items[i];
-        items[i] = temp;
-
-        // Recursively heapify the affected sub-tree 
-        heapify(n, largest, mode);
-    }
-}
-
 
 
 
@@ -392,7 +337,7 @@ void UInventoryComponent::heapify(int n, int i, ESortingMode mode)
 
 FItemBaseData FItemBaseData::GetCopy(FItemBaseData original)
 {
-    return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity, original.icon);
+    return FItemBaseData(original.id, original.displayName, original.weight, original.value, original.quantity, original.icon, original.use);
 }
 
 
@@ -459,107 +404,6 @@ int FItemBaseData::compare(FItemBaseData  i1, FItemBaseData  i2, ECompareField t
     return result;
 }
 
-int FCraftableItemData::compare(FCraftableItemData  i1, FCraftableItemData  i2, ECompareField type)
-{
-    int result = 0;
-    switch (type)
-    {
-    case ECompareField::name:
-        if (i1.displayName > i2.displayName)
-        {
-            result = 1;
-        }
-        else if (i1.displayName < i2.displayName)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::price:
-        if (i1.value > i2.value)
-        {
-            result = 1;
-        }
-        else if (i1.value < i2.value)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::Health:
-        if (i1.Health > i2.Health)
-        {
-            result = 1;
-        }
-        else if (i1.Health < i2.Health)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::id:
-        if (i1.id > i2.id)
-        {
-            result = 1;
-        }
-        else if (i1.id < i2.id)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::quantity:
-        if (i1.quantity > i2.quantity)
-        {
-            result = 1;
-        }
-        else if (i1.quantity < i2.quantity)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::Shield:
-        if (i1.Shield > i2.Shield)
-        {
-            result = 1;
-        }
-        else if (i1.Shield < i2.Shield)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::Armor:
-        if (i1.Armor > i2.Armor)
-        {
-            result = 1;
-        }
-        else if (i1.Armor < i2.Armor)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::WeaponDMG:
-        if (i1.WeaponDamage > i2.WeaponDamage)
-        {
-            result = 1;
-        }
-        else if (i1.WeaponDamage < i2.WeaponDamage)
-        {
-            result = -1;
-        }
-        break;
-    case ECompareField::AbilityDMG:
-        if (i1.AbilityDamage > i2.AbilityDamage)
-        {
-            result = 1;
-        }
-        else if (i1.AbilityDamage < i2.AbilityDamage)
-        {
-            result = -1;
-        }
-        break;
-    default:
-        break;
-    }
-
-    return result;
-}
 
 int FItemBaseData::getId()
 {
@@ -601,6 +445,11 @@ UTexture2D* FItemBaseData::getIcon()
     return icon;
 }
 
+bool FItemBaseData::Use(APlanetSixCharacter* player)
+{
+    PRINT("using Item", -1);
+    return use.Use(player);
+}
 
 bool FItemBaseData::Stack(FItemBaseData other)
 {
@@ -616,4 +465,74 @@ bool FItemBaseData::Stack(FItemBaseData other)
 }
 #pragma endregion
 
+
+bool FUseData::Use(APlanetSixCharacter* player)
+{
+    int x = (int)UseType;
+    FString s = s.FromInt(x);
+    GEngine->AddOnScreenDebugMessage(1, 1.5, FColor::Magenta, s);
+    bool used = true;
+    switch (UseType)
+    {
+    default:
+    case EUseTypes::none:
+        break;
+    case EUseTypes::heal:
+        used = Heal(player);
+        break;
+    case EUseTypes::crystal:
+        EquipCrystal(player);
+        break;
+    }
+    return DestroyItemOnUse && used;
+}
+
+bool FUseData::Heal(APlanetSixCharacter* player)
+{
+    for (size_t i = Fvalues.Num(); i < 1; i++)
+    {
+        Fvalues.Add(0);
+    }
+    if (player->Attributes->Health.GetCurrentValue() < player->Attributes->Health.GetMaxValue())
+    {
+        player->HealthRegen(Fvalues[0]);
+        return true;
+    }
+    return false;
+}
+
+void FUseData::EquipCrystal(APlanetSixCharacter* player)
+{
+    for (size_t i = Fvalues.Num(); i < 5; i++)
+    {
+        Fvalues.Add(0);
+    }
+
+    for (size_t i = Bvalues.Num(); i < 1; i++)
+    {
+        Bvalues.Add(0);
+    }
+
+    int armorValue = Fvalues[0];
+    int abilityValue = Fvalues[1];
+    int healthValue = Fvalues[2];
+    int weaponValue = Fvalues[3];
+    int shieldValue = Fvalues[4];
+
+    if (Bvalues[0])
+    {
+        armorValue *= -1;
+        abilityValue *= -1;
+        healthValue *= -1;
+        weaponValue *= -1;
+        shieldValue *= -1;
+    }
+    player->Attributes->Health.CurrentModifier += healthValue;
+    player->Attributes->AbilityDamage.CurrentModifier += abilityValue;
+    player->Attributes->ArmorReduction.CurrentModifier += armorValue;
+    player->Attributes->WeaponDamage.CurrentModifier += weaponValue;
+    player->Attributes->Shield.CurrentModifier += shieldValue;
+    Bvalues[0] = !Bvalues[0];
+    PRINT("crystal", 1);
+}
 

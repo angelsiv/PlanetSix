@@ -4,7 +4,11 @@
 #include "AttributesComponent.h"
 #include "Engine.h"
 #include "UMG/Public/Blueprint/UserWidget.h"
+#include "PlanetSixGameInstance.h"
 #include "Net/UnrealNetwork.h"
+
+
+#define print(text, i) if (GEngine) GEngine->AddOnScreenDebugMessage(i, 1.5, FColor::White,text)
 
 // Sets default values for this component's properties
 UAttributesComponent::UAttributesComponent()
@@ -22,9 +26,10 @@ UAttributesComponent::UAttributesComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 	
+	// Find the LevelUp Sound Cue
+	static ConstructorHelpers::FObjectFinder<USoundCue> LevelUpSoundFile(TEXT("/Game/Audio/SFX/Character/Cue_LevelUp"));
+	LevelUpSoundCue = LevelUpSoundFile.Object;
 }
 
 void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -48,6 +53,13 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 void UAttributesComponent::GainExperience(float XpAmount)
 {
 	Experience.SetCurrentValue(Experience.GetCurrentValue() + XpAmount);
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetOwner()->GetGameInstance());
+	FPlayerInfo tempplayer = GameInstance->GetPlayerInfo();
+	tempplayer.Experience = Experience.GetCurrentValue();
+
+	print(FString::SanitizeFloat(tempplayer.Experience), -1);
+
+	GameInstance->SetPlayerInfo(tempplayer);
 	CheckLevelUp();
 }
 
@@ -59,6 +71,8 @@ void UAttributesComponent::BeginPlay()
 	// ...
 	//TODO load previous experience
 	Experience.SetCurrentValue(0.f);
+	UpdateAttributes();
+	FullHeal();
 
 	SetActive(true);
 	SetIsReplicated(true);
@@ -68,6 +82,7 @@ void UAttributesComponent::BeginPlay()
 void UAttributesComponent::UpdateWeaponDamage(float BaseWeaponDamage)
 {
 	WeaponDamage.SetCurrentValue(BaseWeaponDamage);
+	WeaponDamage.CurrentModifier = BaseWeaponDamage;
 }
 
 void UAttributesComponent::CheckLevelUp()
@@ -75,7 +90,17 @@ void UAttributesComponent::CheckLevelUp()
 	if (Experience.GetMaxValue() <= Experience.GetCurrentValue())
 	{
 		LevelUp();
+		CheckLevelUp();
 	}
+}
+
+void UAttributesComponent::FullHeal()
+{
+	Health.SetCurrentValue(Health.GetMaxValue());
+	Shield.SetCurrentValue(Shield.GetMaxValue());
+	ArmorReduction.SetCurrentValue(ArmorReduction.GetMaxValue());
+	WeaponDamage.SetCurrentValue(WeaponDamage.GetMaxValue());
+	AbilityDamage.SetCurrentValue(AbilityDamage.GetMaxValue());
 }
 
 void UAttributesComponent::LevelUp()
@@ -83,8 +108,43 @@ void UAttributesComponent::LevelUp()
 	float BaseXp = 5000;
 	float ExponentXp = 1.05f;
 	Level.SetCurrentValue(Level.GetCurrentValue() + 1);
+	//Experience.SetCurrentValue(Experience.GetCurrentValue() - Experience.GetMaxValue());
 	Experience.SetMaxValue(BaseXp * Level.GetCurrentValue() * ExponentXp);
+	UPlanetSixGameInstance* GameInstance = Cast<UPlanetSixGameInstance>(GetOwner()->GetGameInstance());
+	FPlayerInfo TempPlayer = GameInstance->GetPlayerInfo();
+	TempPlayer.Level = Level.GetCurrentValue();
+	/*TempPlayer.MaxExperience = Level.GetMaxValue();*/
+
+	//fully heal the player
+	FullHeal();
+
+	GameInstance->SetPlayerInfo(TempPlayer);
+
+	print(FString::FromInt(TempPlayer.Level), -1);
+	//print(FString::SanitizeFloat(TempPlayer.MaxExperience), -1);
 	bIsLevelUp = true;
+	
+	//Play Level Up Sound cue
+	UGameplayStatics::PlaySound2D(this, LevelUpSoundCue);
+}
+
+void UAttributesComponent::UpdateAttributes()
+{
+	//health scale
+	float HealthScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier());
+	Health.SetMaxValue(HealthScaledToLevel);
+	//shield scale
+	float ShieldScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Shield.GetBaseValue()) * Shield.GetCurrentModifier());
+	Shield.SetMaxValue(ShieldScaledToLevel);
+	//armor scale
+	float ArmorScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * ArmorReduction.GetBaseValue()) * ArmorReduction.GetCurrentModifier());
+	ArmorReduction.SetMaxValue(ArmorScaledToLevel);
+	//weapon dmg scale
+	float WeaponDMGScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * WeaponDamage.GetBaseValue()) + WeaponDamage.GetCurrentModifier());
+	WeaponDamage.SetMaxValue(WeaponDMGScaledToLevel);
+	//ability dmg scale
+	float AbilityDMGScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * AbilityDamage.GetBaseValue()) * AbilityDamage.GetCurrentModifier());
+	AbilityDamage.SetMaxValue(AbilityDMGScaledToLevel);
 }
 
 //** getter for base value of attribute */

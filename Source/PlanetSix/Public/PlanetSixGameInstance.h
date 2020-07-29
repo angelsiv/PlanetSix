@@ -84,6 +84,8 @@ public:
     UFUNCTION(BlueprintCallable)
         void AddQuest(FQuestData quest);
     
+    UFUNCTION(BlueprintCallable)
+        void AbandonQuest();
 
     UFUNCTION(BlueprintCallable)
         void AddItemsToinventoryplayer(TArray<FItemBaseData> Items);
