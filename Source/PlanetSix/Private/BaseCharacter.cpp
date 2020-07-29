@@ -47,7 +47,7 @@ void ABaseCharacter::ReloadShields_Implementation(float DeltaTime)
 	}
 }
 
-void ABaseCharacter::ReceiveDamage_Implementation(float Damage, APlanetSixCharacter* Actor)
+void ABaseCharacter::ReceiveDamage_Implementation(float Damage, ABaseCharacter* Actor)
 {
 
 	if (Attributes->Shield.GetCurrentValue() > 0)
@@ -106,7 +106,7 @@ void ABaseCharacter::Death()
 
 }
 
-void ABaseCharacter::EnemyReceieveDamage(APlanetSixCharacter* Actor)
+void ABaseCharacter::EnemyReceieveDamage(ABaseCharacter* Actor)
 {
 }
 

@@ -106,7 +106,7 @@ public:
 	virtual void Death() override;
 	
 	
-	virtual void EnemyReceieveDamage(APlanetSixCharacter* Actor) override;
+	virtual void EnemyReceieveDamage(ABaseCharacter* Actor) override;
 	
 	
 	int GetID();
