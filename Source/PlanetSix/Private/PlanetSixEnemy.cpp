@@ -59,7 +59,7 @@ void APlanetSixEnemy::BeginPlay()
 		DynamicMat = GetMesh()->CreateDynamicMaterialInstance(0, EnemyMaterial);
 	}
 
-	if (TextureCurve) 
+	if (TextureCurve)
 	{
 		FOnTimelineFloat TimelineCallback;
 		FOnTimelineEventStatic TimelineFinishedCallback;
@@ -81,7 +81,7 @@ void APlanetSixEnemy::Tick(float DeltaTime)
 
 	UpdateWidget();
 
-	if (IsDead()) 
+	if (IsDead())
 	{
 		if (!bIsDeadOnce)
 		{
@@ -127,7 +127,7 @@ void APlanetSixEnemy::Death()
 			}
 		}
 	}
-	if(!DynamicMat){
+	if (!DynamicMat) {
 		Destroy();
 	}
 
@@ -137,23 +137,24 @@ void APlanetSixEnemy::EnemyReceieveDamage(ABaseCharacter* Actor)
 {
 	if (GetController()) {
 		UBlackboardComponent* Blackboard = UAIBlueprintHelperLibrary::GetBlackboard(GetController());
-		if (Blackboard) { 
+		if (Blackboard) {
 			UObject* BBObject = Blackboard->GetValueAsObject(FName("TargetToFollow"));
 			if (!BBObject) {
 
 				Blackboard->SetValueAsObject(FName("TargetToFollow"), Actor);
+
+				print("Recieve enemy target in blackboard" + Actor->GetFName().ToString(), -1);
 			}
 		}
-		print("Recieve enemy target in blackboard", -1);
 	}
 
 	AAIEnemyBaseController* AICont = Cast<AAIEnemyBaseController>(GetController());
 	if (AICont && !(AICont->PlayerRef)) {
 		AICont->PlayerRef = Cast<APlanetSixCharacter>(Actor);
-		print("Recieve enemy target in AI", -1);
+		print("Recieve enemy target in AI with name: " + Actor->GetFName().ToString(), -1);
 
 	}
-	
+
 }
 
 void APlanetSixEnemy::DestroyEnemy()
@@ -171,7 +172,7 @@ void APlanetSixEnemy::ControlMaterial()
 	TimelineValue = MyTimeline.GetPlaybackPosition();
 	CurveFloatValue = TextureCurve->GetFloatValue(TimelineValue);
 	print("CurveFloatValue : " + FString::SanitizeFloat(CurveFloatValue) + " at " + FString::SanitizeFloat(TimelineValue), 11);
-	if (DynamicMat) 
+	if (DynamicMat)
 	{
 		DynamicMat->SetScalarParameterValue(FName("Opacity"), CurveFloatValue);
 	}
