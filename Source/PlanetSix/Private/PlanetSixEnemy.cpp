@@ -137,12 +137,18 @@ void APlanetSixEnemy::EnemyReceieveDamage(ABaseCharacter* Actor)
 {
 	if (GetController()) {
 		UBlackboardComponent* Blackboard = UAIBlueprintHelperLibrary::GetBlackboard(GetController());
-		if (Blackboard) { Blackboard->SetValueAsObject(FName("TargetToFollow"), Actor); }
+		if (Blackboard) { 
+			UObject* BBObject = Blackboard->GetValueAsObject(FName("TargetToFollow"));
+			if (!BBObject) {
+
+				Blackboard->SetValueAsObject(FName("TargetToFollow"), Actor);
+			}
+		}
 		print("Recieve enemy target in blackboard", -1);
 	}
 
 	AAIEnemyBaseController* AICont = Cast<AAIEnemyBaseController>(GetController());
-	if (AICont) {
+	if (AICont && !(AICont->PlayerRef)) {
 		AICont->PlayerRef = Cast<APlanetSixCharacter>(Actor);
 		print("Recieve enemy target in AI", -1);
 
