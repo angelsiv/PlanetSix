@@ -71,16 +71,18 @@ void UAttributesComponent::BeginPlay()
 	// ...
 	//TODO load previous experience
 	Experience.SetCurrentValue(0.f);
+	UpdateAttributes();
+	FullHeal();
 
 	SetActive(true);
 	SetIsReplicated(true);
-	
 }
 
 // update weapon damage when changing weapons
 void UAttributesComponent::UpdateWeaponDamage(float BaseWeaponDamage)
 {
 	WeaponDamage.SetCurrentValue(BaseWeaponDamage);
+	WeaponDamage.CurrentModifier = BaseWeaponDamage;
 }
 
 void UAttributesComponent::CheckLevelUp()
@@ -90,6 +92,15 @@ void UAttributesComponent::CheckLevelUp()
 		LevelUp();
 		CheckLevelUp();
 	}
+}
+
+void UAttributesComponent::FullHeal()
+{
+	Health.SetCurrentValue(Health.GetMaxValue());
+	Shield.SetCurrentValue(Shield.GetMaxValue());
+	ArmorReduction.SetCurrentValue(ArmorReduction.GetMaxValue());
+	WeaponDamage.SetCurrentValue(WeaponDamage.GetMaxValue());
+	AbilityDamage.SetCurrentValue(AbilityDamage.GetMaxValue());
 }
 
 void UAttributesComponent::LevelUp()
@@ -104,6 +115,9 @@ void UAttributesComponent::LevelUp()
 	TempPlayer.Level = Level.GetCurrentValue();
 	/*TempPlayer.MaxExperience = Level.GetMaxValue();*/
 
+	//fully heal the player
+	FullHeal();
+
 	GameInstance->SetPlayerInfo(TempPlayer);
 
 	print(FString::FromInt(TempPlayer.Level), -1);
@@ -116,7 +130,21 @@ void UAttributesComponent::LevelUp()
 
 void UAttributesComponent::UpdateAttributes()
 {
-	Health.SetMaxValue(FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier()));
+	//health scale
+	float HealthScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Health.GetBaseValue()) * Health.GetCurrentModifier());
+	Health.SetMaxValue(HealthScaledToLevel);
+	//shield scale
+	float ShieldScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * Shield.GetBaseValue()) * Shield.GetCurrentModifier());
+	Shield.SetMaxValue(ShieldScaledToLevel);
+	//armor scale
+	float ArmorScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * ArmorReduction.GetBaseValue()) * ArmorReduction.GetCurrentModifier());
+	ArmorReduction.SetMaxValue(ArmorScaledToLevel);
+	//weapon dmg scale
+	float WeaponDMGScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * WeaponDamage.GetBaseValue()) + WeaponDamage.GetCurrentModifier());
+	WeaponDamage.SetMaxValue(WeaponDMGScaledToLevel);
+	//ability dmg scale
+	float AbilityDMGScaledToLevel = FMath::CeilToFloat(FMath::Sqrt(Level.GetCurrentValue() * AbilityDamage.GetBaseValue()) * AbilityDamage.GetCurrentModifier());
+	AbilityDamage.SetMaxValue(AbilityDMGScaledToLevel);
 }
 
 //** getter for base value of attribute */
