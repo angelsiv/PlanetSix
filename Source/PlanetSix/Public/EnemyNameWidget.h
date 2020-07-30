@@ -19,10 +19,10 @@ public:
 	
 
 	UPROPERTY(BlueprintReadWrite)
-	FString Name;
+	FString Name UMETA(ExposeOnSpawn = "true");
 
 	UPROPERTY(BlueprintReadWrite)
-	APlanetSixEnemy* OwnerEnemy;
+	APlanetSixEnemy* OwnerEnemy UMETA(ExposeOnSpawn = "true");
 
 	UPROPERTY(BlueprintReadWrite)
 	bool bIsVariablesInitialized;
