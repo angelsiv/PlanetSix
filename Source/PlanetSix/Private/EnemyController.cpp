@@ -186,7 +186,7 @@ void AEnemyController::Shoot()
 			if (ActorHit)
 			{
 				print("Hit Player", -1);
-				ActorHit->ReceiveDamage(EnemyBase->WeaponDamage());
+				ActorHit->ReceiveDamage(EnemyBase->WeaponDamage(),nullptr);
 			}
 		}
 		DrawDebugLine(GetWorld(), Begin, End, FColor::Blue, false, 1.0f, 0, 1.0f);

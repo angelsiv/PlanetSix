@@ -81,27 +81,27 @@ void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (AnimIdle) 
+	//if (AnimIdle) 
+	//{
+	//	if (AnimInteract) 
+	//	{
+	//		if (bOnInteraction)
+	//		{
+	//			skeleton->PlayAnimation(AnimInteract, true);
+	//		}
+	//	}
+	//	
+	/*	if (!bOnInteraction)
 	{
-		if (AnimInteract) 
-		{
-			if (bOnInteraction)
-			{
-				skeleton->PlayAnimation(AnimInteract, true);
-			}
-		}
-		
-		if (!bOnInteraction)
-		{
-			skeleton->PlayAnimation(AnimIdle, true);
-		}
+		skeleton->PlayAnimation(AnimIdle, true);
+	}*/
 
-	}
+	//}
 
-	if (textrenderQuest)
-	{
-		//textrenderQuest->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(textrenderQuest->GetComponentLocation(), UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation()));
-	}
+	//if (textrenderQuest)
+	//{
+	//	//textrenderQuest->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(textrenderQuest->GetComponentLocation(), UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraLocation()));
+	//}
 
 }
 

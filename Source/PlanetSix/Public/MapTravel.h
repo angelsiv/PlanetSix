@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class UTextRenderComponent;
+class USoundCue;
 
 UCLASS()
 class PLANETSIX_API AMapTravel : public AActor
@@ -19,10 +20,20 @@ public:
 	AMapTravel();
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) UStaticMeshComponent* MeshComponent;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) UBoxComponent* BoxCollider;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) UTextRenderComponent* LocationText;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Map") FString LevelName;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) 
+		UStaticMeshComponent* MeshComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) 
+		UBoxComponent* BoxCollider;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true")) 
+		UTextRenderComponent* LocationText;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Map") 
+		FString LevelName;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue* PortalUseSoundCue;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
