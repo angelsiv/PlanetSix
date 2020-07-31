@@ -3,3 +3,7 @@
 
 #include "AIEnemyBaseController.h"
 
+bool AAIEnemyBaseController::IsEnemyFollowingPath()
+{
+	return IsFollowingAPath();
+}

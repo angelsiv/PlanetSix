@@ -19,4 +19,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Battle)
 		APlanetSixCharacter* PlayerRef;
 
+	UFUNCTION(BlueprintCallable)
+	bool IsEnemyFollowingPath();
+
 };
