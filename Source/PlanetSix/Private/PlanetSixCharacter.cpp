@@ -491,7 +491,7 @@ void APlanetSixCharacter::Tick(float DeltaSeconds)
     {
         Death();
     }
-    DrawDebugString(GetWorld(), FVector(0, 0, 100), GetEnumText(GetLocalRole()), this, FColor::White, DeltaSeconds);
+    //DrawDebugString(GetWorld(), FVector(0, 0, 100), GetEnumText(GetLocalRole()), this, FColor::White, DeltaSeconds);
 }
 
 void APlanetSixCharacter::BeginPlay()
