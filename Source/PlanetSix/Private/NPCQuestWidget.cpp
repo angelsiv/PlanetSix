@@ -38,13 +38,14 @@ void UNPCQuestWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 	TextName->SetText(QuestDataNPC->NPCQuest.QuestTitleName);
 	TextDescription->SetText(QuestDataNPC->NPCQuest.QuestDescription);
+	TextObjectives1->SetText(QuestDataNPC->NPCQuest.objectives[0].ObjectiveDescription);
 
-	//most consuming Thing i have ever used but it works -Youcef
-	for (int32 i = 0; i < QuestDataNPC->NPCQuest.objectives.Num(); i++)
-	{
-		TextObjectives1->SetText(QuestDataNPC->NPCQuest.objectives[i].ObjectiveDescription);
-		/*TextObjectives2->SetText(QuestData.objectives[i].ObjectiveDescription);*/
-	}
+	////most consuming Thing i have ever used but it works -Youcef
+	//for (int32 i = 0; i < QuestDataNPC->NPCQuest.objectives.Num(); i++)
+	//{
+	//	
+	//	/*TextObjectives2->SetText(QuestData.objectives[i].ObjectiveDescription);*/
+	//}
 	
 	print("Printing " + QuestDataNPC->NPCQuest.QuestTitleName.ToString(), 9);
 	
