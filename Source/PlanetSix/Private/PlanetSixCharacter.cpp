@@ -486,6 +486,11 @@ void APlanetSixCharacter::Tick(float DeltaSeconds)
         Class->GainSkillPoint();
         Attributes->bIsLevelUp = false;
     }
+
+    if (IsDead())
+    {
+        Death();
+    }
     DrawDebugString(GetWorld(), FVector(0, 0, 100), GetEnumText(GetLocalRole()), this, FColor::White, DeltaSeconds);
 }
 
@@ -508,4 +513,5 @@ void APlanetSixCharacter::Death()
     SetActorTransform(RespawnPoint);
     Attributes->Health.SetCurrentValue(Attributes->Health.GetMaxValue());
     Attributes->Shield.SetCurrentValue(Attributes->Shield.GetMaxValue());
+    bIsDead = false;
 }
