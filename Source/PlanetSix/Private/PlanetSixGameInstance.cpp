@@ -165,16 +165,16 @@ int UPlanetSixGameInstance::ReduceItemNumber(int ID, int Quantity)
 
 void UPlanetSixGameInstance::SaveGame()
 {
-	
-	UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::CreateSaveGameObject(UPlanetSixSaveGame::StaticClass()));
-	SavedGame->PlayerInfo = GetPlayerInfoToSave();
+	//
+	//UPlanetSixSaveGame* SavedGame = Cast<UPlanetSixSaveGame>(UGameplayStatics::CreateSaveGameObject(UPlanetSixSaveGame::StaticClass()));
+	//SavedGame->PlayerInfo = GetPlayerInfoToSave();
 
-	print("Saving in PlayerSave " + PlayerSave.SaveName, -1);
+	//print("Saving in PlayerSave " + PlayerSave.SaveName, -1);
 
-	if (UGameplayStatics::SaveGameToSlot(SavedGame, PlayerSave.SaveName, 0)) {
-	
-		print("Saved true",-1);
-	}
+	//if (UGameplayStatics::SaveGameToSlot(SavedGame, PlayerSave.SaveName, 0)) {
+	//
+	//	print("Saved true",-1);
+	//}
 
 	CreateWidget<UUserWidget>(GetWorld(), SavingEffectWidget)->AddToViewport();
 	
