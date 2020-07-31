@@ -534,9 +534,9 @@ void FUseData::EquipCrystal(APlanetSixCharacter* player)
     player->Attributes->ArmorReduction.CurrentModifier += armorValue;
     player->Attributes->WeaponDamage.CurrentModifier += weaponValue;
     player->Attributes->Shield.CurrentModifier += shieldValue;
+    player->Attributes->UpdateAttributes();
     player->HealthRegen(player->Attributes->Health.GetMaxValue() - tempHealth);
     player->ShieldRegen(player->Attributes->Shield.GetMaxValue() - tempShield);
-    player->Attributes->FullHeal();
     Bvalues[0] = !Bvalues[0];
     PRINT("crystal", 1);
 }
