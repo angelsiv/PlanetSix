@@ -64,7 +64,7 @@ void ASkill::Tick(float DeltaTime)
 	ActivationTime -= DeltaTime;
 	CurrentCooldown -= DeltaTime;
 
-	DrawDebugString(GetWorld(), FVector(0, 0, 50), GetEnumSkillText(GetLocalRole()), this, FColor::White, DeltaTime);
+	//DrawDebugString(GetWorld(), FVector(0, 0, 50), GetEnumSkillText(GetLocalRole()), this, FColor::White, DeltaTime);
 }
 
 /** Inflict Damage to the receiver depending on the caster's abilitydamage.

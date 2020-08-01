@@ -109,9 +109,9 @@ void AcraftingStation::VeriyCraftability(TArray<FItemBaseData> inventory)
             {
                 craftable = false;
             }
-            PossibleRecipies[i].craftable = craftable;
 
         }
+            PossibleRecipies[i].craftable = craftable;
 
     }
 }

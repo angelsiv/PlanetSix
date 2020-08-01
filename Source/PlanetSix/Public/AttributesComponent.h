@@ -221,6 +221,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void UpdateAttributes();
 
+	UFUNCTION(BlueprintCallable)
+		void FullHeal();
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -239,6 +241,4 @@ protected:
 	UFUNCTION(BlueprintCallable)
 		void LevelUp();
 
-	UFUNCTION(BlueprintCallable)
-		void FullHeal();
 };

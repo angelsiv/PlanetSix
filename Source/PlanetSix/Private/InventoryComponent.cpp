@@ -527,11 +527,16 @@ void FUseData::EquipCrystal(APlanetSixCharacter* player)
         weaponValue *= -1;
         shieldValue *= -1;
     }
+    float tempHealth = player->Attributes->Health.GetMaxValue();
+    float tempShield = player->Attributes->Shield.GetMaxValue();
     player->Attributes->Health.CurrentModifier += healthValue;
     player->Attributes->AbilityDamage.CurrentModifier += abilityValue;
     player->Attributes->ArmorReduction.CurrentModifier += armorValue;
     player->Attributes->WeaponDamage.CurrentModifier += weaponValue;
     player->Attributes->Shield.CurrentModifier += shieldValue;
+    player->Attributes->UpdateAttributes();
+    player->HealthRegen(player->Attributes->Health.GetMaxValue() - tempHealth);
+    player->ShieldRegen(player->Attributes->Shield.GetMaxValue() - tempShield);
     Bvalues[0] = !Bvalues[0];
     PRINT("crystal", 1);
 }
